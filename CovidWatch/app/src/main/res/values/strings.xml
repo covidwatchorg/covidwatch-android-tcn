@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CovidWatch</string>
+    <string name="disable_human_contact_logging">Disable Human-Contact Logging</string>
+    <string name="your_id">Your Temporary ID:</string>
+</resources>
