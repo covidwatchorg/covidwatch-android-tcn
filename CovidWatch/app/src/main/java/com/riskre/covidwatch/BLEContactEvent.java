@@ -11,7 +11,6 @@ import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTI
 import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_IDENTIFIER_DESCRIPTOR;
 import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_SERVICE;
 
-
 public class BLEContactEvent {
 
     private static final String TAG = BLEContactEvent.class.getSimpleName();

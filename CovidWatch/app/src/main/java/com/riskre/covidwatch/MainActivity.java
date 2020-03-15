@@ -25,6 +25,9 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
+    // App
+    CovidWatchApplication application;
+
     // Constants
     private static final String TAG = "MainActivity";
     private static final int REQUEST_ENABLE_BT = 1;
@@ -37,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private boolean currently_logging_contact_events = false;
     private BluetoothAdapter bluetoothAdapter;
 
+
     // Initializes Bluetooth adapter.
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        application = (CovidWatchApplication) this.getApplication();
         setContentView(R.layout.activity_main);
 
         contact_event_numbers.add("TEST");
@@ -64,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
      * The user will be asked to enable bluetooth if it is turned off
      */
     private void initBluetoothAdapter() {
+
+        application.initGattServer(this);
 
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -116,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onClickEnableContactLogging(View view) {
         Button toggle = (Button) view;
-        CovidWatchApplication application = (CovidWatchApplication) this.getApplication();
 
         if (currently_logging_contact_events) {
             currently_logging_contact_events = false;

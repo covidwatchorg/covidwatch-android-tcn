@@ -23,7 +23,11 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * TODO class responsibility
+ *
+ * BLEContactTracer is responsible for advertising and scanning for the
+ * bluetooth services to make this possible. Only one instance of this
+ * class is to be constructed, but its not enforced. You have been warned!
+ *
  */
 public class BLEContactTracer {
 
@@ -46,28 +50,28 @@ public class BLEContactTracer {
     }
 
     /**
-     * TODO Doc
+     * Callback when scanning start and stops
      */
     private final ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             BluetoothDevice device = result.getDevice();
-            Log.w(TAG, "test"+device.getAddress());
+            Log.w(TAG, "Found another device w/ app: "+device.getAddress());
         }
 
         @Override
         public void onBatchScanResults(List<ScanResult> results) {
-            // Ignore for now
+            // TODO we may or maynot want to use this feature
         }
 
         @Override
         public void onScanFailed(int errorCode) {
-            // Ignore for now
+            // TODO error handling
         }
     };
 
     /**
-     * TODO: Doc
+     * Callback when advertisements start and stops
      */
     private final AdvertiseCallback advertisingCallback = new AdvertiseCallback() {
         @Override
@@ -83,12 +87,17 @@ public class BLEContactTracer {
     };
 
     /**
-     * TODO
-     * @param serviceUUIDs
+     * Create the necessary filters for the BLE Services and begin
+     * scanning for advertisements on those Service UUID's
+     *
+     * @param serviceUUIDs The UUIDs to look for when scanning
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void startContactTracingScanner(UUID[] serviceUUIDs){
+
         List<ScanFilter> filters = null;
+
+        // construct filters from serviceUUIDs
         if(serviceUUIDs != null) {
             filters = new ArrayList<>();
             for (UUID serviceUUID : serviceUUIDs) {
@@ -98,6 +107,11 @@ public class BLEContactTracer {
                 filters.add(filter);
             }
         }
+
+        // we use low power scan mode to conserve battery,
+        // CALLBACK_TYPE_ALL_MATCHES will run the callback for every discovery
+        // instead of batching them up. MATCH_MODE_AGGRESSIVE will try to connect
+        // even with 1 advertisement.
         ScanSettings scanSettings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
                 .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
@@ -105,36 +119,45 @@ public class BLEContactTracer {
                 .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
                 .setReportDelay(0L)
                 .build();
+
+        // The scan filter is incredibly important to allow android to run scans
+        // in the background
         if (scanner != null) {
             scanner.startScan(filters, scanSettings, scanCallback);
-            Log.d(TAG, "scan started");
+            Log.i(TAG, "scan started");
         }  else {
             Log.e(TAG, "could not get scanner object");
+            // TODO error handling
         }
     }
 
     /**
-     * TODO
-     * @param serviceUUID
+     * Starts the advertiser, with the given UUID. We advertise with MEDIUM power to get
+     * reasonable range, but this will need to be experimentally determined later.
+     *
+     * ADVERTISE_MODE_LOW_LATENCY is a must as the other nodes are not real-time.
+     *
+     * @param UUID serviceUUID The UUID to advertise the service
      */
     public void startContactTracingAdvertiser(UUID serviceUUID){
+
         AdvertiseSettings settings = new AdvertiseSettings.Builder()
                 .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
                 .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-                .setConnectable( true )
+                .setConnectable(true)
                 .build();
 
-        ParcelUuid pUuid = new ParcelUuid(serviceUUID);
-
         AdvertiseData data = new AdvertiseData.Builder()
-                .setIncludeDeviceName( false )
-                .addServiceUuid( pUuid )
-                .addServiceData( pUuid, "D".getBytes( Charset.forName( "UTF-8" ) ) )
+                .setIncludeDeviceName(false)
+                .addServiceUuid(new ParcelUuid(serviceUUID))
                 .build();
 
         advertiser.startAdvertising( settings, data, advertisingCallback );
     }
 
+    /**
+     * Stops all BLE related activity
+     */
     public void stopContactTracing(){
         scanner.stopScan(scanCallback);
         advertiser.stopAdvertising(advertisingCallback);
