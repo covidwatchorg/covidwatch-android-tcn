@@ -55,13 +55,15 @@ public class BLEContactTracer {
     private final ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
-            BluetoothDevice device = result.getDevice();
-            Log.w(TAG, "Found another device w/ app: "+device.getAddress());
+            // TODO we may or maynot want to use this feature
         }
 
         @Override
         public void onBatchScanResults(List<ScanResult> results) {
-            // TODO we may or maynot want to use this feature
+            for(ScanResult result: results){
+                BluetoothDevice device = result.getDevice();
+                Log.w(TAG, "Found another device w/ app: "+device.getAddress());
+            }
         }
 
         @Override
@@ -117,7 +119,7 @@ public class BLEContactTracer {
                 .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
                 .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
                 .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
-                .setReportDelay(0L)
+                .setReportDelay(1000)
                 .build();
 
         // The scan filter is incredibly important to allow android to run scans
