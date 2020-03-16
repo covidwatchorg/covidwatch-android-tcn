@@ -13,12 +13,20 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.util.Log;
 
+import com.polidea.rxandroidble2.LogConstants;
+import com.polidea.rxandroidble2.LogOptions;
+import com.polidea.rxandroidble2.RxBleClient;
+import com.polidea.rxandroidble2.exceptions.BleException;
+import com.riskre.covidwatch.ble.BLEAdvertiser;
 import com.riskre.covidwatch.ble.BLEContactEvent;
-import com.riskre.covidwatch.ble.BLEContactTracer;
+import com.riskre.covidwatch.ble.BLEScanner;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import io.reactivex.exceptions.UndeliverableException;
+import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
 
 
 public class CovidWatchApplication extends Application {
@@ -27,8 +35,46 @@ public class CovidWatchApplication extends Application {
     private static final String TAG = CovidWatchApplication.class.getSimpleName();
 
     // BLE
-    private BLEContactTracer contactTracer =
-            new BLEContactTracer(this, BluetoothAdapter.getDefaultAdapter());
+    private BLEAdvertiser BleAdvertiser;
+    private BLEScanner BleScanner;
+    private BluetoothGattService service;
+
+    public BLEAdvertiser getBleAdvertiser(){
+        return BleAdvertiser;
+    }
+
+    public BLEScanner getBleScanner(){
+        return BleScanner;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        RxBleClient rxBleClient = RxBleClient.create(this);
+        RxBleClient.updateLogOptions(new LogOptions.Builder()
+                .setLogLevel(LogConstants.DEBUG)
+                .setMacAddressLogSetting(LogConstants.MAC_ADDRESS_FULL)
+                .setUuidsLogSetting(LogConstants.UUIDS_FULL)
+                .setShouldLogAttributeValues(true)
+                .build()
+        );
+
+        // inject scanner and advertiser with respective dependencies
+        BleScanner = new BLEScanner(this, rxBleClient);
+        BleAdvertiser = new BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter());
+
+        RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                if (throwable instanceof UndeliverableException && throwable.getCause() instanceof BleException) {
+                    Log.v("SampleApplication", "Suppressed UndeliverableException: " + throwable.toString());
+                    return; // ignore BleExceptions as they were surely delivered at least once
+                }
+                // add other custom handlers if needed
+                throw new RuntimeException("Unexpected Throwable in RxJavaPlugins error handler", throwable);
+            }
+        });
+    }
 
     // GAT
     private BluetoothManager manager;
@@ -47,10 +93,10 @@ public class CovidWatchApplication extends Application {
             Log.i(TAG, "Tried to read characteristic: " + characteristic);
             super.onCharacteristicReadRequest(device, requestId, offset, characteristic);
             server.sendResponse(device,
-                                requestId,
-                                BluetoothGatt.GATT_SUCCESS,
-                                offset,
-                                BLEContactEvent.getNewContactEventNumber());
+                    requestId,
+                    BluetoothGatt.GATT_SUCCESS,
+                    offset,
+                    BLEContactEvent.getNewContactEventNumber());
         }
 
         @Override
@@ -66,13 +112,6 @@ public class CovidWatchApplication extends Application {
                     BLEContactEvent.getNewContactEventNumber());
         }
     };
-
-    private BluetoothGattService service;
-    private Set<BluetoothDevice> registered_devices = new HashSet<>();
-
-    public BLEContactTracer getContactTracer() {
-        return contactTracer;
-    }
 
     /**
      * Initialize the GATT server instance with the services/characteristics
@@ -97,6 +136,7 @@ public class CovidWatchApplication extends Application {
      * Shut down the GATT server.
      */
     private void stopServer() {
+
         if (server == null)
             return;
 

@@ -122,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
             currently_logging_contact_events = false;
             toggle.setText("ENABLE CONTACT LOGGING");
 
-            application.getContactTracer().stopContactTracing();
+            application.getBleAdvertiser().stopAdvertiser();
+            application.getBleScanner().stopScanning();
 
 
         } else {
@@ -130,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
             toggle.setText("DISABLE CONTACT LOGGING");
 
             UUID BLE_SERVICE_UUID = UUID.fromString(getString(R.string.peripheral_service_uuid));
-            application.getContactTracer().startContactTracingScanner(new UUID[]{BLE_SERVICE_UUID});
-            application.getContactTracer().startContactTracingAdvertiser(BLE_SERVICE_UUID);
+            application.getBleAdvertiser().startAdvertiser(BLE_SERVICE_UUID);
+            application.getBleScanner().startScanning();
         }
     }
 }
