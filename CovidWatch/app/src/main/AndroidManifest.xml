@@ -10,11 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".CovidWatchApplication">
-        <service
-            android:name=".BluetoothBackgroundService"
-            android:enabled="true"
-            android:exported="false"></service>
-
 
 
         <activity android:name=".MainActivity">

@@ -1,4 +1,4 @@
-package com.riskre.covidwatch;
+package com.riskre.covidwatch.ble;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
@@ -24,24 +24,25 @@ public class BLEContactEvent {
     public static BluetoothGattService createContactEventService() {
 
         // Contact Event Service
-        BluetoothGattService service = new BluetoothGattService(CONTACT_EVENT_SERVICE,
+        BluetoothGattService service = new BluetoothGattService(
+                CONTACT_EVENT_SERVICE,
                 BluetoothGattService.SERVICE_TYPE_PRIMARY);
 
         // Contact Event Identifier Characteristic
         BluetoothGattCharacteristic contactEventCharacteristic = new BluetoothGattCharacteristic(
                 CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
-                // Read-only characteristic, supports notifications
-                BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+                BluetoothGattCharacteristic.PROPERTY_READ,
                 BluetoothGattCharacteristic.PERMISSION_READ);
 
         // Descriptor for the CEN
         BluetoothGattDescriptor UUIDDescriptor = new BluetoothGattDescriptor(
                 CONTACT_EVENT_IDENTIFIER_DESCRIPTOR,
-                // Read/write descriptor
                 BluetoothGattDescriptor.PERMISSION_READ);
+
 
         contactEventCharacteristic.addDescriptor(UUIDDescriptor);
         service.addCharacteristic(contactEventCharacteristic);
+
         return service;
     }
 

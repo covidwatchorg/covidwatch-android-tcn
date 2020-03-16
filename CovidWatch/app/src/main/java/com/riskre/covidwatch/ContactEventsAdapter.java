@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * TODO docs
+ */
 public class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventsAdapter.ViewHolder> {
 
     private static final String TAG = "ContactEventsAdapter";

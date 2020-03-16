@@ -50,12 +50,6 @@ public class MainActivity extends AppCompatActivity {
         application = (CovidWatchApplication) this.getApplication();
         setContentView(R.layout.activity_main);
 
-        contact_event_numbers.add("TEST");
-        contact_event_numbers.add("TEST");
-        contact_event_numbers.add("TEST");
-        contact_event_numbers.add("TEST");
-        contact_event_numbers.add("TEST");
-
         /**
          * Initialization
          */
@@ -70,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initBluetoothAdapter() {
 
-        application.initGattServer(this);
+        application.startGattServer(this);
 
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);

@@ -1,7 +1,10 @@
-package com.riskre.covidwatch;
+package com.riskre.covidwatch.ble;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
@@ -11,13 +14,13 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
+import android.content.Context;
 import android.os.Build;
 import android.os.ParcelUuid;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +40,8 @@ public class BLEContactTracer {
     // BLE
     private BluetoothLeScanner scanner;
     private BluetoothLeAdvertiser advertiser;
+    private Context context;
+
 
     /**
      * Initializes the BluetoothLeScanner and BluetoothLeAdvertiser
@@ -44,7 +49,8 @@ public class BLEContactTracer {
      *
      * @param adapter The default adapter to use for BLE
      */
-    public BLEContactTracer(BluetoothAdapter adapter){
+    public BLEContactTracer(Context ctx, BluetoothAdapter adapter){
+        context = ctx;
         scanner =  adapter.getBluetoothLeScanner();
         advertiser = adapter.getBluetoothLeAdvertiser();
     }
@@ -52,25 +58,30 @@ public class BLEContactTracer {
     /**
      * Callback when scanning start and stops
      */
-    private final ScanCallback scanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            // TODO we may or maynot want to use this feature
-        }
+    private final ScanCallback scanCallback;
 
-        @Override
-        public void onBatchScanResults(List<ScanResult> results) {
-            for(ScanResult result: results){
-                BluetoothDevice device = result.getDevice();
-                Log.w(TAG, "Found another device w/ app: "+device.getAddress());
+    {
+        scanCallback = new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
+                // TODO we may or maynot want to use this feature
             }
-        }
 
-        @Override
-        public void onScanFailed(int errorCode) {
-            // TODO error handling
-        }
-    };
+            @Override
+            public void onBatchScanResults(List<ScanResult> results) {
+                for (ScanResult result : results) {
+                    BluetoothDevice device = result.getDevice();
+                    device.connectGatt(context, true, bluetoothGattCallback);
+                    Log.w(TAG, "Found another device w/ app: " + device.getAddress());
+                }
+            }
+
+            @Override
+            public void onScanFailed(int errorCode) {
+                // TODO error handling
+            }
+        };
+    }
 
     /**
      * Callback when advertisements start and stops
@@ -87,6 +98,33 @@ public class BLEContactTracer {
             super.onStartFailure(errorCode);
         }
     };
+
+    private final BluetoothGattCallback bluetoothGattCallback =
+            new BluetoothGattCallback() {
+                @Override
+                public void onConnectionStateChange(BluetoothGatt gatt, int status,
+                                                    int newState) {
+                    Log.d("debug", "onConnectionStateChange status: " + status + " newState: "+newState);
+
+                    switch(newState) {
+                        case BluetoothProfile.STATE_CONNECTING:
+                            Log.d("debug", "connection state: CONNECTING.");
+                            break;
+                        case BluetoothProfile.STATE_CONNECTED:
+                            Log.d("debug", "connection state: CONNECTED.");
+                            break;
+                        case BluetoothProfile.STATE_DISCONNECTING:
+                            Log.d("debug", "connection state: DISCONNECTING.");
+                            break;
+                        case BluetoothProfile.STATE_DISCONNECTED:
+                            Log.d("debug", "connection state: DISCONNECTED.");
+                            break;
+                        default:
+                            Log.d("debug", "connection state: OTHER.");
+                            break;
+                    }
+                }
+            };
 
     /**
      * Create the necessary filters for the BLE Services and begin
@@ -119,7 +157,7 @@ public class BLEContactTracer {
                 .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
                 .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
                 .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
-                .setReportDelay(1000)
+                .setReportDelay(10000)
                 .build();
 
         // The scan filter is incredibly important to allow android to run scans
@@ -136,7 +174,6 @@ public class BLEContactTracer {
     /**
      * Starts the advertiser, with the given UUID. We advertise with MEDIUM power to get
      * reasonable range, but this will need to be experimentally determined later.
-     *
      * ADVERTISE_MODE_LOW_LATENCY is a must as the other nodes are not real-time.
      *
      * @param UUID serviceUUID The UUID to advertise the service
