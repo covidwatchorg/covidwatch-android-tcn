@@ -42,9 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean currently_logging_contact_events = false;
     private BluetoothAdapter bluetoothAdapter;
 
-
-    // Initializes Bluetooth adapter.
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

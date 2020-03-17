@@ -30,7 +30,6 @@ import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTI
  * BLEAdvertiser is responsible for advertising the bluetooth services.
  * Only one instance of this class is to be constructed, but its not enforced. (for now)
  * You have been warned!
- *
  */
 public class BLEAdvertiser {
 
@@ -45,9 +44,10 @@ public class BLEAdvertiser {
      * Initializes the BluetoothLeScanner and BluetoothLeAdvertiser
      * from the given BluetoothAdapter
      *
+     * @param ctx The context this object is in
      * @param adapter The default adapter to use for BLE
      */
-    public BLEAdvertiser(Context ctx, BluetoothAdapter adapter){
+    public BLEAdvertiser(Context ctx, BluetoothAdapter adapter) {
         context = ctx;
         advertiser = adapter.getBluetoothLeAdvertiser();
     }
@@ -58,13 +58,13 @@ public class BLEAdvertiser {
     private final AdvertiseCallback advertisingCallback = new AdvertiseCallback() {
         @Override
         public void onStartSuccess(AdvertiseSettings settingsInEffect) {
-            Log.w( "BLE", "Advertising success!: " +  settingsInEffect);
+            Log.w("BLE", "Advertising success!: " + settingsInEffect);
             super.onStartSuccess(settingsInEffect);
         }
 
         @Override
         public void onStartFailure(int errorCode) {
-            Log.e( "BLE", "Advertising onStartFailure: " + errorCode );
+            Log.e("BLE", "Advertising onStartFailure: " + errorCode);
             super.onStartFailure(errorCode);
         }
     };
@@ -74,9 +74,10 @@ public class BLEAdvertiser {
      * reasonable range, but this will need to be experimentally determined later.
      * ADVERTISE_MODE_LOW_LATENCY is a must as the other nodes are not real-time.
      *
-     * @param UUID serviceUUID The UUID to advertise the service
+     * @param serviceUUID The UUID to advertise the service
+     * @param contactEventUUID The UUID that indicates the contact event
      */
-    public void startAdvertiser(UUID serviceUUID, UUID contactEventUUID){
+    public void startAdvertiser(UUID serviceUUID, UUID contactEventUUID) {
 
         AdvertiseSettings settings = new AdvertiseSettings.Builder()
                 .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
@@ -87,16 +88,27 @@ public class BLEAdvertiser {
         AdvertiseData data = new AdvertiseData.Builder()
                 .setIncludeDeviceName(false)
                 .addServiceUuid(new ParcelUuid(serviceUUID))
-                .addServiceData(new ParcelUuid(serviceUUID), new UuidAdapter().getBytesFromUUID(contactEventUUID))
+                .addServiceData(new ParcelUuid(serviceUUID),
+                        new UuidAdapter().getBytesFromUUID(contactEventUUID))
                 .build();
 
-        advertiser.startAdvertising( settings, data, advertisingCallback );
+        advertiser.startAdvertising(settings, data, advertisingCallback);
     }
 
     /**
      * Stops all BLE related activity
      */
-    public void stopAdvertiser(){
+    public void stopAdvertiser() {
         advertiser.stopAdvertising(advertisingCallback);
+    }
+
+    /**
+     * Changes the CEN to a new random valid UUID
+     * NOTE: This will stop/start the advertiser
+     */
+    public void changeContactEventNumber() {
+        Log.i(TAG, "Changing the contact event number!");
+        this.stopAdvertiser();
+        this.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, UUID.randomUUID());
     }
 }

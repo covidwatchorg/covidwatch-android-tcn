@@ -11,7 +11,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
@@ -22,6 +21,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.polidea.rxandroidble2.RxBleClient;
@@ -30,6 +30,8 @@ import com.riskre.covidwatch.MainActivity;
 import com.riskre.covidwatch.R;
 import com.riskre.covidwatch.UUIDs;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 
@@ -38,18 +40,22 @@ public class BLEForegroundService extends Service {
     // CONSTANTS
     private static final String TAG = "BLEForegroundService";
     private final String CHANNEL_ID = "CovidBluetoothContactChannel";
+    private int CONTACT_EVENT_NUMBER_INTERVAL_MIN = 1;
+    private int MS_TO_MIN = 60000;
 
     // APP
     CovidWatchApplication app;
+    Timer timer;
 
     @Override
     public void onCreate() {
         super.onCreate();
         app = (CovidWatchApplication) this.getApplication();
         app.BleAdvertiser = new BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter());
-        app.BleScanner = new BLEScanner(this, RxBleClient.create(this));
+        app.BleScanner = new BLEScanner(this, BluetoothAdapter.getDefaultAdapter());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -68,16 +74,25 @@ public class BLEForegroundService extends Service {
 
         startForeground(6, notification);
 
-        startGattServer(this);
+        // scheduler a new timer to start changing the contact event numbers
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+                                      @Override
+                                      public void run() {
+                                          app.BleAdvertiser.changeContactEventNumber();
+                                      }
+                                  },
+                MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN,
+                MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN);
+
         app.BleAdvertiser.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, UUID.randomUUID());
-        app.BleScanner.startScanning();
+        app.BleScanner.startScanning(new UUID[]{UUIDs.CONTACT_EVENT_SERVICE});
 
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        stopServer();
         app.BleAdvertiser.stopAdvertiser();
         app.BleScanner.stopScanning();
         super.onDestroy();
@@ -106,12 +121,24 @@ public class BLEForegroundService extends Service {
         }
     }
 
+    // The following GATT Server code works but is not being used because of many reasons:
+    //
+    // 1) GATT Clients on android are really buggy when connecting/disconnecting quickly
+    // 2) RxAndroidBle which is a library that solves those problems is only available for API 26 and
+    //      up which is only 30% of the android users (we want to be as accessible as possible)
+    // 3) We can achieve the same results by logging the advertised CEN and then logging the received CEN
+    //      without ever connecting. (asymmetric connection model)
+    //
+    // The following code has been marked as Deprecated but still works so potentially can be used
+    // in the future.
+
     /**
      * Initialize the GATT server instance with the services/characteristics
      * from BLEContactEvent
      *
      * @param context the context from the running activity
      */
+    @Deprecated
     public void startGattServer(Context context) {
 
         app.manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -128,6 +155,7 @@ public class BLEForegroundService extends Service {
     /**
      * Shut down the GATT server.
      */
+    @Deprecated
     private void stopServer() {
         if (app.server == null)
             return;
