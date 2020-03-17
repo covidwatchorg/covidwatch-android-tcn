@@ -20,6 +20,7 @@ import com.polidea.rxandroidble2.exceptions.BleScanException;
 import com.polidea.rxandroidble2.scan.ScanFilter;
 import com.polidea.rxandroidble2.scan.ScanSettings;
 import com.riskre.covidwatch.UUIDs;
+import com.riskre.covidwatch.UuidAdapter;
 
 import java.util.UUID;
 
@@ -75,7 +76,7 @@ public class BLEAdvertiser {
      *
      * @param UUID serviceUUID The UUID to advertise the service
      */
-    public void startAdvertiser(UUID serviceUUID){
+    public void startAdvertiser(UUID serviceUUID, UUID contactEventUUID){
 
         AdvertiseSettings settings = new AdvertiseSettings.Builder()
                 .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
@@ -86,6 +87,7 @@ public class BLEAdvertiser {
         AdvertiseData data = new AdvertiseData.Builder()
                 .setIncludeDeviceName(false)
                 .addServiceUuid(new ParcelUuid(serviceUUID))
+                .addServiceData(new ParcelUuid(serviceUUID), new UuidAdapter().getBytesFromUUID(contactEventUUID))
                 .build();
 
         advertiser.startAdvertising( settings, data, advertisingCallback );

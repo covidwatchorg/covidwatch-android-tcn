@@ -69,7 +69,7 @@ public class BLEForegroundService extends Service {
         startForeground(6, notification);
 
         startGattServer(this);
-        app.BleAdvertiser.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE);
+        app.BleAdvertiser.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, UUID.randomUUID());
         app.BleScanner.startScanning();
 
         return START_STICKY;
