@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.ParcelUuid;
+import android.util.Log;
 
 import com.polidea.rxandroidble2.RxBleClient;
 import com.polidea.rxandroidble2.scan.BackgroundScanner;
@@ -16,6 +17,7 @@ public class BLEScanner {
     private RxBleClient rxBleClient;
     private PendingIntent callbackIntent;
     private static final int SCAN_REQUEST_CODE = 42;
+    private String TAG = "BLEScanner";
 
     /**
      * TODO
@@ -30,6 +32,9 @@ public class BLEScanner {
     }
 
     public void startScanning() {
+
+            Log.i(TAG, "Started scanning");
+
             rxBleClient.getBackgroundScanner().scanBleDeviceInBackground(
                     callbackIntent,
                     new ScanSettings.Builder()

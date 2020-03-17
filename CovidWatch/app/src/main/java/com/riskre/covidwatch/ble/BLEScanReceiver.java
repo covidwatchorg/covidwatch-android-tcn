@@ -22,7 +22,12 @@ public class BLEScanReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         CovidWatchApplication application = (CovidWatchApplication) context.getApplicationContext();
-        BackgroundScanner backgroundScanner = application.getBleScanner().getBackgroundScanner();
+
+        // TODO fix this, shouldn't need this check
+        if(application.BleScanner == null)
+            return;
+
+        BackgroundScanner backgroundScanner = application.BleScanner.getBackgroundScanner();
 
         try {
             final List<ScanResult> scanResults = backgroundScanner.onScanResultReceived(intent);

@@ -26,10 +26,9 @@ import java.util.UUID;
 import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC;
 
 /**
- *
- * BLEContactTracer is responsible for advertising and scanning for the
- * bluetooth services to make this possible. Only one instance of this
- * class is to be constructed, but its not enforced. You have been warned!
+ * BLEAdvertiser is responsible for advertising the bluetooth services.
+ * Only one instance of this class is to be constructed, but its not enforced. (for now)
+ * You have been warned!
  *
  */
 public class BLEAdvertiser {
@@ -58,6 +57,7 @@ public class BLEAdvertiser {
     private final AdvertiseCallback advertisingCallback = new AdvertiseCallback() {
         @Override
         public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+            Log.w( "BLE", "Advertising success!: " +  settingsInEffect);
             super.onStartSuccess(settingsInEffect);
         }
 

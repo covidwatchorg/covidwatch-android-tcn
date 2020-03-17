@@ -11,6 +11,12 @@
         android:theme="@style/AppTheme"
         android:name=".CovidWatchApplication">
 
+        <service
+            android:name=".ble.BLEForegroundService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <receiver android:name=".ble.BLEScanReceiver"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -25,6 +31,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
 
 
