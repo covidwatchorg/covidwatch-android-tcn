@@ -1,4 +1,4 @@
-package com.riskre.covidwatch;
+package com.riskre.covidwatch.utils;
 
 import java.util.UUID;
 

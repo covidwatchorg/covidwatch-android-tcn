@@ -1,7 +1,6 @@
 package com.riskre.covidwatch.ble;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
@@ -14,8 +13,8 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.riskre.covidwatch.UUIDAdapter;
-import com.riskre.covidwatch.UUIDs;
+import com.riskre.covidwatch.utils.UUIDAdapter;
+import com.riskre.covidwatch.utils.UUIDs;
 import com.riskre.covidwatch.data.ContactEvent;
 import com.riskre.covidwatch.data.ContactEventDAO;
 import com.riskre.covidwatch.data.CovidWatchDatabase;

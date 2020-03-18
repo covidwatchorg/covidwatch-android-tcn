@@ -16,8 +16,11 @@ class CovidWatchRepository {
     }
 
     /**
+     * TODO
      * Room executes all queries on a separate thread.
      * Observed LiveData will notify the observer when the data has changed.
+     *
+     * @return allEvents, all the contact events in the DB
      */
     LiveData<List<ContactEvent>> getAllEvents() {
         return allEvents;

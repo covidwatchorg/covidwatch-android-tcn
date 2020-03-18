@@ -7,9 +7,9 @@ import android.bluetooth.BluetoothGattService;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC;
-import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_IDENTIFIER_DESCRIPTOR;
-import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_SERVICE;
+import static com.riskre.covidwatch.utils.UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC;
+import static com.riskre.covidwatch.utils.UUIDs.CONTACT_EVENT_IDENTIFIER_DESCRIPTOR;
+import static com.riskre.covidwatch.utils.UUIDs.CONTACT_EVENT_SERVICE;
 
 public class BLEContactEvent {
 

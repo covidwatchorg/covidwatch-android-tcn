@@ -26,7 +26,7 @@ import com.riskre.covidwatch.ble.BLEForegroundService;
 import com.riskre.covidwatch.data.ContactEvent;
 import com.riskre.covidwatch.data.ContactEventDAO;
 import com.riskre.covidwatch.data.ContactEventViewModel;
-import com.riskre.covidwatch.data.ContactEventsAdapter;
+import com.riskre.covidwatch.ui.ContactEventsAdapter;
 import com.riskre.covidwatch.data.CovidWatchDatabase;
 
 import java.util.ArrayList;

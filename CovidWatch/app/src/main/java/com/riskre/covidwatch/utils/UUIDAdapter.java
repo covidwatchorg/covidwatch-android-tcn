@@ -1,4 +1,4 @@
-package com.riskre.covidwatch;
+package com.riskre.covidwatch.utils;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;

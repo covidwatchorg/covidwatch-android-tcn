@@ -23,13 +23,11 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.polidea.rxandroidble2.RxBleClient;
 import com.riskre.covidwatch.CovidWatchApplication;
 import com.riskre.covidwatch.MainActivity;
 import com.riskre.covidwatch.R;
-import com.riskre.covidwatch.UUIDs;
+import com.riskre.covidwatch.utils.UUIDs;
 import com.riskre.covidwatch.data.ContactEventViewModel;
 
 import java.util.Timer;

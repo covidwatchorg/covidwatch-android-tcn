@@ -10,12 +10,10 @@ import android.content.Context;
 import android.os.ParcelUuid;
 import android.util.Log;
 
-import com.riskre.covidwatch.UUIDAdapter;
-import com.riskre.covidwatch.UUIDs;
+import com.riskre.covidwatch.utils.UUIDAdapter;
+import com.riskre.covidwatch.utils.UUIDs;
 
 import java.util.UUID;
-
-import static com.riskre.covidwatch.UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC;
 
 /**
  * BLEAdvertiser is responsible for advertising the bluetooth services.
