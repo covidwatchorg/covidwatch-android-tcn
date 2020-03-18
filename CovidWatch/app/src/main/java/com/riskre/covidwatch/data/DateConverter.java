@@ -1,8 +1,4 @@
 package com.riskre.covidwatch.data;
-//  Created by Zsombor SZABO on 17/03/2020.
-//  Copyright © IZE. All rights reserved.
-//  See LICENSE.txt for licensing information.
-//  
 
 import androidx.room.TypeConverter;
 

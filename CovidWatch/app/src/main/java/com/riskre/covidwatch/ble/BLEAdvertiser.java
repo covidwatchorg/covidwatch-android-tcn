@@ -1,26 +1,17 @@
 package com.riskre.covidwatch.ble;
 
-import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Parcel;
+
 import android.os.ParcelUuid;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import com.polidea.rxandroidble2.RxBleClient;
-import com.polidea.rxandroidble2.exceptions.BleScanException;
-import com.polidea.rxandroidble2.scan.ScanFilter;
-import com.polidea.rxandroidble2.scan.ScanSettings;
+import com.riskre.covidwatch.UUIDAdapter;
 import com.riskre.covidwatch.UUIDs;
-import com.riskre.covidwatch.UuidAdapter;
 
 import java.util.UUID;
 
@@ -89,7 +80,7 @@ public class BLEAdvertiser {
                 .setIncludeDeviceName(false)
                 .addServiceUuid(new ParcelUuid(serviceUUID))
                 .addServiceData(new ParcelUuid(serviceUUID),
-                        new UuidAdapter().getBytesFromUUID(contactEventUUID))
+                        new UUIDAdapter().getBytesFromUUID(contactEventUUID))
                 .build();
 
         advertiser.startAdvertising(settings, data, advertisingCallback);

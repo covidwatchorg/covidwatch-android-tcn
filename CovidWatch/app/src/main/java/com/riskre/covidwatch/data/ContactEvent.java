@@ -1,13 +1,8 @@
 package com.riskre.covidwatch.data;
-//  Created by Zsombor SZABO on 17/03/2020.
-//  Copyright © IZE. All rights reserved.
-//  See LICENSE.txt for licensing information.
-//  
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -24,17 +19,27 @@ public class ContactEvent {
     @ColumnInfo(name = "timestamp")
     public Date timestamp;
 
+    @ColumnInfo(name = "signal_strength")
+    public int signalStrength;
+
     @ColumnInfo(name = "upload_state", defaultValue = "0")
     public int uploadState;
 
     @ColumnInfo(name = "was_potentially_infectious", defaultValue = "false")
     public Boolean wasPotentiallyInfectious;
 
-    public ContactEvent() {
-        identifier = UUID.randomUUID().toString();
+    public ContactEvent() {}
+
+    public ContactEvent(UUID contactEventUUID, int RSSI) {
+        identifier = contactEventUUID.toString();
+        signalStrength = RSSI;
         timestamp = new Date(System.currentTimeMillis());
         uploadState = 0;
         wasPotentiallyInfectious = false;
     }
 
+    @NonNull
+    public String getIdentifier() {
+        return identifier;
+    }
 }

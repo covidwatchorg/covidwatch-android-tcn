@@ -1,9 +1,12 @@
 package com.riskre.covidwatch;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,9 +23,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.riskre.covidwatch.ble.BLEForegroundService;
+import com.riskre.covidwatch.data.ContactEvent;
+import com.riskre.covidwatch.data.ContactEventViewModel;
+import com.riskre.covidwatch.data.ContactEventsAdapter;
 
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
     // CEN
     private ArrayList<String> contact_event_numbers = new ArrayList<String>();
-    private RecyclerView.Adapter cen_adapter;
+    private ContactEventsAdapter cen_adapter;
 
     // BLE
     private boolean currently_logging_contact_events = false;
     private BluetoothAdapter bluetoothAdapter;
+
+    // DB
+    private ContactEventViewModel cenViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -80,10 +89,19 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView() {
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        cen_adapter = new ContactEventsAdapter(contact_event_numbers, this);
+        cen_adapter = new ContactEventsAdapter(this);
         recyclerView.setAdapter(cen_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        cenViewModel = new ViewModelProvider(this).get(ContactEventViewModel.class);
+
+        cenViewModel.getAllEvents().observe(this, new Observer<List<ContactEvent>>() {
+            @Override
+            public void onChanged(@Nullable final List<ContactEvent> events) {
+                // Update the cached copy of the words in the adapter.
+                cen_adapter.setContactEvents(events);
+            }
+        });
     }
 
 

@@ -1,27 +1,30 @@
 package com.riskre.covidwatch.data;
-//  Created by Zsombor SZABO on 17/03/2020.
-//  Copyright © IZE. All rights reserved.
-//  See LICENSE.txt for licensing information.
-//  
 
-//import android.app.Application;
-//
-//import androidx.lifecycle.AndroidViewModel;
-//import androidx.lifecycle.LiveData;
-//
-//import java.util.List;
-//
-//public class ContactEventViewModel extends AndroidViewModel {
-//
-//    private LiveData<List<ContactEvent>> mAllWords;
-//
-//    public ContactEventViewModel (Application application) {
-//        super(application);
-//        mRepository = new WordRepository(application);
-//        mAllWords = mRepository.getAllWords();
-//    }
-//
-//    LiveData<List<Word>> getAllWords() { return mAllWords; }
-//
-//    public void insert(Word word) { mRepository.insert(word); }
-//}
+
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+
+import java.util.List;
+
+public class ContactEventViewModel extends AndroidViewModel {
+
+    private CovidWatchRepository repository;
+    private LiveData<List<ContactEvent>> allEvents;
+
+    public ContactEventViewModel(Application application) {
+        super(application);
+        repository = new CovidWatchRepository(application);
+        allEvents = repository.getAllEvents();
+    }
+
+    public LiveData<List<ContactEvent>> getAllEvents() {
+        return allEvents;
+    }
+
+    public void insert(ContactEvent cen) {
+        repository.insert(cen);
+    }
+}
