@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity(tableName = "contact_events")
 @TypeConverters(DateConverter.class)
@@ -15,6 +14,9 @@ public class ContactEvent {
     @PrimaryKey
     @NonNull
     public String identifier;
+
+    @ColumnInfo(name = "advertising_cen")
+    public String advertisingCEN;
 
     @ColumnInfo(name = "timestamp")
     public Date timestamp;
@@ -30,8 +32,8 @@ public class ContactEvent {
 
     public ContactEvent() {}
 
-    public ContactEvent(UUID contactEventUUID, int RSSI) {
-        identifier = contactEventUUID.toString();
+    public ContactEvent(String CEN, int RSSI) {
+        identifier = CEN;
         signalStrength = RSSI;
         timestamp = new Date(System.currentTimeMillis());
         uploadState = 0;
@@ -41,5 +43,49 @@ public class ContactEvent {
     @NonNull
     public String getIdentifier() {
         return identifier;
+    }
+
+    public void setIdentifier(@NonNull String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getAdvertisingCEN() {
+        return advertisingCEN;
+    }
+
+    public void setAdvertisingCEN(String advertisingCEN) {
+        this.advertisingCEN = advertisingCEN;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public int getSignalStrength() {
+        return signalStrength;
+    }
+
+    public void setSignalStrength(int signalStrength) {
+        this.signalStrength = signalStrength;
+    }
+
+    public int getUploadState() {
+        return uploadState;
+    }
+
+    public void setUploadState(int uploadState) {
+        this.uploadState = uploadState;
+    }
+
+    public Boolean getWasPotentiallyInfectious() {
+        return wasPotentiallyInfectious;
+    }
+
+    public void setWasPotentiallyInfectious(Boolean wasPotentiallyInfectious) {
+        this.wasPotentiallyInfectious = wasPotentiallyInfectious;
     }
 }

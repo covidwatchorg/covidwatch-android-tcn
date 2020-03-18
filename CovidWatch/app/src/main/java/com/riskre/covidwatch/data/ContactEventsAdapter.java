@@ -44,7 +44,7 @@ public class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventsAdap
     public void onBindViewHolder(ContactEventsHolder holder, int position) {
         if (contactEvents != null) {
             ContactEvent current = contactEvents.get(position);
-            holder.ContactEventItemView.setText(current.getIdentifier());
+            holder.ContactEventItemView.setText("RSSI: " + current.getSignalStrength() + "\nID: " + current.getIdentifier());
         } else {
             // Covers the case of data not being ready yet.
             holder.ContactEventItemView.setText("No ContactEvent");

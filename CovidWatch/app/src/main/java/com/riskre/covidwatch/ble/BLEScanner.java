@@ -14,6 +14,12 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.riskre.covidwatch.UUIDAdapter;
+import com.riskre.covidwatch.UUIDs;
+import com.riskre.covidwatch.data.ContactEvent;
+import com.riskre.covidwatch.data.ContactEventDAO;
+import com.riskre.covidwatch.data.CovidWatchDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,12 +56,31 @@ public class BLEScanner {
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
                 for (ScanResult result : results) {
-                    result.getRssi();
 
                     Log.w(TAG, "Contact Event number: "+result.getScanRecord().getServiceData().toString());
                     Log.w(TAG, "Signal strength: "+result.getRssi());
                     Log.w(TAG, "Found another human: " + result.getDevice().getAddress());
-                    // TODO log in room DB
+
+                    UUID contactEventNumber = UUIDAdapter.getUUIDFromBytes(
+                                                    result.getScanRecord().getServiceData().get(
+                                                            new ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)));
+
+                    CovidWatchDatabase.databaseWriteExecutor.execute(() -> {
+                        // Populate the database in the background.
+                        // If you want to start with more words, just add them.
+                        ContactEventDAO dao = CovidWatchDatabase.getDatabase(context).contactEventDAO();
+                        ContactEvent old = dao.findByPrimaryKey(contactEventNumber.toString());
+
+                        // If the signal is stronger, update the RSSI value, otherwise just add the Event
+                        // to the DB if it doesn't exist
+                        if(old != null && old.getSignalStrength() > result.getRssi()){
+                            old.setSignalStrength(result.getRssi());
+                            dao.update(old);
+                        } else if (old == null){
+                            ContactEvent cen = new ContactEvent(contactEventNumber.toString(), result.getRssi());
+                            dao.insert(cen);
+                        }
+                    });
                 }
             }
         };
@@ -86,7 +111,7 @@ public class BLEScanner {
                 .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
                 .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
                 .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
-                .setReportDelay(10000)
+                .setReportDelay(30000)
                 .build();
 
         // The scan filter is incredibly important to allow android to run scans

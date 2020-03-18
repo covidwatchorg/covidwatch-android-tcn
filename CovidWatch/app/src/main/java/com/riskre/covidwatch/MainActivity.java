@@ -24,8 +24,10 @@ import android.widget.Toast;
 
 import com.riskre.covidwatch.ble.BLEForegroundService;
 import com.riskre.covidwatch.data.ContactEvent;
+import com.riskre.covidwatch.data.ContactEventDAO;
 import com.riskre.covidwatch.data.ContactEventViewModel;
 import com.riskre.covidwatch.data.ContactEventsAdapter;
+import com.riskre.covidwatch.data.CovidWatchDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,5 +150,14 @@ public class MainActivity extends AppCompatActivity {
             toggle.setText("DISABLE CONTACT LOGGING");
             ContextCompat.startForegroundService(this, serviceIntent);
         }
+    }
+
+    public void clearDB(View view){
+        CovidWatchDatabase.databaseWriteExecutor.execute(() -> {
+            // Populate the database in the background.
+            // If you want to start with more words, just add them.
+            ContactEventDAO dao = CovidWatchDatabase.getDatabase(this).contactEventDAO();
+            dao.deleteAll();
+        });
     }
 }

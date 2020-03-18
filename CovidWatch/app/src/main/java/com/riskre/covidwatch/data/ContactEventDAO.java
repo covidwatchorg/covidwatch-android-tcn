@@ -2,7 +2,6 @@ package com.riskre.covidwatch.data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -22,17 +21,11 @@ public interface ContactEventDAO {
     @Query("SELECT * FROM contact_events WHERE identifier = :identifier")
     ContactEvent findByPrimaryKey(String identifier);
 
-    @Insert
-    void insertAll(ContactEvent... contactEvents);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ContactEvent contactEvent);
 
     @Update
-    void updateSignalStrength(ContactEvent contactEvent);
-
-    @Delete
-    void delete(ContactEvent contactEvent);
+    void update(ContactEvent contactEvent);
 
     @Query("DELETE FROM contact_events")
     void deleteAll();

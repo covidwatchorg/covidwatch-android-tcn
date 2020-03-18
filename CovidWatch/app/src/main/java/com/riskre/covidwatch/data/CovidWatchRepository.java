@@ -1,11 +1,7 @@
 package com.riskre.covidwatch.data;
 
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
-
-import com.riskre.covidwatch.CovidWatchApplication;
-
 import java.util.List;
 
 class CovidWatchRepository {
