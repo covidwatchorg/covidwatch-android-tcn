@@ -26,6 +26,7 @@ import com.riskre.covidwatch.ble.BLEForegroundService;
 import com.riskre.covidwatch.data.ContactEvent;
 import com.riskre.covidwatch.data.ContactEventDAO;
 import com.riskre.covidwatch.data.ContactEventViewModel;
+import com.riskre.covidwatch.firestore.PublicContactEventsObserver;
 import com.riskre.covidwatch.ui.ContactEventsAdapter;
 import com.riskre.covidwatch.data.CovidWatchDatabase;
 
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     // DB
     private ContactEventViewModel cenViewModel;
 
+    // TODO: Separate this into a service
+    private PublicContactEventsObserver publicContactEventsObserver;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         initBluetoothAdapter();
         initLocationManager();
+        initPublicContactEventsObserver();
+    }
+
+    private void initPublicContactEventsObserver() {
+        publicContactEventsObserver = new PublicContactEventsObserver(application.getApplicationContext());
     }
 
     /**
