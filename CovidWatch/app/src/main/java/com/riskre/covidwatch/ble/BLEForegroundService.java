@@ -27,6 +27,9 @@ import androidx.core.app.NotificationCompat;
 import com.riskre.covidwatch.CovidWatchApplication;
 import com.riskre.covidwatch.MainActivity;
 import com.riskre.covidwatch.R;
+import com.riskre.covidwatch.data.ContactEvent;
+import com.riskre.covidwatch.data.ContactEventDAO;
+import com.riskre.covidwatch.data.CovidWatchDatabase;
 import com.riskre.covidwatch.utils.UUIDs;
 import com.riskre.covidwatch.data.ContactEventViewModel;
 
@@ -88,10 +91,14 @@ public class BLEForegroundService extends Service {
                 MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN,
                 MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN);
 
-        // generate random UUID, update the global Advertising UUID and start
-        // advertising. TODO grab a lock
+        // generate random UUID, update the global Advertising UUID and start advertising
         UUID new_cen = UUID.randomUUID();
-        ((CovidWatchApplication) this.getApplication()).setCurrentAdvertisingUUID(new_cen);
+
+        CovidWatchDatabase.databaseWriteExecutor.execute(() -> {
+            ContactEventDAO dao = CovidWatchDatabase.getDatabase(this).contactEventDAO();
+            ContactEvent cen = new ContactEvent(new_cen.toString());
+            dao.insert(cen);
+        });
 
         app.getBleAdvertiser().startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, new_cen);
         app.getBleScanner().startScanning(new UUID[]{UUIDs.CONTACT_EVENT_SERVICE});

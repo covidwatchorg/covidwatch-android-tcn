@@ -65,6 +65,7 @@ public class BLEScanner {
 
                     final byte[] uuidBytes = result.getScanRecord().getServiceData().get(
                             new ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE));
+
                     if (uuidBytes == null) {
                         continue;
                     }
@@ -72,29 +73,9 @@ public class BLEScanner {
                     UUID contactEventNumber = UUIDAdapter.getUUIDFromBytes(uuidBytes);
 
                     CovidWatchDatabase.databaseWriteExecutor.execute(() -> {
-                        // Populate the database in the background.
-                        // If you want to start with more words, just add them.
                         ContactEventDAO dao = CovidWatchDatabase.getDatabase(context).contactEventDAO();
-                        ContactEvent old = dao.findByPrimaryKey(contactEventNumber.toString());
-
-                        // If the signal is stronger, update the RSSI value, otherwise just add the Event
-                        // to the DB if it doesn't exist
-                        if (old != null && old.getSignalStrength() < result.getRssi()) {
-                            old.setSignalStrength(result.getRssi());
-                            old.setTimestamp(new Date(System.currentTimeMillis()));
-                            dao.update(old);
-                        } else if (old == null) {
-                            UUID cur = ((CovidWatchApplication)
-                                    (context.getApplicationContext())).getCurrentAdvertisingUUID();
-
-                            ContactEvent cen = new ContactEvent(
-                                    contactEventNumber.toString(),
-                                    cur.toString(),
-                                    result.getRssi()
-                            );
-
-                            dao.insert(cen);
-                        }
+                        ContactEvent cen = new ContactEvent(contactEventNumber.toString());
+                        dao.insert(cen);
                     });
                 }
             }

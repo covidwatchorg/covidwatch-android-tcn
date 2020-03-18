@@ -42,11 +42,8 @@ public class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventsAdap
         if (contactEvents != null) {
             ContactEvent current = contactEvents.get(position);
             holder.ContactEventItemView.setText(
-                    "Strongest RSSI: " + current.getSignalStrength() +
                             "\nCEN: " + current.getIdentifier() +
-                            "\nAEN: " + current.getAdvertisingCEN() +
-                            "\nClosest @  " + current.getTimestamp());
-
+                            "\nDetected @  " + current.getTimestamp());
         } else {
             // Covers the case of data not being ready yet.
             holder.ContactEventItemView.setText("No ContactEvent");

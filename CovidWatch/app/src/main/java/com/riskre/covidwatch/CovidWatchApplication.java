@@ -15,20 +15,11 @@ public class CovidWatchApplication extends Application {
     // BLE
     private BLEAdvertiser BleAdvertiser;
     private BLEScanner BleScanner;
-    public static UUID currentAdvertisingUUID;
 
     // GAT
     private BluetoothManager manager;
     private BluetoothGattServer server;
     private BluetoothGattService service;
-
-    public UUID getCurrentAdvertisingUUID() {
-        return currentAdvertisingUUID;
-    }
-
-    public void setCurrentAdvertisingUUID(UUID uuid) {
-        currentAdvertisingUUID = uuid;
-    }
 
     public BLEAdvertiser getBleAdvertiser() {
         return BleAdvertiser;

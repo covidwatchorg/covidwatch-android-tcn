@@ -11,6 +11,9 @@ import android.os.ParcelUuid;
 import android.util.Log;
 
 import com.riskre.covidwatch.CovidWatchApplication;
+import com.riskre.covidwatch.data.ContactEvent;
+import com.riskre.covidwatch.data.ContactEventDAO;
+import com.riskre.covidwatch.data.CovidWatchDatabase;
 import com.riskre.covidwatch.utils.UUIDAdapter;
 import com.riskre.covidwatch.utils.UUIDs;
 
@@ -101,7 +104,13 @@ public class BLEAdvertiser {
         this.stopAdvertiser();
 
         UUID new_cen = UUID.randomUUID();
-        ((CovidWatchApplication)context.getApplicationContext()).setCurrentAdvertisingUUID(new_cen);
+
+        CovidWatchDatabase.databaseWriteExecutor.execute(() -> {
+            ContactEventDAO dao = CovidWatchDatabase.getDatabase(context).contactEventDAO();
+            ContactEvent cen = new ContactEvent(new_cen.toString());
+            dao.insert(cen);
+        });
+
         this.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, new_cen);
     }
 }

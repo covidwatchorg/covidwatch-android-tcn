@@ -15,14 +15,8 @@ public class ContactEvent {
     @NonNull
     public String identifier;
 
-    @ColumnInfo(name = "advertising_cen")
-    public String advertisingCEN;
-
     @ColumnInfo(name = "timestamp")
     public Date timestamp;
-
-    @ColumnInfo(name = "signal_strength")
-    public int signalStrength;
 
     @ColumnInfo(name = "upload_state", defaultValue = "0")
     public int uploadState;
@@ -33,15 +27,12 @@ public class ContactEvent {
     public ContactEvent() {}
 
     /**
+     *  Constructor
      *
-     * @param scannedCEN
-     * @param advertisedCEN
-     * @param RSSI
+     * @param CEN The contact event number
      */
-    public ContactEvent(String scannedCEN, String advertisedCEN, int RSSI) {
-        identifier = scannedCEN;
-        advertisingCEN = advertisedCEN;
-        signalStrength = RSSI;
+    public ContactEvent(String CEN) {
+        identifier = CEN;
         timestamp = new Date(System.currentTimeMillis());
         uploadState = 0;
         wasPotentiallyInfectious = false;
@@ -56,28 +47,12 @@ public class ContactEvent {
         this.identifier = identifier;
     }
 
-    public String getAdvertisingCEN() {
-        return advertisingCEN;
-    }
-
-    public void setAdvertisingCEN(String advertisingCEN) {
-        this.advertisingCEN = advertisingCEN;
-    }
-
     public Date getTimestamp() {
         return timestamp;
     }
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public int getSignalStrength() {
-        return signalStrength;
-    }
-
-    public void setSignalStrength(int signalStrength) {
-        this.signalStrength = signalStrength;
     }
 
     public int getUploadState() {
