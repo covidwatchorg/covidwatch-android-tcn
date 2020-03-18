@@ -41,12 +41,18 @@ public class ContactEventsAdapter extends RecyclerView.Adapter<ContactEventsAdap
     public void onBindViewHolder(ContactEventsHolder holder, int position) {
         if (contactEvents != null) {
             ContactEvent current = contactEvents.get(position);
-            holder.ContactEventItemView.setText("RSSI: " + current.getSignalStrength() + "\nID: " + current.getIdentifier());
+            holder.ContactEventItemView.setText(
+                    "Strongest RSSI: " + current.getSignalStrength() +
+                            "\nCEN: " + current.getIdentifier() +
+                            "\nAEN: " + current.getAdvertisingCEN() +
+                            "\nClosest @  " + current.getTimestamp());
+
         } else {
             // Covers the case of data not being ready yet.
             holder.ContactEventItemView.setText("No ContactEvent");
         }
     }
+
 
     // getItemCount() is called many times, and when it is first called,
     // contactEvents has not been updated (means initially, it's null, and we can't return null).

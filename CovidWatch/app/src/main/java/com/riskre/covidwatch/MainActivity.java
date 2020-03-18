@@ -83,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+
+        currently_logging_contact_events =
+                this.getIntent().getBooleanExtra("toggle", false);
+
+        Button toggle = (Button) findViewById(R.id.button);
+        if (currently_logging_contact_events) {
+            toggle.setText("DISABLE CONTACT LOGGING");
+        } else {
+            toggle.setText("ENABLE CONTACT LOGGING");
+        }
+
     }
 
     /**
@@ -95,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(cen_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // display database entries by observing the contact events
         cenViewModel = new ViewModelProvider(this).get(ContactEventViewModel.class);
-
         cenViewModel.getAllEvents().observe(this, new Observer<List<ContactEvent>>() {
             @Override
             public void onChanged(@Nullable final List<ContactEvent> events) {
@@ -137,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view The button that has been clicked
      */
     public void onClickEnableContactLogging(View view) {
+
         Button toggle = (Button) view;
         Intent serviceIntent = new Intent(this, BLEForegroundService.class);
 
@@ -152,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clearDB(View view){
+    public void clearDB(View view) {
         CovidWatchDatabase.databaseWriteExecutor.execute(() -> {
             // Populate the database in the background.
             // If you want to start with more words, just add them.

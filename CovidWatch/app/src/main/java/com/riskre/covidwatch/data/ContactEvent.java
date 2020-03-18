@@ -32,8 +32,15 @@ public class ContactEvent {
 
     public ContactEvent() {}
 
-    public ContactEvent(String CEN, int RSSI) {
-        identifier = CEN;
+    /**
+     *
+     * @param scannedCEN
+     * @param advertisedCEN
+     * @param RSSI
+     */
+    public ContactEvent(String scannedCEN, String advertisedCEN, int RSSI) {
+        identifier = scannedCEN;
+        advertisingCEN = advertisedCEN;
         signalStrength = RSSI;
         timestamp = new Date(System.currentTimeMillis());
         uploadState = 0;

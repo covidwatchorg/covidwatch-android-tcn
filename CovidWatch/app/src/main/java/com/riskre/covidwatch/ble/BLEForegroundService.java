@@ -53,10 +53,8 @@ public class BLEForegroundService extends Service {
     public void onCreate() {
         super.onCreate();
         app = (CovidWatchApplication) this.getApplication();
-        app.BleAdvertiser = new BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter());
-        app.BleScanner = new BLEScanner(this, BluetoothAdapter.getDefaultAdapter());
-
-
+        app.setBleAdvertiser(new BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter()));
+        app.setBleScanner(new BLEScanner(this, BluetoothAdapter.getDefaultAdapter()));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -66,8 +64,10 @@ public class BLEForegroundService extends Service {
         createNotificationChannel();
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.putExtra("toggle", true);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, notificationIntent, 0);
+                this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("CovidWatch passively logging")
@@ -82,22 +82,27 @@ public class BLEForegroundService extends Service {
         timer.scheduleAtFixedRate(new TimerTask() {
                                       @Override
                                       public void run() {
-                                          app.BleAdvertiser.changeContactEventNumber();
+                                          app.getBleAdvertiser().changeContactEventNumber();
                                       }
                                   },
                 MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN,
                 MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN);
 
-        app.BleAdvertiser.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, UUID.randomUUID());
-        app.BleScanner.startScanning(new UUID[]{UUIDs.CONTACT_EVENT_SERVICE});
+        // generate random UUID, update the global Advertising UUID and start
+        // advertising. TODO grab a lock
+        UUID new_cen = UUID.randomUUID();
+        ((CovidWatchApplication) this.getApplication()).setCurrentAdvertisingUUID(new_cen);
+
+        app.getBleAdvertiser().startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, new_cen);
+        app.getBleScanner().startScanning(new UUID[]{UUIDs.CONTACT_EVENT_SERVICE});
 
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        app.BleAdvertiser.stopAdvertiser();
-        app.BleScanner.stopScanning();
+        app.getBleAdvertiser().stopAdvertiser();
+        app.getBleScanner().stopScanning();
         super.onDestroy();
     }
 
@@ -144,14 +149,14 @@ public class BLEForegroundService extends Service {
     @Deprecated
     public void startGattServer(Context context) {
 
-        app.manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        app.server = app.manager.openGattServer(context, bluetoothGattServerCallback);
+        app.setManager((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE));
+        app.setServer(app.getManager().openGattServer(context, bluetoothGattServerCallback));
 
-        app.service = new BluetoothGattService(
+        app.setService(new BluetoothGattService(
                 UUID.fromString(getString(R.string.peripheral_service_uuid)),
-                BluetoothGattService.SERVICE_TYPE_PRIMARY);
+                BluetoothGattService.SERVICE_TYPE_PRIMARY));
 
-        app.server.addService(BLEContactEvent.createContactEventService());
+        app.getServer().addService(BLEContactEvent.createContactEventService());
 
     }
 
@@ -160,9 +165,9 @@ public class BLEForegroundService extends Service {
      */
     @Deprecated
     private void stopServer() {
-        if (app.server == null)
+        if (app.getServer() == null)
             return;
-        app.server.close();
+        app.getServer().close();
     }
 
     /**
@@ -188,7 +193,7 @@ public class BLEForegroundService extends Service {
 
             Log.i(TAG, "Tried to read descriptor: " + descriptor);
             super.onDescriptorReadRequest(device, requestId, offset, descriptor);
-            app.server.sendResponse(device,
+            app.getServer().sendResponse(device,
                     requestId,
                     BluetoothGatt.GATT_SUCCESS,
                     0,

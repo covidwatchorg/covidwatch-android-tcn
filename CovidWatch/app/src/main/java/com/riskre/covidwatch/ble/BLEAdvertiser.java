@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.ParcelUuid;
 import android.util.Log;
 
+import com.riskre.covidwatch.CovidWatchApplication;
 import com.riskre.covidwatch.utils.UUIDAdapter;
 import com.riskre.covidwatch.utils.UUIDs;
 
@@ -98,6 +99,9 @@ public class BLEAdvertiser {
     public void changeContactEventNumber() {
         Log.i(TAG, "Changing the contact event number!");
         this.stopAdvertiser();
-        this.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, UUID.randomUUID());
+
+        UUID new_cen = UUID.randomUUID();
+        ((CovidWatchApplication)context.getApplicationContext()).setCurrentAdvertisingUUID(new_cen);
+        this.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, new_cen);
     }
 }
