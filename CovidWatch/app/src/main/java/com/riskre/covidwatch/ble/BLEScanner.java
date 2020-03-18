@@ -63,9 +63,13 @@ public class BLEScanner {
                     Log.w(TAG, "Signal strength: " + result.getRssi());
                     Log.w(TAG, "Found another human: " + result.getDevice().getAddress());
 
-                    UUID contactEventNumber = UUIDAdapter.getUUIDFromBytes(
-                            result.getScanRecord().getServiceData().get(
-                                    new ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)));
+                    final byte[] uuidBytes = result.getScanRecord().getServiceData().get(
+                            new ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE));
+                    if (uuidBytes == null) {
+                        continue;
+                    }
+
+                    UUID contactEventNumber = UUIDAdapter.getUUIDFromBytes(uuidBytes);
 
                     CovidWatchDatabase.databaseWriteExecutor.execute(() -> {
                         // Populate the database in the background.

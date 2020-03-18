@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -42,4 +43,5 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.room:room-runtime:2.2.1"
     annotationProcessor "androidx.room:room-compiler:2.2.1"
+    implementation "com.google.firebase:firebase-firestore:21.4.1"
 }

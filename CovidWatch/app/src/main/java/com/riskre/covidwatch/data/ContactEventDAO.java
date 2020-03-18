@@ -27,6 +27,9 @@ public interface ContactEventDAO {
     @Update
     void update(ContactEvent contactEvent);
 
+    @Query("UPDATE contact_events SET was_potentially_infectious = :wasPotentiallyInfectious WHERE identifier IN (:identifiers)")
+    void update(List<String> identifiers, Boolean wasPotentiallyInfectious);
+
     @Query("DELETE FROM contact_events")
     void deleteAll();
 }
