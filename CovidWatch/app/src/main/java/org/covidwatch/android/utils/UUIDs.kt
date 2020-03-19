@@ -1,0 +1,12 @@
+package org.covidwatch.android.utils
+
+import java.util.*
+
+object UUIDs {
+    var CONTACT_EVENT_SERVICE: UUID =
+        UUID.fromString("0000C019-0000-1000-8000-00805F9B34FB")
+    var CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC: UUID =
+        UUID.fromString("D61F4F27-3D6B-4B04-9E46-C9D2EA617F62")
+    var CONTACT_EVENT_IDENTIFIER_DESCRIPTOR: UUID =
+        UUID.fromString("3109E184-B766-DEAD-BEEF-D7116B29A275")
+}
