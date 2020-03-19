@@ -41,6 +41,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948989908880:android:fb74e94b8535076e950515",
+        "android_client_info": {
+          "package_name": "org.covidwatch.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948989908880-4e39t08v91nf6b94f9kings4hpqi03bv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfVAb6eI1cxGbZ21zHjL2qa8d4SWGqAdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948989908880-4e39t08v91nf6b94f9kings4hpqi03bv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "948989908880-e7heqefqe7i7r5i0qgl8l7acodak98e6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "company.ize.covidwatch"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

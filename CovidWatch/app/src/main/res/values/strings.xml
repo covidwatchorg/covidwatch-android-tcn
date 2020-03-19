@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">CovidWatch</string>
-    <string name="disable_contact_logging">Disable Contact Logging</string>
-    <string name="enable_contact_logging">Enable Contact Logging</string>
-    <string name="your_id">Your Temporary ID:</string>
-    <string name="i_am_sick">I am sick</string>
-    <string name="peripheral_service_uuid">C019FB3E-B1FC-45E9-9274-1EA259249C80</string>
-    <string name="cen_characteristic_uuid">D61F4F27-3D6B-4B04-9E46-C9D2EA617F62</string>
+    <string name="app_name">COVIDWatch</string>
+    <string name="title_contact_events">Contact Events</string>
+    <string name="title_my_profile">My Profile</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_are_you_sick_question">Are you sick? 🤒</string>
+    <string name="title_yes">Yes</string>
+    <string name="title_no">No</string>
+    <string name="preference_file_key">org.covidwatch.android.PREFERENCE_FILE_KEY</string>
+    <string name="preference_is_current_user_sick">preference_is_current_user_sick</string>
 </resources>
