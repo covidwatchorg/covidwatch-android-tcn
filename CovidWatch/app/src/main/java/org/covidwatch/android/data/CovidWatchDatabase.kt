@@ -17,7 +17,6 @@ abstract class CovidWatchDatabase : RoomDatabase() {
         val databaseWriteExecutor: ExecutorService =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS)
 
-
         @Volatile
         private var INSTANCE: CovidWatchDatabase? = null
 
@@ -31,6 +30,5 @@ abstract class CovidWatchDatabase : RoomDatabase() {
                 context.applicationContext,
                 CovidWatchDatabase::class.java, "covidwatch.db"
             ).fallbackToDestructiveMigration().build()
-
     }
 }

@@ -18,8 +18,6 @@ class ContactEvent {
     @ColumnInfo(name = "was_potentially_infectious")
     var wasPotentiallyInfectious: Boolean = false
 
-    constructor() {}
-
     /**
      * Constructor
      *
@@ -28,5 +26,5 @@ class ContactEvent {
     constructor(CEN: String) {
         identifier = CEN.capitalize()
     }
-
+    constructor() {}
 }

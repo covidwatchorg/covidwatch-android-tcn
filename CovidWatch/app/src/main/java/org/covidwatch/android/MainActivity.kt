@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -19,8 +18,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.covidwatch.android.data.ContactEventDAO
-import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.firestore.PublicContactEventsObserver
 
 class MainActivity : AppCompatActivity() {
@@ -30,12 +27,14 @@ class MainActivity : AppCompatActivity() {
     // TODO: Separate this into a service
     private var publicContactEventsObserver: PublicContactEventsObserver? = null
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
+        val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -77,7 +76,6 @@ class MainActivity : AppCompatActivity() {
      * Initializes the Location Manager used to obtain coarse bluetooth/wifi location
      * and fine GPS location, logged on a contact event.
      *
-     *
      * TODO add GPS initialization here, for now we just ask for location permissions
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -107,16 +105,6 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    fun clearDB(view: View?) {
-        CovidWatchDatabase.databaseWriteExecutor.execute {
-
-            // Populate the database in the background.
-            // If you want to start with more words, just add them.
-            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(this).contactEventDAO()
-            dao.deleteAll()
         }
     }
 }

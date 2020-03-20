@@ -61,4 +61,5 @@ class ContactEventsAdapter() :
                                             newConcert: ContactEvent) = oldConcert == newConcert
         }
     }
+
 }

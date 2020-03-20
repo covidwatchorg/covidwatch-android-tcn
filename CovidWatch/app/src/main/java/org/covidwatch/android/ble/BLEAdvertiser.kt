@@ -24,6 +24,11 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
     // BLE
     private val advertiser: BluetoothLeAdvertiser = adapter.bluetoothLeAdvertiser
 
+    // CONSTANTS
+    companion object {
+        private const val TAG = "BLEContactTracing"
+    }
+
     /**
      * Callback when advertisements start and stops
      */
@@ -62,8 +67,7 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
             .addServiceData(
                 ParcelUuid(serviceUUID),
                 contactEventUUID?.toBytes()
-            )
-            .build()
+            ).build()
         advertiser.startAdvertising(settings, data, advertisingCallback)
     }
 
@@ -88,11 +92,6 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
             dao.insert(cen)
         }
         startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventNumber)
-    }
-
-    companion object {
-        // Constants
-        private const val TAG = "BLEContactTracing"
     }
 
 }

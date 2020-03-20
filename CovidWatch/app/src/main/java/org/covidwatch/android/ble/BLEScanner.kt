@@ -15,19 +15,24 @@ import org.covidwatch.android.utils.toUUID
 import java.util.*
 
 class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
+
     // BLE
     private val scanner: BluetoothLeScanner? = adapter.bluetoothLeScanner
 
     // CONTEXT
-    var context: Context
+    var context: Context = ctx
 
-    /**
-     * Callback when scanning start and stops
-     */
+    // CALLBACKS
     private var scanCallback: ScanCallback? = null
+
+    // CONSTANTS
+    companion object {
+        private const val TAG = "BLEScanner"
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     fun startScanning(serviceUUIDs: Array<UUID>?) {
+
         var filters: MutableList<ScanFilter?>? = null
 
         // construct filters from serviceUUIDs
@@ -50,7 +55,7 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
             .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
             .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
             .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
-            .setReportDelay(1000)
+            .setReportDelay(10000)
             .build()
 
         // The scan filter is incredibly important to allow android to run scans
@@ -68,43 +73,24 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
         scanner!!.stopScan(scanCallback)
     }
 
-    companion object {
-        // CONSTANTS
-        private const val TAG = "BLEScanner"
-    }
-
-    /**
-     * BLEScanner is responsible for scanning the advertisements containing the CEN
-     * and logging that information in the Room database.
-     *
-     * @param ctx     The context this object is in
-     * @param adapter The default adapter to use for BLE
-     */
-    init {
-        context = ctx
-    }
-
     init {
         scanCallback = object : ScanCallback() {
             override fun onBatchScanResults(results: List<ScanResult>) {
                 for (result in results) {
+
                     Log.w(
                         TAG,
-                        "Contact Event number: " + result.scanRecord!!.serviceData
-                            .toString()
+                        "Contact Event number: " + result.scanRecord!!.serviceData.toString()
                     )
-                    Log.w(
-                        TAG,
-                        "Signal strength: " + result.rssi
-                    )
-                    Log.w(
-                        TAG,
-                        "Found another human: " + result.device.address
-                    )
+                    Log.w(TAG, "Signal strength: " + result.rssi)
+                    Log.w(TAG, "Found another human: " + result.device.address)
+
                     val uuidBytes =
                         result.scanRecord!!.serviceData[ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)]
                             ?: continue
+
                     val contactEventNumber: UUID? = uuidBytes.toUUID()
+
                     if (contactEventNumber != null) {
                         CovidWatchDatabase.databaseWriteExecutor.execute {
                             val dao: ContactEventDAO =
