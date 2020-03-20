@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.fragment_user_profile.*
 import org.covidwatch.android.R
 import org.covidwatch.android.adapters.FragmentDataBindingComponent
 import org.covidwatch.android.ble.BLEForegroundService
+import org.covidwatch.android.data.ContactEventDAO
+import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.databinding.FragmentUserProfileBinding
 
 
@@ -86,6 +88,13 @@ class UserProfileFragment : Fragment() {
                 toggleContactLoggingButton.setOnClickListener {
                     toggleContactLogging()
                     toggleText(toggleContactLoggingButton)
+                }
+
+                testClearDbButton.setOnClickListener {
+                        CovidWatchDatabase.databaseWriteExecutor.execute {
+                            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(requireActivity()).contactEventDAO()
+                            dao.deleteAll()
+                        }
                 }
             }
 
