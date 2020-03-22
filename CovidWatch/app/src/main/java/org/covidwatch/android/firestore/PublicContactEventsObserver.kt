@@ -5,69 +5,61 @@ import android.util.Log
 import com.google.firebase.firestore.*
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import java.util.*
 
 class PublicContactEventsObserver(var context: Context) {
 
     var registration: ListenerRegistration? = null
 
-    private fun startObservingPublicContactEvents() {
-        if (registration != null) {
-            registration!!.remove()
-        }
-        val db = FirebaseFirestore.getInstance()
-        registration = db.collection("contact_events").addSnapshotListener { queryDocumentSnapshots, e ->
-            if (e != null) {
-                Log.w(
+    fun startObserving() {
+        registration?.remove()
+//        val twoWeeksPastNow = Date()
+//        twoWeeksPastNow.time += -60 * 60 * 24 * 7 * 2
+        registration = FirebaseFirestore.getInstance().collection("contact_events")
+//            .whereGreaterThan("timestamp", Timestamp(twoWeeksPastNow))
+            .addSnapshotListener { queryDocumentSnapshots, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listening for realtime updates of contact events failed ", e)
+                    return@addSnapshotListener
+                }
+                val queryDocumentSnapshot = queryDocumentSnapshots
+                    ?: return@addSnapshotListener
+                Log.d(
                     TAG,
-                    "Listening for realtime updates of contact events failed",
-                    e
+                    "Listened for realtime updates of ${queryDocumentSnapshots.size()} contact event(s)"
                 )
-                return@addSnapshotListener
-            }
-            Log.d(
-                TAG,
-                "Listened for realtime updates of " + queryDocumentSnapshots!!.size() + " contact event(s)"
-            )
-            val addedDocumentChanges: MutableList<DocumentChange> =
-                ArrayList()
-            val removedDocumentChanges: MutableList<DocumentChange> =
-                ArrayList()
-            for (dc in queryDocumentSnapshots.documentChanges) {
-                when (dc.type) {
-                    DocumentChange.Type.ADDED -> addedDocumentChanges.add(
-                        dc
-                    )
-                    DocumentChange.Type.MODIFIED -> {
-                    }
-                    DocumentChange.Type.REMOVED -> removedDocumentChanges.add(
-                        dc
-                    )
+                CovidWatchDatabase.databaseWriteExecutor.execute {
+                    val addedDocumentChanges =
+                        queryDocumentSnapshot.documentChanges.filter {
+                            it.type == DocumentChange.Type.ADDED
+                        }
+                    val removedDocumentChanges =
+                        queryDocumentSnapshot.documentChanges.filter {
+                            it.type == DocumentChange.Type.REMOVED
+                        }
+                    markLocalContactEvents(addedDocumentChanges, true)
+                    markLocalContactEvents(removedDocumentChanges, false)
                 }
             }
-            markLocalContactEvents(addedDocumentChanges, true)
-            markLocalContactEvents(removedDocumentChanges, false)
-
-        }
     }
 
     private fun markLocalContactEvents(
         documentChanges: List<DocumentChange>,
-        infectious: Boolean
+        wasPotentiallyInfectious: Boolean
     ) {
-        if (documentChanges.isEmpty()) {
-            return
-        }
-        CovidWatchDatabase.databaseWriteExecutor.execute {
-            val dao: ContactEventDAO =
-                CovidWatchDatabase.getInstance(context).contactEventDAO()
-            val identifiers =
-                ArrayList<String>()
-            for (obj in documentChanges) {
-                identifiers.add(obj.document.id)
-            }
-            // TODO: Handle "SQLiteException too many SQL variables (Sqlite code 1)" in the case of more than 999 parameters
-            dao.update(identifiers, infectious)
+        if (documentChanges.isEmpty()) return
+        Log.d(
+            TAG,
+            "Marking ${documentChanges.size} contact event(s) as potentially infectious=$wasPotentiallyInfectious ..."
+        )
+        val dao: ContactEventDAO = CovidWatchDatabase.getInstance(context).contactEventDAO()
+        val identifiers = documentChanges.map { it.document.id }
+        val chunkSize = 998 // SQLITE_MAX_VARIABLE_NUMBER - 1
+        identifiers.chunked(chunkSize).forEach {
+            dao.update(it, wasPotentiallyInfectious)
+            Log.d(
+                TAG,
+                "Marked ${it.size} contact event(s) as potentially infectious=$wasPotentiallyInfectious"
+            )
         }
     }
 
@@ -75,7 +67,4 @@ class PublicContactEventsObserver(var context: Context) {
         private const val TAG = "PublicContactEventsObserver"
     }
 
-    init {
-        startObservingPublicContactEvents()
-    }
 }

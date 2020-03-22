@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.bluetooth.*
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
@@ -28,18 +29,16 @@ class BLEForegroundService : Service() {
     companion object {
         // CONSTANTS
         private const val CHANNEL_ID = "CovidBluetoothContactChannel"
-        private const val CONTACT_EVENT_NUMBER_INTERVAL_MIN = 5
+        private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 5
         private const val MS_TO_MIN = 60000
     }
 
     override fun onCreate() {
         super.onCreate()
-        val application = (this.application as? CovidWatchApplication)
-        if (application != null) {
-            app = application
-            app?.bleAdvertiser = BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter())
-            app?.bleScanner = BLEScanner(this, BluetoothAdapter.getDefaultAdapter())
-        }
+        val application = (application as? CovidWatchApplication) ?: return
+        app = application
+        app?.bleAdvertiser = BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter())
+        app?.bleScanner = BLEScanner(this, BluetoothAdapter.getDefaultAdapter())
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -60,32 +59,42 @@ class BLEForegroundService : Service() {
         startForeground(6, notification)
 
         // scheduler a new timer to start changing the contact event numbers
+        timer?.cancel()
         timer = Timer()
-        timer!!.scheduleAtFixedRate(
+        timer?.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
                     app?.bleAdvertiser?.changeContactEventNumber()
                 }
             },
-            MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN.toLong(),
-            MS_TO_MIN * CONTACT_EVENT_NUMBER_INTERVAL_MIN.toLong()
+            MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong(),
+            MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong()
         )
 
-        // generate random UUID, update the global Advertising UUID and start advertising
         val newContactEventUUID = UUID.randomUUID()
         CovidWatchDatabase.databaseWriteExecutor.execute {
             val dao: ContactEventDAO = CovidWatchDatabase.getInstance(this).contactEventDAO()
-            val cen = ContactEvent(newContactEventUUID.toString())
-            dao.insert(cen)
+            val contactEvent = ContactEvent(newContactEventUUID.toString())
+            val isCurrentUserSick = getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ).getBoolean(getString(R.string.preference_is_current_user_sick), false)
+            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
+            dao.insert(contactEvent)
         }
         app?.bleAdvertiser?.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventUUID)
         app?.bleScanner?.startScanning(arrayOf<UUID>(UUIDs.CONTACT_EVENT_SERVICE))
+
         return START_STICKY
     }
 
     override fun onDestroy() {
         app?.bleAdvertiser?.stopAdvertiser()
         app?.bleScanner?.stopScanning()
+        timer?.apply {
+            cancel()
+            purge()
+        }
         super.onDestroy()
     }
 

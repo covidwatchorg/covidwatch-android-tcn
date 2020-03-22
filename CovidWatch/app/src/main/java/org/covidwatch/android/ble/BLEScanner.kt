@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
+import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
@@ -33,7 +34,9 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
     @RequiresApi(api = Build.VERSION_CODES.M)
     fun startScanning(serviceUUIDs: Array<UUID>?) {
 
-        var filters: MutableList<ScanFilter?>? = null
+        val scanner = scanner ?: return
+
+        var filters: MutableList<ScanFilter>? = null
 
         // construct filters from serviceUUIDs
         if (serviceUUIDs != null) {
@@ -60,43 +63,49 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
 
         // The scan filter is incredibly important to allow android to run scans
         // in the background
-        if (scanner != null) {
-            scanner.startScan(filters, scanSettings, scanCallback)
-            Log.i(TAG, "scan started")
-        } else {
-            Log.e(TAG, "could not get scanner object")
-            // TODO error handling
-        }
+        scanner.startScan(filters, scanSettings, scanCallback)
+        Log.i(TAG, "Started scanning")
     }
 
     fun stopScanning() {
-        scanner!!.stopScan(scanCallback)
+        scanner?.stopScan(scanCallback)
+        Log.i(TAG, "Stopped scanning")
     }
 
     init {
         scanCallback = object : ScanCallback() {
             override fun onBatchScanResults(results: List<ScanResult>) {
                 for (result in results) {
+                    val scanRecord = result.scanRecord ?: continue
 
-                    Log.w(
-                        TAG,
-                        "Contact Event number: " + result.scanRecord!!.serviceData.toString()
-                    )
-                    Log.w(TAG, "Signal strength: " + result.rssi)
-                    Log.w(TAG, "Found another human: " + result.device.address)
+                    val contactEventIdentifier =
+                        scanRecord.serviceData[ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)]?.toUUID()
 
-                    val uuidBytes =
-                        result.scanRecord!!.serviceData[ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)]
-                            ?: continue
-
-                    val contactEventNumber: UUID? = uuidBytes.toUUID()
-
-                    if (contactEventNumber != null) {
+                    if (contactEventIdentifier == null) {
+                        Log.i(
+                            TAG,
+                            "On batch scan result device.address=${result.device.address} RSSI=${result.rssi}"
+                        )
+                        // TODO: Handle case when CEN cannot be extracted from scan record.
+                    } else {
+                        Log.i(
+                            TAG,
+                            "On batch scan result device.address=${result.device.address} RSSI=${result.rssi} CEN=${contactEventIdentifier.toString()
+                                .toUpperCase()}"
+                        )
                         CovidWatchDatabase.databaseWriteExecutor.execute {
                             val dao: ContactEventDAO =
                                 CovidWatchDatabase.getInstance(context).contactEventDAO()
-                            val cen = ContactEvent(contactEventNumber.toString())
-                            dao.insert(cen)
+                            val contactEvent = ContactEvent(contactEventIdentifier.toString())
+                            val isCurrentUserSick = context.getSharedPreferences(
+                                context.getString(R.string.preference_file_key),
+                                Context.MODE_PRIVATE
+                            ).getBoolean(
+                                context.getString(R.string.preference_is_current_user_sick),
+                                false
+                            )
+                            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
+                            dao.insert(contactEvent)
                         }
                     }
                 }

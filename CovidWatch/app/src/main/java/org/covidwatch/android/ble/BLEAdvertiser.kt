@@ -8,6 +8,7 @@ import android.bluetooth.le.BluetoothLeAdvertiser
 import android.content.Context
 import android.os.ParcelUuid
 import android.util.Log
+import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
@@ -34,7 +35,7 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
      */
     private val advertisingCallback: AdvertiseCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-            Log.w("BLE", "Advertising success!: $settingsInEffect")
+            Log.w("BLE", "Advertising onStartSuccess: $settingsInEffect")
             super.onStartSuccess(settingsInEffect)
         }
 
@@ -64,10 +65,8 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
         val data = AdvertiseData.Builder()
             .setIncludeDeviceName(false)
             .addServiceUuid(ParcelUuid(serviceUUID))
-            .addServiceData(
-                ParcelUuid(serviceUUID),
-                contactEventUUID?.toBytes()
-            ).build()
+            .addServiceData(ParcelUuid(serviceUUID), contactEventUUID?.toBytes())
+            .build()
         advertiser.startAdvertising(settings, data, advertisingCallback)
     }
 
@@ -83,15 +82,20 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
      * NOTE: This will stop/start the advertiser
      */
     fun changeContactEventNumber() {
-        Log.i(TAG, "Changing the contact event number!")
+        Log.i(TAG, "Changing the contact event identifier...")
         stopAdvertiser()
-        val newContactEventNumber = UUID.randomUUID()
+        val newContactEventIdentifier = UUID.randomUUID()
         CovidWatchDatabase.databaseWriteExecutor.execute {
             val dao: ContactEventDAO = CovidWatchDatabase.getInstance(context).contactEventDAO()
-            val cen = ContactEvent(newContactEventNumber.toString())
-            dao.insert(cen)
+            val contactEvent = ContactEvent(newContactEventIdentifier.toString())
+            val isCurrentUserSick = context.getSharedPreferences(
+                context.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ).getBoolean(context.getString(R.string.preference_is_current_user_sick), false)
+            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
+            dao.insert(contactEvent)
         }
-        startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventNumber)
+        startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventIdentifier)
     }
 
 }

@@ -24,11 +24,17 @@ interface ContactEventDAO {
     @Update
     fun update(contactEvent: ContactEvent)
 
+    @Update
+    fun update(contactEvents: List<ContactEvent>)
+
     @Query("UPDATE contact_events SET was_potentially_infectious = :wasPotentiallyInfectious WHERE identifier IN (:identifiers)")
-    fun update(
-        identifiers: List<String>,
-        wasPotentiallyInfectious: Boolean
-    )
+    fun update(identifiers: List<String>, wasPotentiallyInfectious: Boolean)
+
+    @Query("UPDATE contact_events SET was_potentially_infectious = '1'")
+    fun markAllAsPotentiallyInfectious()
+
+    @Query("UPDATE contact_events SET upload_state = :uploadState WHERE identifier IN (:identifiers)")
+    fun update(identifiers: List<String>, uploadState: Int)
 
     @Query("DELETE FROM contact_events")
     fun deleteAll()
