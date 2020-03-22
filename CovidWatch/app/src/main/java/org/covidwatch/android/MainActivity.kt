@@ -18,14 +18,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.covidwatch.android.firestore.PublicContactEventsObserver
 
 class MainActivity : AppCompatActivity() {
 
-    private var bluetoothAdapter: BluetoothAdapter? = null
-
-    // TODO: Separate this into a service
-    private var publicContactEventsObserver: PublicContactEventsObserver? = null
+    private lateinit var bluetoothAdapter: BluetoothAdapter
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         initBluetoothAdapter()
         initLocationManager()
-        initPublicContactEventsObserver()
-    }
-
-    private fun initPublicContactEventsObserver() {
-        publicContactEventsObserver =
-            PublicContactEventsObserver(application.applicationContext)
     }
 
     /**
@@ -60,13 +50,10 @@ class MainActivity : AppCompatActivity() {
      * The user will be asked to enable bluetooth if it is turned off
      */
     private fun initBluetoothAdapter() {
-        val bluetoothManager =
-            getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothAdapter = bluetoothManager.adapter ?: return
-
+        bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
         // Ensures Bluetooth is available on the device and it is enabled. If not,
         // displays a dialog requesting user permission to enable Bluetooth.
-        if (bluetoothAdapter == null || !bluetoothAdapter!!.isEnabled) {
+        if (!bluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBtIntent, 1)
         }
@@ -104,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         } else {
-            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -53,12 +53,16 @@ class ContactEventsAdapter() :
             DiffUtil.ItemCallback<ContactEvent>() {
             // Contact event details may have changed if reloaded from the database,
             // but ID is fixed.
-            override fun areItemsTheSame(oldConcert: ContactEvent,
-                                         newConcert: ContactEvent) = oldConcert.identifier == newConcert.identifier
+            override fun areItemsTheSame(
+                oldConctactEvent: ContactEvent,
+                newContactEvent: ContactEvent
+            ) = oldConctactEvent.identifier == newContactEvent.identifier
 
             @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(oldConcert: ContactEvent,
-                                            newConcert: ContactEvent) = oldConcert == newConcert
+            override fun areContentsTheSame(
+                oldContactEvent: ContactEvent,
+                newContactEvent: ContactEvent
+            ) = oldContactEvent == newContactEvent
         }
     }
 

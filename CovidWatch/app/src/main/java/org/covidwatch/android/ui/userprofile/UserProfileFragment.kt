@@ -36,6 +36,8 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val context = context ?: return null
+
         binding =
             DataBindingUtil.inflate<FragmentUserProfileBinding>(
                 inflater,
@@ -50,7 +52,7 @@ class UserProfileFragment : Fragment() {
 
                 fun setCurrentUserSick(sick: Boolean) {
                     userProfileViewModel.isCurrentUserSick.value = sick
-                    val application = context?.applicationContext ?: return
+                    val application = context.applicationContext ?: return
                     val sharedPref = application.getSharedPreferences(
                         application.getString(R.string.preference_file_key), Context.MODE_PRIVATE
                     ) ?: return
@@ -71,8 +73,7 @@ class UserProfileFragment : Fragment() {
                 }
 
                 // TODO cleanup
-                val toggleText = {
-                    button: Button ->
+                val toggleText = { button: Button ->
                     button.text = if (currentlyLoggingContactEvents) {
                         getString(R.string.disable_contact_logging)
                     } else {
@@ -81,8 +82,9 @@ class UserProfileFragment : Fragment() {
                 }
 
                 // load previous state of button and set the text accordingly
-                val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-                currentlyLoggingContactEvents = sharedPref!!.getBoolean("toggleState", false)
+                val sharedPref =
+                    activity?.getPreferences(Context.MODE_PRIVATE) ?: return binding.root
+                currentlyLoggingContactEvents = sharedPref.getBoolean("toggleState", false)
                 toggleText(toggleContactLoggingButton)
 
                 toggleContactLoggingButton.setOnClickListener {
@@ -91,10 +93,11 @@ class UserProfileFragment : Fragment() {
                 }
 
                 testClearDbButton.setOnClickListener {
-                        CovidWatchDatabase.databaseWriteExecutor.execute {
-                            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(requireActivity()).contactEventDAO()
-                            dao.deleteAll()
-                        }
+                    CovidWatchDatabase.databaseWriteExecutor.execute {
+                        val dao: ContactEventDAO =
+                            CovidWatchDatabase.getInstance(requireActivity()).contactEventDAO()
+                        dao.deleteAll()
+                    }
                 }
             }
 
@@ -108,22 +111,23 @@ class UserProfileFragment : Fragment() {
      * Also persists the state in SharedPreferences
      */
     private fun toggleContactLogging() {
+        val context = requireActivity().applicationContext ?: return
         if (currentlyLoggingContactEvents) {
 
             currentlyLoggingContactEvents = false
             Intent(
-                requireActivity().applicationContext!!,
+                context,
                 BLEForegroundService::class.java
             ).also { intent ->
-                requireActivity().applicationContext!!.stopService(intent)
+                context.stopService(intent)
             }
         } else {
             currentlyLoggingContactEvents = true
             Intent(
-                requireActivity().applicationContext!!,
+                context,
                 BLEForegroundService::class.java
             ).also { intent ->
-                requireActivity().applicationContext!!.startService(intent)
+                context.startService(intent)
             }
         }
 

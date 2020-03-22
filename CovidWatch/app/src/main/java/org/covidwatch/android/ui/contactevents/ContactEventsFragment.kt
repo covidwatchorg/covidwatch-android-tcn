@@ -9,13 +9,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import kotlinx.android.synthetic.main.fragment_contact_events.view.*
 import org.covidwatch.android.R
 import org.covidwatch.android.adapters.FragmentDataBindingComponent
-import org.covidwatch.android.data.ContactEvent
-import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.databinding.FragmentContactEventsBinding
-import java.util.*
+
 
 class ContactEventsFragment : Fragment() {
 
@@ -31,11 +31,6 @@ class ContactEventsFragment : Fragment() {
         val context = context ?: return null
 
         val database = CovidWatchDatabase.getInstance(context)
-//        CovidWatchDatabase.databaseWriteExecutor.execute {
-//            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(context).contactEventDAO()
-//            val cen = ContactEvent(UUID.randomUUID().toString())
-//            dao.insert(cen)
-//        }
         val viewModel: ContactEventsViewModel by viewModels(factoryProducer = {
             ContactEventsViewModelFactory(database.contactEventDAO())
         })
@@ -52,9 +47,11 @@ class ContactEventsFragment : Fragment() {
                 lifecycleOwner = this@ContactEventsFragment
             }
 
-        val adapter =
-            ContactEventsAdapter()
+        val adapter = ContactEventsAdapter()
         binding.contactEventsRecyclerview.adapter = adapter
+        binding.contactEventsRecyclerview.addItemDecoration(
+            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        )
         viewModel.contactEvents.observe(viewLifecycleOwner, Observer { adapter.submitList(it) })
 
         return binding.root
