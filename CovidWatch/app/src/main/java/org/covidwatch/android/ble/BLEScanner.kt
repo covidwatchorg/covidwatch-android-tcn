@@ -24,7 +24,54 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
     var context: Context = ctx
 
     // CALLBACKS
-    private var scanCallback: ScanCallback? = null
+    private var scanCallback = object : ScanCallback() {
+
+        override fun onScanFailed(errorCode: Int) {
+            super.onScanFailed(errorCode)
+            Log.i(TAG, "onScanFailed errorCode=$errorCode")
+        }
+
+        override fun onBatchScanResults(results: MutableList<ScanResult>?) {
+            super.onBatchScanResults(results)
+            Log.i(TAG, "onBatchScanResults results=$results")
+            results?.forEach { handleScanResult(it) }
+        }
+
+        private fun handleScanResult(result: ScanResult) {
+            val scanRecord = result.scanRecord ?: return
+
+            val contactEventIdentifier =
+                scanRecord.serviceData[ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)]?.toUUID()
+
+            if (contactEventIdentifier == null) {
+                Log.i(
+                    TAG,
+                    "Scan result device.address=${result.device.address} RSSI=${result.rssi} CEI=N/A"
+                )
+                // TODO: Handle case when CEI cannot be extracted from scan record.
+            } else {
+                Log.i(
+                    TAG,
+                    "Scan result device.address=${result.device.address} RSSI=${result.rssi} CEI=${contactEventIdentifier.toString()
+                        .toUpperCase()}"
+                )
+                CovidWatchDatabase.databaseWriteExecutor.execute {
+                    val dao: ContactEventDAO =
+                        CovidWatchDatabase.getInstance(context).contactEventDAO()
+                    val contactEvent = ContactEvent(contactEventIdentifier.toString())
+                    val isCurrentUserSick = context.getSharedPreferences(
+                        context.getString(R.string.preference_file_key),
+                        Context.MODE_PRIVATE
+                    ).getBoolean(
+                        context.getString(R.string.preference_is_current_user_sick),
+                        false
+                    )
+                    contactEvent.wasPotentiallyInfectious = isCurrentUserSick
+                    dao.insert(contactEvent)
+                }
+            }
+        }
+    }
 
     // CONSTANTS
     companion object {
@@ -36,17 +83,8 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
 
         val scanner = scanner ?: return
 
-        var filters: MutableList<ScanFilter>? = null
-
-        // construct filters from serviceUUIDs
-        if (serviceUUIDs != null) {
-            filters = ArrayList()
-            for (serviceUUID in serviceUUIDs) {
-                val filter = ScanFilter.Builder()
-                    .setServiceUuid(ParcelUuid(serviceUUID))
-                    .build()
-                filters.add(filter)
-            }
+        val scanFilters = serviceUUIDs?.map {
+            ScanFilter.Builder().setServiceUuid(ParcelUuid(it)).build()
         }
 
         // we use low power scan mode to conserve battery,
@@ -58,12 +96,12 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
             .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
             .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
             .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
-            .setReportDelay(10000)
+            .setReportDelay(1000)
             .build()
 
         // The scan filter is incredibly important to allow android to run scans
         // in the background
-        scanner.startScan(filters, scanSettings, scanCallback)
+        scanner.startScan(scanFilters, scanSettings, scanCallback)
         Log.i(TAG, "Started scanning")
     }
 
@@ -72,44 +110,4 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
         Log.i(TAG, "Stopped scanning")
     }
 
-    init {
-        scanCallback = object : ScanCallback() {
-            override fun onBatchScanResults(results: List<ScanResult>) {
-                for (result in results) {
-                    val scanRecord = result.scanRecord ?: continue
-
-                    val contactEventIdentifier =
-                        scanRecord.serviceData[ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)]?.toUUID()
-
-                    if (contactEventIdentifier == null) {
-                        Log.i(
-                            TAG,
-                            "On batch scan result device.address=${result.device.address} RSSI=${result.rssi}"
-                        )
-                        // TODO: Handle case when CEN cannot be extracted from scan record.
-                    } else {
-                        Log.i(
-                            TAG,
-                            "On batch scan result device.address=${result.device.address} RSSI=${result.rssi} CEN=${contactEventIdentifier.toString()
-                                .toUpperCase()}"
-                        )
-                        CovidWatchDatabase.databaseWriteExecutor.execute {
-                            val dao: ContactEventDAO =
-                                CovidWatchDatabase.getInstance(context).contactEventDAO()
-                            val contactEvent = ContactEvent(contactEventIdentifier.toString())
-                            val isCurrentUserSick = context.getSharedPreferences(
-                                context.getString(R.string.preference_file_key),
-                                Context.MODE_PRIVATE
-                            ).getBoolean(
-                                context.getString(R.string.preference_is_current_user_sick),
-                                false
-                            )
-                            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
-                            dao.insert(contactEvent)
-                        }
-                    }
-                }
-            }
-        }
-    }
 }

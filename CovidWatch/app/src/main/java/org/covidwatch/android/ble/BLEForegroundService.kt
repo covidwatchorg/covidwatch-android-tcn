@@ -1,16 +1,13 @@
 package org.covidwatch.android.ble
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.bluetooth.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LifecycleService
 import org.covidwatch.android.CovidWatchApplication
 import org.covidwatch.android.MainActivity
 import org.covidwatch.android.R
@@ -20,7 +17,7 @@ import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.utils.UUIDs
 import java.util.*
 
-class BLEForegroundService : Service() {
+class BLEForegroundService : LifecycleService() {
 
     // APP
     private var app: CovidWatchApplication? = null
@@ -31,6 +28,7 @@ class BLEForegroundService : Service() {
         private const val CHANNEL_ID = "CovidBluetoothContactChannel"
         private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 5
         private const val MS_TO_MIN = 60000
+        private const val TAG = "BLEForegroundService"
     }
 
     override fun onCreate() {
@@ -41,20 +39,20 @@ class BLEForegroundService : Service() {
         app?.bleScanner = BLEScanner(this, BluetoothAdapter.getDefaultAdapter())
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
 
-        createNotificationChannel()
+        createNotificationChannelIfNeeded()
 
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT
         )
-
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("CovidWatch passively logging")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
+            .setCategory(Notification.CATEGORY_SERVICE)
             .build()
         startForeground(6, notification)
 
@@ -64,7 +62,7 @@ class BLEForegroundService : Service() {
         timer?.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    app?.bleAdvertiser?.changeContactEventNumber()
+                    app?.bleAdvertiser?.changeContactEventIdentifier()
                 }
             },
             MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong(),
@@ -98,6 +96,7 @@ class BLEForegroundService : Service() {
         super.onDestroy()
     }
 
+
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
@@ -107,7 +106,7 @@ class BLEForegroundService : Service() {
      * android O. This creates the necessary notification channel for the foregroundService
      * to function.
      */
-    private fun createNotificationChannel() {
+    private fun createNotificationChannelIfNeeded() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
                 CHANNEL_ID,
@@ -120,4 +119,5 @@ class BLEForegroundService : Service() {
             manager.createNotificationChannel(serviceChannel)
         }
     }
+
 }

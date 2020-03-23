@@ -9,11 +9,11 @@ import org.covidwatch.android.R
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     var isCurrentUserSick = MutableLiveData<Boolean>().apply {
-        val sick = application.getSharedPreferences(
+        val isSick = application.getSharedPreferences(
             application.getString(R.string.preference_file_key),
             Context.MODE_PRIVATE
         ).getBoolean(application.getString(R.string.preference_is_current_user_sick), false)
-        value = sick
+        value = isSick
     }
 
 }

@@ -33,13 +33,6 @@
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/yes_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_yes"
-                android:textSize="20sp" />
-
-            <Button
                 android:id="@+id/no_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,17 +40,10 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/toggle_contact_logging_button"
+                android:id="@+id/yes_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/enable_contact_logging"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/test_clear_db_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/test_clear_db"
+                android:text="@string/title_yes"
                 android:textSize="20sp" />
 
         </LinearLayout>

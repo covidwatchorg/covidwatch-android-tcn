@@ -6,11 +6,12 @@
     <string name="title_are_you_sick_question">Are you sick? 🤒</string>
     <string name="title_yes">Yes</string>
     <string name="title_no">No</string>
+    <string name="title_clear">Clear</string>
+    <string name="title_start_logging">Start</string>
+    <string name="title_stop_logging">Stop</string>
     <string name="preference_file_key">org.covidwatch.android.PREFERENCE_FILE_KEY</string>
     <string name="preference_is_current_user_sick">preference_is_current_user_sick</string>
-    <string name="disable_contact_logging">Disable Contact Logging</string>
-    <string name="enable_contact_logging">Enable Contact Logging</string>
-    <string name="test_clear_db">TEST: Clear Events</string>
+    <string name="preference_is_contact_event_logging_enabled">preference_is_contact_event_logging_enabled</string>
     <string name="channel_name">Channel Name</string>
     <string name="channel_description">Channel Description</string>
     <string name="notification_current_user_was_exposed">Uh oh, you have been exposed</string>

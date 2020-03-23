@@ -1,6 +1,6 @@
 package org.covidwatch.android.ble
 
-import android.bluetooth.BluetoothAdapter
+import android.bluetooth.*
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseData
 import android.bluetooth.le.AdvertiseSettings
@@ -25,6 +25,8 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
     // BLE
     private val advertiser: BluetoothLeAdvertiser = adapter.bluetoothLeAdvertiser
 
+    private var advertisedContactEventUUID: UUID? = null
+
     // CONSTANTS
     companion object {
         private const val TAG = "BLEContactTracing"
@@ -34,13 +36,14 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
      * Callback when advertisements start and stops
      */
     private val advertisingCallback: AdvertiseCallback = object : AdvertiseCallback() {
+
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-            Log.w("BLE", "Advertising onStartSuccess: $settingsInEffect")
+            Log.w(TAG, "Advertising onStartSuccess settingsInEffect=$settingsInEffect")
             super.onStartSuccess(settingsInEffect)
         }
 
         override fun onStartFailure(errorCode: Int) {
-            Log.e("BLE", "Advertising onStartFailure: $errorCode")
+            Log.e(TAG, "Advertising onStartFailure errorCode=$errorCode")
             super.onStartFailure(errorCode)
         }
     }
@@ -57,6 +60,8 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
         serviceUUID: UUID?,
         contactEventUUID: UUID?
     ) {
+        advertisedContactEventUUID = contactEventUUID
+
         val settings = AdvertiseSettings.Builder()
             .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
             .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
@@ -67,6 +72,7 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
             .addServiceUuid(ParcelUuid(serviceUUID))
             .addServiceData(ParcelUuid(serviceUUID), contactEventUUID?.toBytes())
             .build()
+
         advertiser.startAdvertising(settings, data, advertisingCallback)
     }
 
@@ -78,10 +84,10 @@ class BLEAdvertiser(private val context: Context, adapter: BluetoothAdapter) {
     }
 
     /**
-     * Changes the CEN to a new random valid UUID
+     * Changes the CEI to a new random valid UUID
      * NOTE: This will stop/start the advertiser
      */
-    fun changeContactEventNumber() {
+    fun changeContactEventIdentifier() {
         Log.i(TAG, "Changing the contact event identifier...")
         stopAdvertiser()
         val newContactEventIdentifier = UUID.randomUUID()

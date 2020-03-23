@@ -24,10 +24,10 @@ class ContactEvent {
     /**
      * Constructor
      *
-     * @param CEN The contact event number
+     * @param CEI The contact event number
      */
-    constructor(CEN: String) {
-        identifier = CEN.toUpperCase()
+    constructor(CEI: String) {
+        identifier = CEI.toUpperCase()
     }
 
     constructor() {}
