@@ -62,7 +62,7 @@ class BLEForegroundService : LifecycleService() {
         timer?.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    app?.bleAdvertiser?.changeContactEventIdentifier()
+                    app?.bleAdvertiser?.changeContactEventIdentifierInServiceDataField()
                 }
             },
             MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong(),
