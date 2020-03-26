@@ -1,2 +1,3 @@
 rootProject.name='COVIDWatch'
 include ':app'
+include ':libcontacttracing'

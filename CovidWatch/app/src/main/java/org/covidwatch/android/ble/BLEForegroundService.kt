@@ -36,7 +36,10 @@ class BLEForegroundService : LifecycleService() {
         val application = (application as? CovidWatchApplication) ?: return
         app = application
         app?.bleAdvertiser = BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter())
-        app?.bleScanner = BLEScanner(this, BluetoothAdapter.getDefaultAdapter())
+        app?.bleScanner = org.covidwatch.libcontacttracing.BLEScanner(
+            this,
+            BluetoothAdapter.getDefaultAdapter()
+        )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

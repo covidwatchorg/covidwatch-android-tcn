@@ -5,19 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.ViewModelProvider
 import org.covidwatch.android.ble.BLEAdvertiser
 import org.covidwatch.android.ble.BLEForegroundService
-import org.covidwatch.android.ble.BLEScanner
+import org.covidwatch.libcontacttracing.BLEScanner
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.firestore.LocalContactEventsUploader
 import org.covidwatch.android.firestore.PublicContactEventsObserver
-import org.covidwatch.android.ui.contactevents.ContactEventsViewModel
 
 class CovidWatchApplication : Application() {
 
     var bleAdvertiser: BLEAdvertiser? = null
-    var bleScanner: BLEScanner? = null
+    var bleScanner: org.covidwatch.libcontacttracing.BLEScanner? = null
 
     var sharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
