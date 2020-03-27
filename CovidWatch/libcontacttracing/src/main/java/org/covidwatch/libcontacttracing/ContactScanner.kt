@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
+import java.text.DateFormat
 import java.util.*
 
 /**
@@ -18,6 +19,7 @@ import java.util.*
  *
  * @param ctx The android Context this object is constructed in
  * @param scanner The bluetooth adapter to get the bluetoothLeScanner from
+ * @param serviceUUID The UUID to listen to in the background
  * @param ContactEventHandler A callback to run on every device that was
  *                               discovered advertising the proper service UUID
  */
@@ -25,7 +27,8 @@ import java.util.*
 class ContactScanner(
     private val ctx: Context,
     private val scanner: BluetoothLeScanner,
-    private val ContactEventHandler: (ctx: Context, scanresult: ScanResult) -> Unit
+    private val serviceUUID: UUID,
+    private val ContactEventHandler: (ctx: Context, contactEvent: ContactEvent) -> Unit
 ) {
 
     companion object {
@@ -45,8 +48,22 @@ class ContactScanner(
 
         override fun onBatchScanResults(results: MutableList<ScanResult>?) {
             super.onBatchScanResults(results)
+
             Log.d(TAG, "onBatchScanResults results=$results")
-            results?.forEach { ContactEventHandler(ctx, it) }
+
+            results?.forEach next_scan@{
+                // if the scanRecord is null or if there is no data,
+                // we skip over those results as they don't provide any benifit
+                val scanRecord = it.scanRecord ?: return@next_scan
+                val data = scanRecord.serviceData[
+                        ParcelUuid(serviceUUID)]?.toUByteArray() ?: return@next_scan
+
+                val timestamp =
+                    DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime())
+
+                // handle contact event
+                ContactEventHandler(ctx, ContactEvent(data, timestamp, it.rssi))
+            }
         }
     }
 

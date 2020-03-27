@@ -2,18 +2,21 @@ package org.covidwatch.libcontacttracing
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGattServer
+import android.bluetooth.BluetoothGattServerCallback
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseSettings
 import android.bluetooth.le.BluetoothLeAdvertiser
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import java.util.*
 
 /**
  * ContactAdvertiser
  *
- *
  */
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class ContactAdvertiser(
     private val ctx: Context,
     private val advertiser: BluetoothLeAdvertiser,
@@ -22,10 +25,9 @@ class ContactAdvertiser(
     private var bluetoothGattServer: BluetoothGattServer? = null
     private var advertisedContactEventUUID: UUID? = null
 
-    // CONSTANTS
     companion object {
-        private const val TAG = "BLEAdvertiser"
-     }
+        private const val TAG = "libcontacttracing"
+    }
 
     /**
      * Callback when advertisements start and stops

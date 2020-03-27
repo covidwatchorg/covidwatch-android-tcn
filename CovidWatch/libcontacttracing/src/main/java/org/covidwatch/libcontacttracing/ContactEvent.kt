@@ -9,8 +9,8 @@ package org.covidwatch.libcontacttracing
  * @param RSSI The Received Signal Strength Indicator to indicate distance
  */
 data class ContactEvent(
-    var data: ByteArray,
-    var timestamp: Int,
+    var data: UByteArray,
+    var timestamp: String,
     var RSSI: Int
 ) {
 
@@ -52,7 +52,7 @@ data class ContactEvent(
      */
     override fun hashCode(): Int {
         var result = data.contentHashCode()
-        result = 31 * result + timestamp
+        result = 31 * result + timestamp.hashCode()
         result = 31 * result + RSSI
         return result
     }
