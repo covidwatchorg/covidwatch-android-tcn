@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
-import java.text.DateFormat
 import java.util.*
 
 /**
@@ -14,9 +13,7 @@ import java.util.*
  *
  * Responsible for triggering the CENHandler when there has been contact with an other
  * device running the CENAdvertiser, or simply advertising the same service UUID.
- * The CENHandler callback takes the provided context, and a
- * android.bluetooth.le.ScanResult and will be called on every device found that
- * is advertising with the provided service UUID.
+ * The CENHandler callback gets a CEN for every device that was found to be advertising CENs
  *
  * @param ctx The android Context this object is constructed in
  * @param scanner The bluetooth adapter to get the bluetoothLeScanner from
@@ -34,7 +31,7 @@ class CENScanner(
 
     companion object {
         private const val TAG = "libcontacttracing"
-        private const val MIN_TO_MS = 60000
+        private const val SECONDS_TO_MS = 1000
     }
 
     /**
@@ -56,6 +53,7 @@ class CENScanner(
 
                 // if the scanRecord is null or if there is no data,
                 // we skip over that result as it does not provide any benefit
+                // as we may have picked up a stray BLE device
                 val scanRecord = it.scanRecord ?: return@next_scan
                 val data = scanRecord.serviceData[
                         ParcelUuid(serviceUUID)]?.toUUID()?.toBytes() ?: return@next_scan
@@ -74,12 +72,13 @@ class CENScanner(
      *                     background, NOTE: if this array is empty, the callback
      *                     will not be triggered.
      *
-     * @param reportDelaySeconds The interval to batch up the results before triggering the callback,
-     *                     mainly to avoid multiple calls if the other device is nearby.
-     *                     Default is set to 10s
+     * @param reportDelaySeconds The interval to batch up the results before
+     *                      triggering the callback, mainly to avoid multiple calls
+     *                      to the handler if the other device is nearby.
+     *                      Default is set to 10s
      */
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun startScanning(serviceUUIDs: Array<UUID>?, reportDelaySeconds: Long) {
+    fun startScanning(serviceUUIDs: Array<UUID>?, reportDelaySeconds: Long = 10) {
 
         val scanFilters = serviceUUIDs?.map {
             ScanFilter.Builder().setServiceUuid(ParcelUuid(it)).build()
@@ -92,7 +91,7 @@ class CENScanner(
         // its best to not configure those settings and include the most amount of people
         val scanSettings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
-            .setReportDelay(reportDelaySeconds * MIN_TO_MS)
+            .setReportDelay(reportDelaySeconds * SECONDS_TO_MS)
             .build()
 
         // The scan filter is incredibly important to allow

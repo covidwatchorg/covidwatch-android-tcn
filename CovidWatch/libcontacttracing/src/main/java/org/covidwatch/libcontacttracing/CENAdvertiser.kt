@@ -71,7 +71,7 @@ class CENAdvertiser(
                 var value: ByteArray? = null
 
                 try {
-                    if (characteristic?.uuid == serviceUUID) {
+                    if (characteristic?.uuid == charactersticUUID) {
                         if (offset != 0) {
                             result = BluetoothGatt.GATT_INVALID_OFFSET
                             return
@@ -88,10 +88,11 @@ class CENAdvertiser(
                     result = BluetoothGatt.GATT_FAILURE
                     value = null
                 } finally {
+
                     Log.i(
                         TAG,
                         "onCharacteristicReadRequest result=$result device=$device " +
-                              "requestId=$requestId offset=$offset characteristic=$characteristic"
+                                "requestId=$requestId offset=$offset characteristic=$characteristic"
                     )
                     bluetoothGattServer?.sendResponse(
                         device,
@@ -234,7 +235,7 @@ class CENAdvertiser(
      * NOTE: This will also log the CEN and stop/start the advertiser
      */
     fun updateCEN() {
-        Log.i(TAG, "Changing the contact event identifier in service data field...")
+        Log.i(TAG, "Toggling CENAdvertiser to update CEN")
         stopAdvertiser()
         startAdvertiser(serviceUUID)
     }

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import org.covidwatch.android.CovidWatchApplication
@@ -18,7 +17,6 @@ import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.utils.UUIDs
 import java.util.*
 import org.covidwatch.libcontacttracing.*
-import kotlin.random.Random
 
 class BLEForegroundService : LifecycleService() {
 
@@ -29,16 +27,16 @@ class BLEForegroundService : LifecycleService() {
     companion object {
         // CONSTANTS
         private const val CHANNEL_ID = "CovidBluetoothContactChannel"
-        private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 5
+        private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 1
         private const val MS_TO_MIN = 60000
         private const val TAG = "BLEForegroundService"
     }
 
-    class DefaultCENHandler : CENHandler {
-        override fun handleCEN(ctx: Context, cen: CEN) {
+    class DefaultCENHandler(val ctx: Context) : CENHandler {
+        override fun handleCEN(cen: CEN) {
             CovidWatchDatabase.databaseWriteExecutor.execute {
                 val dao: ContactEventDAO = CovidWatchDatabase.getInstance(ctx).contactEventDAO()
-                val contactEvent = ContactEvent(CEN.number)
+                val contactEvent = ContactEvent(cen.toUUID().toString())
                 val isCurrentUserSick = ctx.getSharedPreferences(
                     ctx.getString(R.string.preference_file_key),
                     Context.MODE_PRIVATE
@@ -50,13 +48,13 @@ class BLEForegroundService : LifecycleService() {
     }
 
     class DefaultCENGenerator : CENGenerator {
-        override fun generateCEN(ctx: Context): CEN {
+        override fun generateCEN(): CEN {
             return CEN(UUID.randomUUID())
         }
     }
 
     private val cenGenerator = DefaultCENGenerator()
-    private val cenHandler = DefaultCENHandler()
+    private val cenHandler = DefaultCENHandler(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -114,8 +112,8 @@ class BLEForegroundService : LifecycleService() {
         )
 
         // start contact logging
-        app?.cenAdvertiser?.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE)
-        app?.cenScanner?.startScanning(arrayOf<UUID>(UUIDs.CONTACT_EVENT_SERVICE), 10)
+        app!!.cenAdvertiser!!.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE)
+        app!!.cenScanner!!.startScanning(arrayOf(UUIDs.CONTACT_EVENT_SERVICE), 10)
 
         return START_STICKY
     }

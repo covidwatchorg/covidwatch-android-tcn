@@ -7,7 +7,8 @@ interface CENHandler {
 
     /**
      * Handles the detected CEN from a neighbouring device
-     * @return Unit
+     * @param cen The CEN to handle
+     * @return Unit (nothing)
      */
     fun handleCEN(cen: CEN)
 }
