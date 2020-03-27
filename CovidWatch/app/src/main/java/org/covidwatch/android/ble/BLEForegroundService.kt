@@ -26,7 +26,7 @@ class BLEForegroundService : LifecycleService() {
     companion object {
         // CONSTANTS
         private const val CHANNEL_ID = "CovidBluetoothContactChannel"
-        private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 5
+        private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 15
         private const val MS_TO_MIN = 60000
         private const val TAG = "BLEForegroundService"
     }
@@ -49,7 +49,7 @@ class BLEForegroundService : LifecycleService() {
             this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT
         )
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("CovidWatch passively logging")
+            .setContentTitle("Tags is logging")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .setCategory(Notification.CATEGORY_SERVICE)

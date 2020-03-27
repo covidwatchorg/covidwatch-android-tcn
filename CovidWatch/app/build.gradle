@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "org.covidwatch.android"
+        applicationId "org.covidwatch.tags.android"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -62,10 +62,10 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "androidx.room:room-runtime:2.2.4"
-    annotationProcessor "androidx.room:room-compiler:2.2.4"
-    implementation "androidx.room:room-ktx:2.2.4"
-    kapt 'androidx.room:room-compiler:2.2.4'
+    implementation "androidx.room:room-runtime:2.2.5"
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
+    implementation "androidx.room:room-ktx:2.2.5"
+    kapt 'androidx.room:room-compiler:2.2.5'
     implementation 'androidx.fragment:fragment-ktx:1.2.3'
     implementation "com.google.firebase:firebase-firestore-ktx:21.4.1"
     implementation "com.google.guava:guava:28.2-android"

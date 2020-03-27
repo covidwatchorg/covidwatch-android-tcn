@@ -1,77 +1,41 @@
 {
   "project_info": {
-    "project_number": "948989908880",
-    "firebase_url": "https://covid-19-risk.firebaseio.com",
-    "project_id": "covid-19-risk",
-    "storage_bucket": "covid-19-risk.appspot.com"
+    "project_number": "1004440600410",
+    "firebase_url": "https://tags-eea45.firebaseio.com",
+    "project_id": "tags-eea45",
+    "storage_bucket": "tags-eea45.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:948989908880:android:ad49548accb93bd2950515",
+        "mobilesdk_app_id": "1:1004440600410:android:1e435d93ea548abf16bd63",
         "android_client_info": {
-          "package_name": "com.riskre.covidwatch"
+          "package_name": "org.covidwatch.tags.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "948989908880-4e39t08v91nf6b94f9kings4hpqi03bv.apps.googleusercontent.com",
+          "client_id": "1004440600410-dlidckrb468cli26b7g48sav5r2qmqbo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBfVAb6eI1cxGbZ21zHjL2qa8d4SWGqAdQ"
+          "current_key": "AIzaSyBFzFR9jVFs5_gNXFa6XOblvVhvxoqEZ3c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "948989908880-4e39t08v91nf6b94f9kings4hpqi03bv.apps.googleusercontent.com",
+              "client_id": "1004440600410-dlidckrb468cli26b7g48sav5r2qmqbo.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "948989908880-e7heqefqe7i7r5i0qgl8l7acodak98e6.apps.googleusercontent.com",
+              "client_id": "1004440600410-lhdes8lh9ln4kc4obb8jlu81po7m755o.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "company.ize.covidwatch"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:948989908880:android:fb74e94b8535076e950515",
-        "android_client_info": {
-          "package_name": "org.covidwatch.android"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "948989908880-4e39t08v91nf6b94f9kings4hpqi03bv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBfVAb6eI1cxGbZ21zHjL2qa8d4SWGqAdQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "948989908880-4e39t08v91nf6b94f9kings4hpqi03bv.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "948989908880-e7heqefqe7i7r5i0qgl8l7acodak98e6.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "company.ize.covidwatch"
+                "bundle_id": "org.covidwatch.tags.ios"
               }
             }
           ]
