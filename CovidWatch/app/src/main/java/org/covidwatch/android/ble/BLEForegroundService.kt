@@ -16,6 +16,8 @@ import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.utils.UUIDs
 import java.util.*
+import org.covidwatch.libcontacttracing.*
+import kotlin.random.Random
 
 class BLEForegroundService : LifecycleService() {
 
@@ -31,14 +33,40 @@ class BLEForegroundService : LifecycleService() {
         private const val TAG = "BLEForegroundService"
     }
 
+    class DefaultCENHandler : CENHandler {
+        override fun handleCEN(cen: CEN) {
+            TODO("Not yet implemented")
+        }
+    }
+
+    class DefaultCENGenerator : CENGenerator {
+        override fun generateCEN(): CEN {
+            TODO("Not yet implemented")
+        }
+    }
+
+    private val cenGenerator = DefaultCENGenerator()
+    private val cenHandler = DefaultCENHandler()
+
     override fun onCreate() {
         super.onCreate()
         val application = (application as? CovidWatchApplication) ?: return
         app = application
-        app?.bleAdvertiser = BLEAdvertiser(this, BluetoothAdapter.getDefaultAdapter())
-        app?.bleScanner = org.covidwatch.libcontacttracing.BLEScanner(
+
+        app?.cenAdvertiser = CENAdvertiser(
             this,
-            BluetoothAdapter.getDefaultAdapter()
+            BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser,
+            UUIDs.CONTACT_EVENT_SERVICE,
+            UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
+            cenHandler,
+            cenGenerator
+        )
+
+        app?.cenScanner = CENScanner(
+            this,
+            BluetoothAdapter.getDefaultAdapter().bluetoothLeScanner,
+            UUIDs.CONTACT_EVENT_SERVICE,
+            cenHandler
         )
     }
 
@@ -65,7 +93,7 @@ class BLEForegroundService : LifecycleService() {
         timer?.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    app?.bleAdvertiser?.changeContactEventIdentifierInServiceDataField()
+                    app?.cenAdvertiser?.updateCEN()
                 }
             },
             MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong(),
@@ -83,15 +111,15 @@ class BLEForegroundService : LifecycleService() {
             contactEvent.wasPotentiallyInfectious = isCurrentUserSick
             dao.insert(contactEvent)
         }
-        app?.bleAdvertiser?.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventUUID)
-        app?.bleScanner?.startScanning(arrayOf<UUID>(UUIDs.CONTACT_EVENT_SERVICE))
+        app?.cenAdvertiser?.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, cenGenerator.generateCEN())
+        app?.cenScanner?.startScanning(arrayOf<UUID>(UUIDs.CONTACT_EVENT_SERVICE), 10)
 
         return START_STICKY
     }
 
     override fun onDestroy() {
-        app?.bleAdvertiser?.stopAdvertiser()
-        app?.bleScanner?.stopScanning()
+        app?.cenAdvertiser?.stopAdvertiser()
+        app?.cenScanner?.stopScanning()
         timer?.apply {
             cancel()
             purge()

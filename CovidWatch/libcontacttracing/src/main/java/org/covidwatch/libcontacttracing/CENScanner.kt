@@ -60,17 +60,14 @@ class CENScanner(
                 val data = scanRecord.serviceData[
                         ParcelUuid(serviceUUID)]?.toUUID()?.toBytes() ?: return@next_scan
 
-                val timestamp =
-                    DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime())
-
                 // handle contact event
-                cenHandler.handleCEN(CENDetection(CEN(data), timestamp, it.rssi))
+                cenHandler.handleCEN(CEN(data))
             }
         }
     }
 
     /**
-     * startContactScanner, will start the low power BLE scanner with the
+     * startScanning, will start the low power BLE scanner with the
      * given report delay and service UUIDs.
      *
      * @param serviceUUIDs An array of UUIDs for the services to listen to in the
@@ -82,7 +79,7 @@ class CENScanner(
      *                     Default is set to 10s
      */
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun startContactScanning(serviceUUIDs: Array<UUID>?, reportDelaySeconds: Long) {
+    fun startScanning(serviceUUIDs: Array<UUID>?, reportDelaySeconds: Long) {
 
         val scanFilters = serviceUUIDs?.map {
             ScanFilter.Builder().setServiceUuid(ParcelUuid(it)).build()
@@ -105,9 +102,9 @@ class CENScanner(
     }
 
     /**
-     * stopContactScanner stops contact scanning
+     * stopScanning stops contact scanning
      */
-    fun stopContactScanning() {
+    fun stopScanning() {
         scanner.stopScan(scanCallback)
         Log.i(TAG, "Stopped Contact Scanning")
     }

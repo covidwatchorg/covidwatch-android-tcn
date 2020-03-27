@@ -15,6 +15,16 @@ import java.util.*
 /**
  * CENAdvertiser
  *
+ * Advertises CENs using the serviceData field in the advertisement, as well
+ * as provide implementation for the GATT Client to allow for iOS devices to connect
+ * and write their CENs.
+ *
+ * @param ctx The context this class is constructed in
+ * @param advertiser The BluetoothLeAdvertiser in the BluetoothAdapter
+ * @param serviceUUID The serviceUUID to advertise
+ * @param cenHandler The handler for CENs when they are written to the GATT Server
+ * @param cenGenerator The generator for new CENs when advertising
+ *
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class CENAdvertiser(
@@ -26,7 +36,6 @@ class CENAdvertiser(
     private val cenGenerator: CENGenerator
 ) {
     private var bluetoothGattServer: BluetoothGattServer? = null
-    private var advertisedCEN: CEN? = null
 
     companion object {
         private const val TAG = "libcontacttracing"
@@ -68,9 +77,10 @@ class CENAdvertiser(
                             return
                         }
 
-                        cenHandler(cenGenerator.generateCEN())
+                        val newCEN = cenGenerator.generateCEN()
+                        cenHandler.handleCEN(newCEN)
+                        value = newCEN.number.toUUID()!!.toBytes()
 
-                        value = newContactEventIdentifier.toBytes()
                     } else {
                         result = BluetoothGatt.GATT_FAILURE
                     }
@@ -80,7 +90,8 @@ class CENAdvertiser(
                 } finally {
                     Log.i(
                         TAG,
-                        "onCharacteristicReadRequest result=$result device=$device requestId=$requestId offset=$offset characteristic=$characteristic"
+                        "onCharacteristicReadRequest result=$result device=$device " +
+                              "requestId=$requestId offset=$offset characteristic=$characteristic"
                     )
                     bluetoothGattServer?.sendResponse(
                         device,
@@ -119,13 +130,15 @@ class CENAdvertiser(
                             return
                         }
 
-                        val newContactEventIdentifier = value?.toUUID()
-                        if (newContactEventIdentifier == null) {
+                        val data = value?.toUUID()
+
+                        if (data == null) {
                             result = BluetoothGatt.GATT_FAILURE
                             return
                         }
 
-                        logContactEventIdentifier(newContactEventIdentifier)
+                        cenHandler.handleCEN(CEN(data))
+
                     } else {
                         result = BluetoothGatt.GATT_FAILURE
                     }
@@ -166,8 +179,6 @@ class CENAdvertiser(
         serviceUUID: UUID?,
         cenToAdvertise: CEN
     ) {
-        advertisedCEN = contactEventUUID
-
         val settings = AdvertiseSettings.Builder()
             .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
             .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
@@ -216,13 +227,13 @@ class CENAdvertiser(
     }
 
     /**
-     * Changes the CEI to a new random valid UUID in the service data field
+     * Changes the CEN to a new random valid UUID in the service data field
      * NOTE: This will also log the CEI and stop/start the advertiser
      */
-    fun changeContactEventIdentifierInServiceDataField() {
+    fun updateCEN() {
         Log.i(TAG, "Changing the contact event identifier in service data field...")
         stopAdvertiser()
-        val newContactEventIdentifier = UUID.randomUUID()
-        startAdvertiser(serviceUUID,)
+        val newCEN = cenGenerator.generateCEN()
+        startAdvertiser(serviceUUID, newCEN)
     }
 }
