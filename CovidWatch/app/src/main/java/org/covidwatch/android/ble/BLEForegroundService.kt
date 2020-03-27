@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import org.covidwatch.android.CovidWatchApplication
@@ -34,14 +35,23 @@ class BLEForegroundService : LifecycleService() {
     }
 
     class DefaultCENHandler : CENHandler {
-        override fun handleCEN(cen: CEN) {
-            TODO("Not yet implemented")
+        override fun handleCEN(ctx: Context, cen: CEN) {
+            CovidWatchDatabase.databaseWriteExecutor.execute {
+                val dao: ContactEventDAO = CovidWatchDatabase.getInstance(ctx).contactEventDAO()
+                val contactEvent = ContactEvent(CEN.number)
+                val isCurrentUserSick = ctx.getSharedPreferences(
+                    ctx.getString(R.string.preference_file_key),
+                    Context.MODE_PRIVATE
+                ).getBoolean(ctx.getString(R.string.preference_is_current_user_sick), false)
+                contactEvent.wasPotentiallyInfectious = isCurrentUserSick
+                dao.insert(contactEvent)
+            }
         }
     }
 
     class DefaultCENGenerator : CENGenerator {
-        override fun generateCEN(): CEN {
-            TODO("Not yet implemented")
+        override fun generateCEN(ctx: Context): CEN {
+            return CEN(UUID.randomUUID())
         }
     }
 
@@ -53,6 +63,7 @@ class BLEForegroundService : LifecycleService() {
         val application = (application as? CovidWatchApplication) ?: return
         app = application
 
+        // advertise CEN
         app?.cenAdvertiser = CENAdvertiser(
             this,
             BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser,
@@ -62,6 +73,7 @@ class BLEForegroundService : LifecycleService() {
             cenGenerator
         )
 
+        // scan CENs
         app?.cenScanner = CENScanner(
             this,
             BluetoothAdapter.getDefaultAdapter().bluetoothLeScanner,
@@ -79,6 +91,7 @@ class BLEForegroundService : LifecycleService() {
         val pendingIntent = PendingIntent.getActivity(
             this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT
         )
+
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("CovidWatch passively logging")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -100,18 +113,8 @@ class BLEForegroundService : LifecycleService() {
             MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong()
         )
 
-        val newContactEventUUID = UUID.randomUUID()
-        CovidWatchDatabase.databaseWriteExecutor.execute {
-            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(this).contactEventDAO()
-            val contactEvent = ContactEvent(newContactEventUUID.toString())
-            val isCurrentUserSick = getSharedPreferences(
-                getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            ).getBoolean(getString(R.string.preference_is_current_user_sick), false)
-            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
-            dao.insert(contactEvent)
-        }
-        app?.cenAdvertiser?.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, cenGenerator.generateCEN())
+        // start contact logging
+        app?.cenAdvertiser?.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE)
         app?.cenScanner?.startScanning(arrayOf<UUID>(UUIDs.CONTACT_EVENT_SERVICE), 10)
 
         return START_STICKY
@@ -151,5 +154,4 @@ class BLEForegroundService : LifecycleService() {
             manager.createNotificationChannel(serviceChannel)
         }
     }
-
 }

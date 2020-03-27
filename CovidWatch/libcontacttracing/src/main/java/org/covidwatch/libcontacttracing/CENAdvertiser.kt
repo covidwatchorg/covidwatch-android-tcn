@@ -170,20 +170,23 @@ class CENAdvertiser(
      * reasonable range, but this will need to be experimentally determined later.
      * ADVERTISE_MODE_LOW_LATENCY is a must as the other nodes are not real-time.
      *
-     * The CENGenerator is called to get a new CEN to advertise
+     * The CENGenerator is called to get a new CEN to advertise, and te CENHandle is called
+     * on that CEN
      *
      * @param serviceUUID The UUID of the service to advertise
-     * @param cenToAdvertise The CEN to advertise with the service UUID
      */
     fun startAdvertiser(
-        serviceUUID: UUID?,
-        cenToAdvertise: CEN
+        serviceUUID: UUID?
     ) {
         val settings = AdvertiseSettings.Builder()
             .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
             .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
             .setConnectable(true)
             .build()
+
+        // generate and handle cen before advertising
+        val cenToAdvertise = cenGenerator.generateCEN()
+        cenHandler.handleCEN(cenToAdvertise)
 
         val data = AdvertiseData.Builder()
             .setIncludeDeviceName(false)
@@ -227,13 +230,12 @@ class CENAdvertiser(
     }
 
     /**
-     * Changes the CEN to a new random valid UUID in the service data field
-     * NOTE: This will also log the CEI and stop/start the advertiser
+     * Changes the CEN to a new random valid CEN in the service data field
+     * NOTE: This will also log the CEN and stop/start the advertiser
      */
     fun updateCEN() {
         Log.i(TAG, "Changing the contact event identifier in service data field...")
         stopAdvertiser()
-        val newCEN = cenGenerator.generateCEN()
-        startAdvertiser(serviceUUID, newCEN)
+        startAdvertiser(serviceUUID)
     }
 }
