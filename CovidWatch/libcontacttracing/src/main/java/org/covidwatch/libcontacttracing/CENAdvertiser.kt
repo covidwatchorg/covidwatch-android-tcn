@@ -1,29 +1,32 @@
 package org.covidwatch.libcontacttracing
 
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGattServer
-import android.bluetooth.BluetoothGattServerCallback
+import android.bluetooth.*
 import android.bluetooth.le.AdvertiseCallback
+import android.bluetooth.le.AdvertiseData
 import android.bluetooth.le.AdvertiseSettings
 import android.bluetooth.le.BluetoothLeAdvertiser
 import android.content.Context
 import android.os.Build
+import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
 import java.util.*
 
 /**
- * ContactAdvertiser
+ * CENAdvertiser
  *
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class ContactAdvertiser(
+class CENAdvertiser(
     private val ctx: Context,
     private val advertiser: BluetoothLeAdvertiser,
-    private val ContactEventGenerator: () -> ContactEvent
+    private val serviceUUID: UUID,
+    private val charactersticUUID: UUID,
+    private val cenHandler: CENHandler,
+    private val cenGenerator: CENGenerator
 ) {
     private var bluetoothGattServer: BluetoothGattServer? = null
-    private var advertisedContactEventUUID: UUID? = null
+    private var advertisedCEN: CEN? = null
 
     companion object {
         private const val TAG = "libcontacttracing"
@@ -33,7 +36,6 @@ class ContactAdvertiser(
      * Callback when advertisements start and stops
      */
     private val advertisingCallback: AdvertiseCallback = object : AdvertiseCallback() {
-
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
             Log.w(TAG, "onStartSuccess settingsInEffect=$settingsInEffect")
             super.onStartSuccess(settingsInEffect)
@@ -48,11 +50,6 @@ class ContactAdvertiser(
     private var bluetoothGattServerCallback: BluetoothGattServerCallback =
         object : BluetoothGattServerCallback() {
 
-            override fun onServiceAdded(status: Int, service: BluetoothGattService?) {
-                super.onServiceAdded(status, service)
-                Log.i(TAG, "onServiceAdded status=$status service=$service")
-            }
-
             override fun onCharacteristicReadRequest(
                 device: BluetoothDevice?,
                 requestId: Int,
@@ -65,15 +62,13 @@ class ContactAdvertiser(
                 var value: ByteArray? = null
 
                 try {
-                    if (characteristic?.uuid == UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC) {
+                    if (characteristic?.uuid == serviceUUID) {
                         if (offset != 0) {
                             result = BluetoothGatt.GATT_INVALID_OFFSET
                             return
                         }
 
-                        val newContactEventIdentifier = UUID.randomUUID()
-
-                        logContactEventIdentifier(newContactEventIdentifier)
+                        cenHandler(cenGenerator.generateCEN())
 
                         value = newContactEventIdentifier.toBytes()
                     } else {
@@ -118,7 +113,7 @@ class ContactAdvertiser(
 
                 var result = BluetoothGatt.GATT_SUCCESS
                 try {
-                    if (characteristic?.uuid == UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC) {
+                    if (characteristic?.uuid == charactersticUUID) {
                         if (offset != 0) {
                             result = BluetoothGatt.GATT_INVALID_OFFSET
                             return
@@ -139,7 +134,10 @@ class ContactAdvertiser(
                 } finally {
                     Log.i(
                         TAG,
-                        "onCharacteristicWriteRequest result=$result device=$device requestId=$requestId characteristic=$characteristic preparedWrite=$preparedWrite responseNeeded=$responseNeeded offset=$offset value=$value"
+                        "onCharacteristicWriteRequest result=$result device=$device" +
+                                "requestId=$requestId characteristic=$characteristic " +
+                                "preparedWrite=$preparedWrite responseNeeded=$responseNeeded" +
+                                "offset=$offset value=$value"
                     )
                     if (responseNeeded) {
                         bluetoothGattServer?.sendResponse(
@@ -155,18 +153,20 @@ class ContactAdvertiser(
         }
 
     /**
-     * Starts the advertiser, with the given UUID. We advertise with MEDIUM power to get
+     * Starts the advertiser, with the given service UUID. We advertise with MEDIUM power to get
      * reasonable range, but this will need to be experimentally determined later.
      * ADVERTISE_MODE_LOW_LATENCY is a must as the other nodes are not real-time.
      *
-     * @param serviceUUID The UUID to advertise the service
-     * @param contactEventUUID The UUID that indicates the contact event
+     * The CENGenerator is called to get a new CEN to advertise
+     *
+     * @param serviceUUID The UUID of the service to advertise
+     * @param cenToAdvertise The CEN to advertise with the service UUID
      */
     fun startAdvertiser(
         serviceUUID: UUID?,
-        contactEventUUID: UUID?
+        cenToAdvertise: CEN
     ) {
-        advertisedContactEventUUID = contactEventUUID
+        advertisedCEN = contactEventUUID
 
         val settings = AdvertiseSettings.Builder()
             .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
@@ -174,28 +174,27 @@ class ContactAdvertiser(
             .setConnectable(true)
             .build()
 
-//        val testServiceDataMaxLength = ByteArray(20)
         val data = AdvertiseData.Builder()
             .setIncludeDeviceName(false)
             .addServiceUuid(ParcelUuid(serviceUUID))
-            .addServiceData(ParcelUuid(serviceUUID), contactEventUUID?.toBytes())
-//           .addServiceData(ParcelUuid(serviceUUID), testServiceDataMaxLength)
+            .addServiceData(ParcelUuid(serviceUUID), cenToAdvertise.number)
             .build()
 
-        (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).let { bluetoothManager ->
+        (ctx.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).let { bluetoothManager ->
 
-            bluetoothGattServer =
-                bluetoothManager.openGattServer(context, bluetoothGattServerCallback)
+            bluetoothGattServer = bluetoothManager.openGattServer(ctx, bluetoothGattServerCallback)
 
             val service = BluetoothGattService(
-                UUIDs.CONTACT_EVENT_SERVICE,
-                BluetoothGattService.SERVICE_TYPE_PRIMARY
+                serviceUUID, BluetoothGattService.SERVICE_TYPE_PRIMARY
             )
+
             service.addCharacteristic(
                 BluetoothGattCharacteristic(
-                    UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
-                    BluetoothGattCharacteristic.PROPERTY_READ or BluetoothGattCharacteristic.PROPERTY_WRITE,
-                    BluetoothGattCharacteristic.PERMISSION_READ or BluetoothGattCharacteristic.PERMISSION_WRITE
+                    charactersticUUID,
+                    BluetoothGattCharacteristic.PROPERTY_READ
+                            or BluetoothGattCharacteristic.PROPERTY_WRITE,
+                    BluetoothGattCharacteristic.PERMISSION_READ
+                            or BluetoothGattCharacteristic.PERMISSION_WRITE
                 )
             )
 
@@ -224,20 +223,6 @@ class ContactAdvertiser(
         Log.i(TAG, "Changing the contact event identifier in service data field...")
         stopAdvertiser()
         val newContactEventIdentifier = UUID.randomUUID()
-        logContactEventIdentifier(newContactEventIdentifier)
-        startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventIdentifier)
-    }
-
-    fun logContactEventIdentifier(identifier: UUID) {
-        CovidWatchDatabase.databaseWriteExecutor.execute {
-            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(context).contactEventDAO()
-            val contactEvent = ContactEvent()
-            val isCurrentUserSick = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            ).getBoolean(context.getString(R.string.preference_is_current_user_sick), false)
-            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
-            dao.insert(contactEvent)
-        }
+        startAdvertiser(serviceUUID,)
     }
 }

@@ -1,4 +1,4 @@
-package org.covidwatch.android.utils
+package org.covidwatch.libcontacttracing
 
 import java.nio.ByteBuffer
 import java.util.*

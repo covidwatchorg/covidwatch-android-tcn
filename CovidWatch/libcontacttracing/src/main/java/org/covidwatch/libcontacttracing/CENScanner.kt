@@ -10,25 +10,26 @@ import java.text.DateFormat
 import java.util.*
 
 /**
- * ContactScanner
+ * CENScanner
  *
- * Responsible for triggering the ContactHandler when there has been Contact with an other
- * device running the ContactAdvertiser. The ContactHandler callback takes the provided context,
- * and a android.bluetooth.le.ScanResult and will be called on every device found that
+ * Responsible for triggering the CENHandler when there has been contact with an other
+ * device running the CENAdvertiser, or simply advertising the same service UUID.
+ * The CENHandler callback takes the provided context, and a
+ * android.bluetooth.le.ScanResult and will be called on every device found that
  * is advertising with the provided service UUID.
  *
  * @param ctx The android Context this object is constructed in
  * @param scanner The bluetooth adapter to get the bluetoothLeScanner from
  * @param serviceUUID The UUID to listen to in the background
- * @param ContactEventHandler A callback to run on every device that was
- *                               discovered advertising the proper service UUID
+ * @param CENHandler A callback to run on every CEN that was
+ *                   discovered advertising the proper service UUID
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class ContactScanner(
+class CENScanner(
     private val ctx: Context,
     private val scanner: BluetoothLeScanner,
     private val serviceUUID: UUID,
-    private val ContactEventHandler: (ctx: Context, contactEvent: ContactEvent) -> Unit
+    private val cenHandler: CENHandler
 ) {
 
     companion object {
@@ -52,17 +53,18 @@ class ContactScanner(
             Log.d(TAG, "onBatchScanResults results=$results")
 
             results?.forEach next_scan@{
+
                 // if the scanRecord is null or if there is no data,
-                // we skip over those results as they don't provide any benifit
+                // we skip over that result as it does not provide any benefit
                 val scanRecord = it.scanRecord ?: return@next_scan
                 val data = scanRecord.serviceData[
-                        ParcelUuid(serviceUUID)]?.toUByteArray() ?: return@next_scan
+                        ParcelUuid(serviceUUID)]?.toUUID()?.toBytes() ?: return@next_scan
 
                 val timestamp =
                     DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime())
 
                 // handle contact event
-                ContactEventHandler(ctx, ContactEvent(data, timestamp, it.rssi))
+                cenHandler.handleCEN(CENDetection(CEN(data), timestamp, it.rssi))
             }
         }
     }
