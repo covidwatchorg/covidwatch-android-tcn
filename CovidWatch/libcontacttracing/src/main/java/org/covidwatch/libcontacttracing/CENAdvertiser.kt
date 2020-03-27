@@ -16,8 +16,8 @@ import java.util.*
  * CENAdvertiser
  *
  * Advertises CENs using the serviceData field in the advertisement, as well
- * as provide implementation for the GATT Client to allow for iOS devices to connect
- * and write their CENs.
+ * as provide implementation for the GATT Server to allow for iOS devices to connect
+ * and read/write CENs.
  *
  * @param ctx The context this class is constructed in
  * @param advertiser The BluetoothLeAdvertiser in the BluetoothAdapter
