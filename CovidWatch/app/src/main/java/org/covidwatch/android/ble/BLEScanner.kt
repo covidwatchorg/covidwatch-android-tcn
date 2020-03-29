@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.*
 import android.content.Context
 import android.os.Build
+import android.os.Handler
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -13,17 +14,21 @@ import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.utils.UUIDs
 import org.covidwatch.android.utils.toUUID
+import java.lang.Exception
 import java.util.*
 
-class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
+class BLEScanner(val context: Context, adapter: BluetoothAdapter) {
 
-    // BLE
+    companion object {
+        private const val TAG = "BluetoothLeScanner"
+    }
+
     private val scanner: BluetoothLeScanner? = adapter.bluetoothLeScanner
 
-    // CONTEXT
-    var context: Context = ctx
+    var isScanning: Boolean = false
 
-    // CALLBACKS
+    private var handler = Handler()
+
     private var scanCallback = object : ScanCallback() {
 
         override fun onScanFailed(errorCode: Int) {
@@ -34,10 +39,10 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
         override fun onBatchScanResults(results: MutableList<ScanResult>?) {
             super.onBatchScanResults(results)
             Log.i(TAG, "onBatchScanResults results=$results")
-            results?.forEach { handleScanResult(it) }
+            results?.forEach { processScanResult(it) }
         }
 
-        private fun handleScanResult(result: ScanResult) {
+        private fun processScanResult(result: ScanResult) {
             val scanRecord = result.scanRecord ?: return
 
             val contactEventIdentifier =
@@ -46,13 +51,12 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
             if (contactEventIdentifier == null) {
                 Log.i(
                     TAG,
-                    "Scan result device.address=${result.device.address} RSSI=${result.rssi} CEI=N/A"
+                    "Scan result device.address=${result.device.address} RSSI=${result.rssi} CEN=N/A"
                 )
-                // TODO: Handle case when CEI cannot be extracted from scan record.
             } else {
                 Log.i(
                     TAG,
-                    "Scan result device.address=${result.device.address} RSSI=${result.rssi} CEI=${contactEventIdentifier.toString()
+                    "Scan result device.address=${result.device.address} RSSI=${result.rssi} CEN=${contactEventIdentifier.toString()
                         .toUpperCase()}"
                 )
                 CovidWatchDatabase.databaseWriteExecutor.execute {
@@ -73,41 +77,51 @@ class BLEScanner(ctx: Context, adapter: BluetoothAdapter) {
         }
     }
 
-    // CONSTANTS
-    companion object {
-        private const val TAG = "BLEScanner"
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     fun startScanning(serviceUUIDs: Array<UUID>?) {
+        if (isScanning) return
 
-        val scanner = scanner ?: return
+        try {
+            val scanFilters = serviceUUIDs?.map {
+                ScanFilter.Builder().setServiceUuid(ParcelUuid(it)).build()
+            }
 
-        val scanFilters = serviceUUIDs?.map {
-            ScanFilter.Builder().setServiceUuid(ParcelUuid(it)).build()
+            val scanSettings = ScanSettings.Builder()
+                .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
+                .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
+                .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
+                .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
+                .setReportDelay(1000)
+                .build()
+
+            isScanning = true
+            scanner?.startScan(scanFilters, scanSettings, scanCallback)
+            Log.i(TAG, "Started scan")
+        } catch (exception: Exception) {
+            Log.e(TAG, "Start scan failed: $exception")
         }
 
-        // we use low power scan mode to conserve battery,
-        // CALLBACK_TYPE_ALL_MATCHES will run the callback for every discovery
-        // instead of batching them up. MATCH_MODE_AGGRESSIVE will try to connect
-        // even with 1 advertisement.
-        val scanSettings = ScanSettings.Builder()
-            .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
-            .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
-            .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
-            .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
-            .setReportDelay(1000)
-            .build()
-
-        // The scan filter is incredibly important to allow android to run scans
-        // in the background
-        scanner.startScan(scanFilters, scanSettings, scanCallback)
-        Log.i(TAG, "Started scanning")
+        // Bug workaround: Restart periodically so the Bluetooth daemon won't get into a borked state
+        handler.removeCallbacksAndMessages(null)
+        handler.postDelayed({
+            if (isScanning) {
+                Log.i(TAG, "Restarting scan...")
+                stopScanning()
+                startScanning(serviceUUIDs)
+            }
+        }, 10000)
     }
 
     fun stopScanning() {
-        scanner?.stopScan(scanCallback)
-        Log.i(TAG, "Stopped scanning")
+        if (!isScanning) return
+
+        try {
+            isScanning = false
+            scanner?.stopScan(scanCallback)
+            Log.i(TAG, "Stopped scan")
+        } catch (exception: Exception) {
+            Log.e(TAG, "Stop scan failed: $exception")
+        }
     }
 
 }

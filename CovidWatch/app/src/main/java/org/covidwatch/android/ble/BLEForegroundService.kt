@@ -80,14 +80,14 @@ class BLEForegroundService : LifecycleService() {
             contactEvent.wasPotentiallyInfectious = isCurrentUserSick
             dao.insert(contactEvent)
         }
-        app?.bleAdvertiser?.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventUUID)
+        app?.bleAdvertiser?.startAdvertising(UUIDs.CONTACT_EVENT_SERVICE, newContactEventUUID)
         app?.bleScanner?.startScanning(arrayOf<UUID>(UUIDs.CONTACT_EVENT_SERVICE))
 
         return START_STICKY
     }
 
     override fun onDestroy() {
-        app?.bleAdvertiser?.stopAdvertiser()
+        app?.bleAdvertiser?.stopAdvertising()
         app?.bleScanner?.stopScanning()
         timer?.apply {
             cancel()

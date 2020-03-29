@@ -17,35 +17,28 @@ import org.covidwatch.android.utils.toBytes
 import org.covidwatch.android.utils.toUUID
 import java.util.*
 
-/**
- * BLEAdvertiser is responsible for advertising the bluetooth services.
- * Only one instance of this class is to be constructed, but its not enforced. (for now)
- * You have been warned!
- */
-class BLEAdvertiser(private val context: Context, private val adapter: BluetoothAdapter) {
-    // BLE
-    private val advertiser: BluetoothLeAdvertiser = adapter.bluetoothLeAdvertiser
-    private var bluetoothGattServer: BluetoothGattServer? = null
-    private var advertisedContactEventUUID: UUID? = null
+class BLEAdvertiser(val context: Context, adapter: BluetoothAdapter) {
 
-    // CONSTANTS
     companion object {
-        private const val TAG = "BLEAdvertiser"
+        private const val TAG = "BluetoothLeAdvertiser"
     }
 
-    /**
-     * Callback when advertisements start and stops
-     */
-    private val advertisingCallback: AdvertiseCallback = object : AdvertiseCallback() {
+    private val advertiser: BluetoothLeAdvertiser? = adapter.bluetoothLeAdvertiser
+
+    private var bluetoothGattServer: BluetoothGattServer? = null
+
+    private var advertisedContactEventIdentifier: UUID? = null
+
+    private val advertiseCallback: AdvertiseCallback = object : AdvertiseCallback() {
 
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-            Log.w(TAG, "onStartSuccess settingsInEffect=$settingsInEffect")
             super.onStartSuccess(settingsInEffect)
+            Log.w(TAG, "onStartSuccess settingsInEffect=$settingsInEffect")
         }
 
         override fun onStartFailure(errorCode: Int) {
-            Log.e(TAG, "onStartFailure errorCode=$errorCode")
             super.onStartFailure(errorCode)
+            Log.e(TAG, "onStartFailure errorCode=$errorCode")
         }
     }
 
@@ -158,78 +151,80 @@ class BLEAdvertiser(private val context: Context, private val adapter: Bluetooth
             }
         }
 
-    /**
-     * Starts the advertiser, with the given UUID. We advertise with MEDIUM power to get
-     * reasonable range, but this will need to be experimentally determined later.
-     * ADVERTISE_MODE_LOW_LATENCY is a must as the other nodes are not real-time.
-     *
-     * @param serviceUUID The UUID to advertise the service
-     * @param contactEventUUID The UUID that indicates the contact event
-     */
-    fun startAdvertiser(
+    fun startAdvertising(
         serviceUUID: UUID?,
-        contactEventUUID: UUID?
+        contactEventIdentifier: UUID?
     ) {
-        advertisedContactEventUUID = contactEventUUID
+        try {
+            advertisedContactEventIdentifier = contactEventIdentifier
 
-        val settings = AdvertiseSettings.Builder()
-            .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
-            .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-            .setConnectable(true)
-            .build()
+            val advertiseSettings = AdvertiseSettings.Builder()
+                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
+                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_LOW)
+                .setConnectable(true)
+                .build()
 
-//        val testServiceDataMaxLength = ByteArray(20)
-        val data = AdvertiseData.Builder()
-            .setIncludeDeviceName(false)
-            .addServiceUuid(ParcelUuid(serviceUUID))
-            .addServiceData(ParcelUuid(serviceUUID), contactEventUUID?.toBytes())
-//            .addServiceData(ParcelUuid(serviceUUID), testServiceDataMaxLength)
-            .build()
+            val advertiseData = AdvertiseData.Builder()
+                .setIncludeDeviceName(false)
+                .addServiceUuid(ParcelUuid(serviceUUID))
+                .addServiceData(ParcelUuid(serviceUUID), contactEventIdentifier?.toBytes())
+//                .addServiceData(ParcelUuid(serviceUUID), ByteArray(20))
+                .build()
 
-        (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).let { bluetoothManager ->
+            (context.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager).let { bluetoothManager ->
 
-            bluetoothGattServer =
-                bluetoothManager.openGattServer(context, bluetoothGattServerCallback)
+                bluetoothGattServer =
+                    bluetoothManager?.openGattServer(context, bluetoothGattServerCallback)
 
-            val service = BluetoothGattService(
-                UUIDs.CONTACT_EVENT_SERVICE,
-                BluetoothGattService.SERVICE_TYPE_PRIMARY
-            )
-            service.addCharacteristic(
-                BluetoothGattCharacteristic(
-                    UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
-                    BluetoothGattCharacteristic.PROPERTY_READ or BluetoothGattCharacteristic.PROPERTY_WRITE,
-                    BluetoothGattCharacteristic.PERMISSION_READ or BluetoothGattCharacteristic.PERMISSION_WRITE
+                val service = BluetoothGattService(
+                    UUIDs.CONTACT_EVENT_SERVICE,
+                    BluetoothGattService.SERVICE_TYPE_PRIMARY
                 )
-            )
+                service.addCharacteristic(
+                    BluetoothGattCharacteristic(
+                        UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
+                        BluetoothGattCharacteristic.PROPERTY_READ or BluetoothGattCharacteristic.PROPERTY_WRITE,
+                        BluetoothGattCharacteristic.PERMISSION_READ or BluetoothGattCharacteristic.PERMISSION_WRITE
+                    )
+                )
 
-            bluetoothGattServer?.clearServices()
-            bluetoothGattServer?.addService(service)
+                bluetoothGattServer?.clearServices()
+                bluetoothGattServer?.addService(service)
+            }
+
+            advertiser?.startAdvertising(advertiseSettings, advertiseData, advertiseCallback)
+
+            Log.i(TAG, "Started advertising")
+        } catch (exception: java.lang.Exception) {
+            Log.e(TAG, "Start advertising failed: $exception")
         }
+    }
 
-        advertiser.startAdvertising(settings, data, advertisingCallback)
+    fun stopAdvertising() {
+        try {
+            advertiser?.stopAdvertising(advertiseCallback)
+            bluetoothGattServer?.apply {
+                clearServices()
+                close()
+            }
+            bluetoothGattServer = null
+
+            Log.i(TAG, "Stopped advertising")
+        } catch (exception: java.lang.Exception) {
+            Log.e(TAG, "Stop advertising failed: $exception")
+        }
     }
 
     /**
-     * Stops all BLE related activity
-     */
-    fun stopAdvertiser() {
-        advertiser.stopAdvertising(advertisingCallback)
-        bluetoothGattServer?.clearServices()
-        bluetoothGattServer?.close()
-        bluetoothGattServer = null
-    }
-
-    /**
-     * Changes the CEI to a new random valid UUID in the service data field
-     * NOTE: This will also log the CEI and stop/start the advertiser
+     * Changes the CEN to a new random UUID in the service data field
+     * NOTE: This will also log the CEN and stop/start the advertiser
      */
     fun changeContactEventIdentifierInServiceDataField() {
         Log.i(TAG, "Changing the contact event identifier in service data field...")
-        stopAdvertiser()
+        stopAdvertising()
         val newContactEventIdentifier = UUID.randomUUID()
         logContactEventIdentifier(newContactEventIdentifier)
-        startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE, newContactEventIdentifier)
+        startAdvertising(UUIDs.CONTACT_EVENT_SERVICE, newContactEventIdentifier)
     }
 
     fun logContactEventIdentifier(identifier: UUID) {
