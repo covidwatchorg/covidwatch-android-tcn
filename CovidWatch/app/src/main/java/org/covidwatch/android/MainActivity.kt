@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         initLocationManager()
     }
 
-    public override fun onStart() {
-        super.onStart()
+    public override fun onResume() {
+        super.onResume()
         refreshPublicContactEvents()
     }
 
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         WorkManager.getInstance(this).enqueueUniqueWork(
             ContactEventsDownloadWorker.WORKER_NAME,
-            ExistingWorkPolicy.KEEP,
+            ExistingWorkPolicy.REPLACE,
             downloadRequest
         )
     }
