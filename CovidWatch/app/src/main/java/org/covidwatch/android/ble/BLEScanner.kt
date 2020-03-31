@@ -12,10 +12,11 @@ import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.utils.UUIDs
+import org.covidwatch.android.firestore.FirestoreConstants
 import org.covidwatch.android.utils.toUUID
 import java.lang.Exception
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class BLEScanner(val context: Context, adapter: BluetoothAdapter) {
 
@@ -46,7 +47,7 @@ class BLEScanner(val context: Context, adapter: BluetoothAdapter) {
             val scanRecord = result.scanRecord ?: return
 
             val contactEventIdentifier =
-                scanRecord.serviceData[ParcelUuid(UUIDs.CONTACT_EVENT_SERVICE)]?.toUUID()
+                scanRecord.serviceData[ParcelUuid(BluetoothService.CONTACT_EVENT_SERVICE)]?.toUUID()
 
             if (contactEventIdentifier == null) {
                 Log.i(
@@ -82,9 +83,10 @@ class BLEScanner(val context: Context, adapter: BluetoothAdapter) {
         if (isScanning) return
 
         try {
-            val scanFilters = serviceUUIDs?.map {
-                ScanFilter.Builder().setServiceUuid(ParcelUuid(it)).build()
-            }
+//            val scanFilters = serviceUUIDs?.map {
+//                ScanFilter.Builder().setServiceUuid(ParcelUuid(it)).build()
+//            }
+            val scanFilters = null
 
             val scanSettings = ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
@@ -109,7 +111,7 @@ class BLEScanner(val context: Context, adapter: BluetoothAdapter) {
                 stopScanning()
                 startScanning(serviceUUIDs)
             }
-        }, 10000)
+        }, TimeUnit.SECONDS.toMillis(10))
     }
 
     fun stopScanning() {

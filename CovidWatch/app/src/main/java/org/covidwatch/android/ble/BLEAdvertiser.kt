@@ -12,7 +12,6 @@ import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.utils.UUIDs
 import org.covidwatch.android.utils.toBytes
 import org.covidwatch.android.utils.toUUID
 import java.util.*
@@ -62,7 +61,7 @@ class BLEAdvertiser(val context: Context, adapter: BluetoothAdapter) {
                 var value: ByteArray? = null
 
                 try {
-                    if (characteristic?.uuid == UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC) {
+                    if (characteristic?.uuid == BluetoothService.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC) {
                         if (offset != 0) {
                             result = BluetoothGatt.GATT_INVALID_OFFSET
                             return
@@ -115,7 +114,7 @@ class BLEAdvertiser(val context: Context, adapter: BluetoothAdapter) {
 
                 var result = BluetoothGatt.GATT_SUCCESS
                 try {
-                    if (characteristic?.uuid == UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC) {
+                    if (characteristic?.uuid == BluetoothService.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC) {
                         if (offset != 0) {
                             result = BluetoothGatt.GATT_INVALID_OFFSET
                             return
@@ -159,9 +158,14 @@ class BLEAdvertiser(val context: Context, adapter: BluetoothAdapter) {
             advertisedContactEventIdentifier = contactEventIdentifier
 
             val advertiseSettings = AdvertiseSettings.Builder()
+                    // Use low latency mode so the chance of being discovered is higher
                 .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
+                    // Use low power so the discoverability range is short
                 .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_LOW)
+                    // Use true so devices can connect to our GATT server
                 .setConnectable(true)
+                    // Advertise forever
+                .setTimeout(0)
                 .build()
 
             val advertiseData = AdvertiseData.Builder()
@@ -177,12 +181,12 @@ class BLEAdvertiser(val context: Context, adapter: BluetoothAdapter) {
                     bluetoothManager?.openGattServer(context, bluetoothGattServerCallback)
 
                 val service = BluetoothGattService(
-                    UUIDs.CONTACT_EVENT_SERVICE,
+                    BluetoothService.CONTACT_EVENT_SERVICE,
                     BluetoothGattService.SERVICE_TYPE_PRIMARY
                 )
                 service.addCharacteristic(
                     BluetoothGattCharacteristic(
-                        UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
+                        BluetoothService.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
                         BluetoothGattCharacteristic.PROPERTY_READ or BluetoothGattCharacteristic.PROPERTY_WRITE,
                         BluetoothGattCharacteristic.PERMISSION_READ or BluetoothGattCharacteristic.PERMISSION_WRITE
                     )
@@ -224,7 +228,7 @@ class BLEAdvertiser(val context: Context, adapter: BluetoothAdapter) {
         stopAdvertising()
         val newContactEventIdentifier = UUID.randomUUID()
         logContactEventIdentifier(newContactEventIdentifier)
-        startAdvertising(UUIDs.CONTACT_EVENT_SERVICE, newContactEventIdentifier)
+        startAdvertising(BluetoothService.CONTACT_EVENT_SERVICE, newContactEventIdentifier)
     }
 
     fun logContactEventIdentifier(identifier: UUID) {

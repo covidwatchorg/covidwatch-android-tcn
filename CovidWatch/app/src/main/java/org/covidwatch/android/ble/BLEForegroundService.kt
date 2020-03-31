@@ -14,8 +14,9 @@ import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.utils.UUIDs
+import org.covidwatch.android.firestore.FirestoreConstants
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class BLEForegroundService : LifecycleService() {
 
@@ -26,8 +27,6 @@ class BLEForegroundService : LifecycleService() {
     companion object {
         // CONSTANTS
         private const val CHANNEL_ID = "CovidBluetoothContactChannel"
-        private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 15
-        private const val MS_TO_MIN = 60000
         private const val TAG = "BLEForegroundService"
     }
 
@@ -65,8 +64,8 @@ class BLEForegroundService : LifecycleService() {
                     app?.bleAdvertiser?.changeContactEventIdentifierInServiceDataField()
                 }
             },
-            MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong(),
-            MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong()
+            TimeUnit.MINUTES.toMillis(BluetoothService.CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong()),
+            TimeUnit.MINUTES.toMillis(BluetoothService.CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong())
         )
 
         val newContactEventUUID = UUID.randomUUID()
@@ -80,8 +79,8 @@ class BLEForegroundService : LifecycleService() {
             contactEvent.wasPotentiallyInfectious = isCurrentUserSick
             dao.insert(contactEvent)
         }
-        app?.bleAdvertiser?.startAdvertising(UUIDs.CONTACT_EVENT_SERVICE, newContactEventUUID)
-        app?.bleScanner?.startScanning(arrayOf<UUID>(UUIDs.CONTACT_EVENT_SERVICE))
+        app?.bleAdvertiser?.startAdvertising(BluetoothService.CONTACT_EVENT_SERVICE, newContactEventUUID)
+        app?.bleScanner?.startScanning(arrayOf<UUID>(BluetoothService.CONTACT_EVENT_SERVICE))
 
         return START_STICKY
     }
@@ -98,6 +97,7 @@ class BLEForegroundService : LifecycleService() {
 
 
     override fun onBind(intent: Intent): IBinder? {
+        super.onBind(intent)
         return null
     }
 
