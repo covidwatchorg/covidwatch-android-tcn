@@ -1,4 +1,4 @@
-package org.covidwatch.libcontacttracing
+package org.covidwatch.libcontactrace
 
 import java.nio.ByteBuffer
 import java.util.*

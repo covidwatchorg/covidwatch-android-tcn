@@ -9,8 +9,8 @@ import org.covidwatch.android.ble.BLEForegroundService
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.firestore.LocalContactEventsUploader
 import org.covidwatch.android.firestore.PublicContactEventsObserver
-import org.covidwatch.libcontacttracing.CENAdvertiser
-import org.covidwatch.libcontacttracing.CENScanner
+import org.covidwatch.libcontactrace.CENAdvertiser
+import org.covidwatch.libcontactrace.CENScanner
 
 class CovidWatchApplication : Application() {
 

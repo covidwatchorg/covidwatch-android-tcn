@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import org.covidwatch.android.CovidWatchApplication
@@ -16,7 +17,8 @@ import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.utils.UUIDs
 import java.util.*
-import org.covidwatch.libcontacttracing.*
+import org.covidwatch.libcontactrace.*
+import org.covidwatch.libcontactrace.cen.*
 
 class BLEForegroundService : LifecycleService() {
 
@@ -32,11 +34,11 @@ class BLEForegroundService : LifecycleService() {
         private const val TAG = "BLEForegroundService"
     }
 
-    class DefaultCENHandler(val ctx: Context) : CENHandler {
-        override fun handleCEN(cen: CEN) {
+    class DefaultCENVisitor(val ctx: Context) : CENVisitor {
+        fun handleCEN(cen: CEN) {
             CovidWatchDatabase.databaseWriteExecutor.execute {
                 val dao: ContactEventDAO = CovidWatchDatabase.getInstance(ctx).contactEventDAO()
-                val contactEvent = ContactEvent(cen.toUUID().toString())
+                val contactEvent = ContactEvent(cen.data.toString())
                 val isCurrentUserSick = ctx.getSharedPreferences(
                     ctx.getString(R.string.preference_file_key),
                     Context.MODE_PRIVATE
@@ -45,16 +47,26 @@ class BLEForegroundService : LifecycleService() {
                 dao.insert(contactEvent)
             }
         }
+
+        override fun visit(cen: GeneratedCEN) {
+            Log.i(TAG, "Handling generated CEN")
+            handleCEN(cen)
+        }
+
+        override fun visit(cen: ObservedCEN) {
+            Log.i(TAG, "Handling observed CEN")
+            handleCEN(cen)
+        }
     }
 
     class DefaultCENGenerator : CENGenerator {
-        override fun generateCEN(): CEN {
-            return CEN(UUID.randomUUID())
+        override fun generate(): GeneratedCEN {
+            return GeneratedCEN(UUID.randomUUID().toBytes())
         }
     }
 
     private val cenGenerator = DefaultCENGenerator()
-    private val cenHandler = DefaultCENHandler(this)
+    private val cenVisitor = DefaultCENVisitor(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -67,7 +79,7 @@ class BLEForegroundService : LifecycleService() {
             BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser,
             UUIDs.CONTACT_EVENT_SERVICE,
             UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
-            cenHandler,
+            cenVisitor,
             cenGenerator
         )
 
@@ -76,7 +88,7 @@ class BLEForegroundService : LifecycleService() {
             this,
             BluetoothAdapter.getDefaultAdapter().bluetoothLeScanner,
             UUIDs.CONTACT_EVENT_SERVICE,
-            cenHandler
+            cenVisitor
         )
     }
 

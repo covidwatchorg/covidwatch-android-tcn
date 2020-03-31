@@ -1,4 +1,4 @@
-package org.covidwatch.libcontacttracing
+package org.covidwatch.libcontactrace
 
 import android.bluetooth.le.*
 import android.content.Context
@@ -6,6 +6,9 @@ import android.os.Build
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
+import org.covidwatch.libcontactrace.cen.CEN
+import org.covidwatch.libcontactrace.cen.CENVisitor
+import org.covidwatch.libcontactrace.cen.ObservedCEN
 import java.util.*
 
 /**
@@ -18,15 +21,15 @@ import java.util.*
  * @param ctx The android Context this object is constructed in
  * @param scanner The bluetooth adapter to get the bluetoothLeScanner from
  * @param serviceUUID The UUID to listen to in the background
- * @param CENHandler A callback to run on every CEN that was
- *                   discovered advertising the proper service UUID
+ * @param cenVisitor The visitor that handles the appropriate CEN
+ *
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class CENScanner(
     private val ctx: Context,
     private val scanner: BluetoothLeScanner,
     private val serviceUUID: UUID,
-    private val cenHandler: CENHandler
+    private val cenVisitor: CENVisitor
 ) {
 
     companion object {
@@ -59,7 +62,7 @@ class CENScanner(
                         ParcelUuid(serviceUUID)]?.toUUID()?.toBytes() ?: return@next_scan
 
                 // handle contact event
-                cenHandler.handleCEN(CEN(data))
+                cenVisitor.visit(ObservedCEN(data))
             }
         }
     }

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.covidwatch.libcontacttracing" >
+    package="org.covidwatch.libcontactrace" >
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 </manifest>
