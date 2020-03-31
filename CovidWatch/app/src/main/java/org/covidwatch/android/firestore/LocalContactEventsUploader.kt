@@ -42,8 +42,9 @@ class LocalContactEventsUploader(var application: Application) {
         db.runBatch { batch ->
             contactEvents.forEach {
                 batch.set(
-                    db.collection("contact_events").document(it.identifier),
-                    hashMapOf("timestamp" to Timestamp(it.timestamp))
+                    db.collection(FirestoreConstants.COLLECTION_CONTACT_EVENTS)
+                        .document(it.identifier),
+                    hashMapOf(FirestoreConstants.FIELD_TIMESTAMP to Timestamp(it.timestamp))
                 )
             }
         }.addOnCompleteListener { task ->
