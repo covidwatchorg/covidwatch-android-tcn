@@ -43,6 +43,7 @@ class CENAdvertiser(
 ) {
 
     var bluetoothGattServer: BluetoothGattServer? = null;
+
     /**
      * Starts the advertiser, with the given service UUID. We advertise with MEDIUM power to get
      * reasonable range, but this will need to be experimentally determined later.
@@ -65,17 +66,22 @@ class CENAdvertiser(
             .setConnectable(true)
             .build()
 
+        val gencen = cenGenerator.generate()
+        cenVisitor.visit(gencen)
+
         // advertisement data
         val data = AdvertiseData.Builder()
             .setIncludeDeviceName(false)
             .addServiceUuid(ParcelUuid(serviceUUID))
+            .addServiceData(ParcelUuid(serviceUUID), gencen.data)
             .build()
 
         // create the GATTServer and open it
         (ctx.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).let { bluetoothManager ->
 
             // create gatt server callback with necessary dependencies
-            val cenGattServerCallback = CENGattServerCallback(characteristicUUID, cenGenerator)
+            val cenGattServerCallback =
+                CENGattServerCallback(characteristicUUID, cenGenerator, cenVisitor)
 
             // open gatt server and track reference
             bluetoothGattServer =

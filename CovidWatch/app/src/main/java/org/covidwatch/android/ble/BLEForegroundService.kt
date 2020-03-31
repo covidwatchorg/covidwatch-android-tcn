@@ -36,9 +36,10 @@ class BLEForegroundService : LifecycleService() {
 
     class DefaultCENVisitor(val ctx: Context) : CENVisitor {
         fun handleCEN(cen: CEN) {
+            Log.i(TAG, "Running handleCEN")
             CovidWatchDatabase.databaseWriteExecutor.execute {
                 val dao: ContactEventDAO = CovidWatchDatabase.getInstance(ctx).contactEventDAO()
-                val contactEvent = ContactEvent(cen.data.toString())
+                val contactEvent = ContactEvent(cen.data.toUUID().toString())
                 val isCurrentUserSick = ctx.getSharedPreferences(
                     ctx.getString(R.string.preference_file_key),
                     Context.MODE_PRIVATE
@@ -50,12 +51,12 @@ class BLEForegroundService : LifecycleService() {
 
         override fun visit(cen: GeneratedCEN) {
             Log.i(TAG, "Handling generated CEN")
-            handleCEN(cen)
+            this.handleCEN(cen)
         }
 
         override fun visit(cen: ObservedCEN) {
             Log.i(TAG, "Handling observed CEN")
-            handleCEN(cen)
+            this.handleCEN(cen)
         }
     }
 

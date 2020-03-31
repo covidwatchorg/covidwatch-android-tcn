@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import org.covidwatch.libcontactrace.cen.CENGenerator
+import org.covidwatch.libcontactrace.cen.CENVisitor
 import java.util.*
 
 /**
@@ -14,12 +15,14 @@ import java.util.*
  * @param characteristicUUID The UUID that that is associated with the CEN Characteristic
  * @param cenGenerator Generates CENs to be served to iOS device
  * @param bluetoothGattServer An reference to the open GattServer (lateinit)
- *        due to circular dependency
+ *        due to circular dependency*
+ * @param cenVisitor TODO
  */
 @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 class CENGattServerCallback(
      private val characteristicUUID: UUID,
-     private val cenGenerator: CENGenerator
+     private val cenGenerator: CENGenerator,
+     private val cenVisitor: CENVisitor
 ) : BluetoothGattServerCallback() {
 
     var bluetoothGattServer: BluetoothGattServer? = null;
@@ -39,7 +42,9 @@ class CENGattServerCallback(
                 result = BluetoothGatt.GATT_INVALID_OFFSET
             }
             characteristic?.uuid == characteristicUUID -> {
-                value = cenGenerator.generate().data
+                val cen = cenGenerator.generate()
+                cenVisitor.visit(cen)
+                value = cen.data
                 result = BluetoothGatt.GATT_SUCCESS
             }
             else -> result = BluetoothGatt.GATT_FAILURE
