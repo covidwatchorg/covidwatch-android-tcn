@@ -17,7 +17,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.covidwatch.android.firestore.ContactEventsDownloadWorker
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +46,30 @@ class MainActivity : AppCompatActivity() {
         initBluetoothAdapter()
         initLocationManager()
     }
+
+    public override fun onResume() {
+        super.onResume()
+        refreshPublicContactEvents()
+    }
+
+    private fun refreshPublicContactEvents() {
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(false)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val downloadRequest =
+            OneTimeWorkRequestBuilder<ContactEventsDownloadWorker>()
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager.getInstance(this).enqueueUniqueWork(
+            ContactEventsDownloadWorker.WORKER_NAME,
+            ExistingWorkPolicy.REPLACE,
+            downloadRequest
+        )
+    }
+
 
     /**
      * Initializes the BluetoothAdapter. Manifest file is already setup to allow bluetooth access.

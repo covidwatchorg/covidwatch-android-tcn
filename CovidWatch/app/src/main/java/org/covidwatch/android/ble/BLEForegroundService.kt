@@ -15,10 +15,11 @@ import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.utils.UUIDs
+import org.covidwatch.android.firestore.FirestoreConstants
 import java.util.*
 import org.covidwatch.libcontactrace.*
 import org.covidwatch.libcontactrace.cen.*
+import java.util.concurrent.TimeUnit
 
 class BLEForegroundService : LifecycleService() {
 
@@ -29,8 +30,6 @@ class BLEForegroundService : LifecycleService() {
     companion object {
         // CONSTANTS
         private const val CHANNEL_ID = "CovidBluetoothContactChannel"
-        private const val CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN = 1
-        private const val MS_TO_MIN = 60000
         private const val TAG = "BLEForegroundService"
     }
 
@@ -78,8 +77,8 @@ class BLEForegroundService : LifecycleService() {
         app?.cenAdvertiser = CENAdvertiser(
             this,
             BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser,
-            UUIDs.CONTACT_EVENT_SERVICE,
-            UUIDs.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
+            BluetoothService.CONTACT_EVENT_SERVICE,
+            BluetoothService.CONTACT_EVENT_IDENTIFIER_CHARACTERISTIC,
             cenVisitor,
             cenGenerator
         )
@@ -88,7 +87,7 @@ class BLEForegroundService : LifecycleService() {
         app?.cenScanner = CENScanner(
             this,
             BluetoothAdapter.getDefaultAdapter().bluetoothLeScanner,
-            UUIDs.CONTACT_EVENT_SERVICE,
+            BluetoothService.CONTACT_EVENT_SERVICE,
             cenVisitor
         )
     }
@@ -104,7 +103,7 @@ class BLEForegroundService : LifecycleService() {
         )
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("CovidWatch passively logging")
+            .setContentTitle("Tags is logging")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .setCategory(Notification.CATEGORY_SERVICE)
@@ -120,14 +119,13 @@ class BLEForegroundService : LifecycleService() {
                     app?.cenAdvertiser?.updateCEN()
                 }
             },
-            MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong(),
-            MS_TO_MIN * CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong()
+            TimeUnit.MINUTES.toMillis(BluetoothService.CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong()),
+            TimeUnit.MINUTES.toMillis(BluetoothService.CONTACT_EVENT_NUMBER_CHANGE_INTERVAL_MIN.toLong())
         )
 
         // start contact logging
-        app!!.cenAdvertiser!!.startAdvertiser(UUIDs.CONTACT_EVENT_SERVICE)
-        app!!.cenScanner!!.startScanning(arrayOf(UUIDs.CONTACT_EVENT_SERVICE), 10)
-
+        app!!.cenAdvertiser!!.startAdvertiser(BluetoothService.CONTACT_EVENT_SERVICE)
+        app!!.cenScanner!!.startScanning(arrayOf(BluetoothService.CONTACT_EVENT_SERVICE), 10)
         return START_STICKY
     }
 

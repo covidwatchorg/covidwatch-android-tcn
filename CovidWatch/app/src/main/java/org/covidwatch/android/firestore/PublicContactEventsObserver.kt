@@ -6,6 +6,7 @@ import com.google.firebase.firestore.*
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
 
+/* DEPRECATED */
 class PublicContactEventsObserver(var context: Context) {
 
     var registration: ListenerRegistration? = null
