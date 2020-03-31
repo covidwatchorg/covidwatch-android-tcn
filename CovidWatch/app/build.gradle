@@ -5,8 +5,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "org.covidwatch.android"
@@ -62,12 +66,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.room:room-runtime:2.2.5'
-    annotationProcessor 'androidx.room:room-compiler:2.2.5'
     implementation 'androidx.room:room-ktx:2.2.5'
-    implementation 'androidx.room:room-compiler:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
     implementation 'androidx.fragment:fragment-ktx:1.2.3'
     implementation "com.google.firebase:firebase-firestore-ktx:21.4.1"
     implementation 'com.google.guava:guava:28.2-jre'
-    compile project(":libcontactrace")
+    implementation project(":libcontactrace")
 
 }
