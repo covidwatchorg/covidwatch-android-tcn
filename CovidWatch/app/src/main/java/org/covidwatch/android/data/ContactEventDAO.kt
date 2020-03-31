@@ -18,7 +18,7 @@ interface ContactEventDAO {
     @Query("SELECT * FROM contact_events WHERE identifier = :identifier")
     fun findByPrimaryKey(identifier: String): ContactEvent
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(contactEvent: ContactEvent)
 
     @Update
