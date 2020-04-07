@@ -2,25 +2,27 @@ package org.covidwatch.android
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.work.*
-import org.covidwatch.android.ble.BLEForegroundService
+import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.firestore.ContactEventsDownloadWorker
 import org.covidwatch.android.firestore.LocalContactEventsUploader
-import org.covidwatch.android.firestore.PublicContactEventsObserver
-import org.covidwatch.libcontactrace.CENAdvertiser
-import org.covidwatch.libcontactrace.CENScanner
+import org.covidwatch.libcontactrace.cen.GeneratedCen
+import org.covidwatch.libcontactrace.toBytes
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class CovidWatchApplication : Application() {
 
-    var cenAdvertiser: CENAdvertiser? = null
-    var cenScanner: CENScanner? = null
+    private lateinit var localContactEventsUploader: LocalContactEventsUploader
+    private lateinit var currentUserExposureNotifier: CurrentUserExposureNotifier
 
-    var sharedPreferenceChangeListener =
+    //TODO: Move to DI module
+    private val bluetoothManager = BluetoothManagerImpl(this)
+
+    private var sharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
                 getString(R.string.preference_is_current_user_sick) -> {
@@ -50,20 +52,12 @@ class CovidWatchApplication : Application() {
         }
 
     private fun configureAdvertising(enabled: Boolean) {
-        Intent(this, BLEForegroundService::class.java).also { intent ->
-            if (enabled) {
-                startService(intent)
-            } else {
-                stopService(intent)
-            }
+        if (enabled) {
+            bluetoothManager.startService(GeneratedCen(UUID.randomUUID().toBytes()))
+        } else {
+            bluetoothManager.stopService()
         }
     }
-
-    private lateinit var localContactEventsUploader: LocalContactEventsUploader
-
-    private lateinit var publicContactEventsObserver: PublicContactEventsObserver
-
-    private lateinit var currentUserExposureNotifier: CurrentUserExposureNotifier
 
     override fun onCreate() {
         super.onCreate()
