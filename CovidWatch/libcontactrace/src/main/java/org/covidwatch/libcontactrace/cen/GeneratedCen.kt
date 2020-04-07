@@ -8,12 +8,12 @@ package org.covidwatch.libcontactrace.cen
  *
  * @param data The data to put in the cen
  */
-open class GeneratedCEN(override val data: ByteArray) : CEN {
+open class GeneratedCen(override val data: ByteArray) : Cen {
 
     /**
      * accept CENVisitor
      */
-    fun accept(visitor: CENVisitor){
+    fun accept(visitor: CenVisitor){
         visitor.visit(this)
     }
 

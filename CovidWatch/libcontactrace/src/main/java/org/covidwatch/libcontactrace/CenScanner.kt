@@ -6,9 +6,8 @@ import android.os.Build
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
-import org.covidwatch.libcontactrace.cen.CEN
-import org.covidwatch.libcontactrace.cen.CENVisitor
-import org.covidwatch.libcontactrace.cen.ObservedCEN
+import org.covidwatch.libcontactrace.cen.CenVisitor
+import org.covidwatch.libcontactrace.cen.ObservedCen
 import java.util.*
 
 /**
@@ -25,11 +24,11 @@ import java.util.*
  *
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class CENScanner(
+class CenScanner(
     private val ctx: Context,
     private val scanner: BluetoothLeScanner,
     private val serviceUUID: UUID,
-    private val cenVisitor: CENVisitor
+    private val cenVisitor: CenVisitor
 ) {
 
     companion object {
@@ -62,7 +61,7 @@ class CENScanner(
                         ParcelUuid(serviceUUID)]?.toUUID()?.toBytes() ?: return@next_scan
 
                 // handle contact event
-                cenVisitor.visit(ObservedCEN(data))
+                cenVisitor.visit(ObservedCen(data))
             }
         }
     }

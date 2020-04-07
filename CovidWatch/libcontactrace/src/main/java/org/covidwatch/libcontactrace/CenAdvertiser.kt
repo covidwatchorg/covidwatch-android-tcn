@@ -5,14 +5,14 @@ import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseData
 import android.bluetooth.le.AdvertiseSettings
 import android.bluetooth.le.BluetoothLeAdvertiser
+import android.content.ContentValues
 import android.content.Context
 import android.os.Build
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.annotation.RequiresApi
-import org.covidwatch.libcontactrace.cen.CENGenerator
-import org.covidwatch.libcontactrace.cen.CENVisitor
-import org.covidwatch.libcontactrace.gattserver.CENGattServerCallback
+import org.covidwatch.libcontactrace.cen.CenGenerator
+import org.covidwatch.libcontactrace.cen.CenVisitor
 import java.util.*
 
 /**
@@ -33,16 +33,16 @@ import java.util.*
  */
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class CENAdvertiser(
+class CenAdvertiser(
     private val ctx: Context,
     private val advertiser: BluetoothLeAdvertiser,
     private val serviceUUID: UUID,
     private val characteristicUUID: UUID,
-    private val cenVisitor: CENVisitor,
-    private val cenGenerator: CENGenerator
+    private val cenVisitor: CenVisitor,
+    private val cenGenerator: CenGenerator
 ) {
 
-    var bluetoothGattServer: BluetoothGattServer? = null;
+    var bluetoothGattServer: BluetoothGattServer? = null
 
     /**
      * Starts the advertiser, with the given service UUID. We advertise with MEDIUM power to get
@@ -77,37 +77,69 @@ class CENAdvertiser(
             .build()
 
         // create the GATTServer and open it
-        (ctx.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).let { bluetoothManager ->
-
-            // create gatt server callback with necessary dependencies
-            val cenGattServerCallback =
-                CENGattServerCallback(characteristicUUID, cenGenerator, cenVisitor)
-
-            // open gatt server and track reference
-            bluetoothGattServer =
-                bluetoothManager.openGattServer(ctx, cenGattServerCallback)
-
-            // add CEN service
-            val service = BluetoothGattService(
-                serviceUUID,
-                BluetoothGattService.SERVICE_TYPE_PRIMARY
-            )
-            service.addCharacteristic(
-                BluetoothGattCharacteristic(
-                    characteristicUUID,
-                    BluetoothGattCharacteristic.PROPERTY_READ or BluetoothGattCharacteristic.PROPERTY_WRITE,
-                    BluetoothGattCharacteristic.PERMISSION_READ or BluetoothGattCharacteristic.PERMISSION_WRITE
-                )
-            )
-
-            bluetoothGattServer?.clearServices()
-            bluetoothGattServer?.addService(service)
-
-            // lateinit gatt server reference to callback so it can serve
-            cenGattServerCallback.bluetoothGattServer = bluetoothGattServer
-        }
+        initBleGattServer(
+            (ctx.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager),
+            serviceUUID
+        )
 
         advertiser.startAdvertising(settings, data, advertisingCallback)
+    }
+
+    private fun initBleGattServer(
+        bluetoothManager: BluetoothManager,
+        serviceUUID: UUID?
+    ): Boolean? {
+        bluetoothGattServer = bluetoothManager.openGattServer(ctx,
+            object : BluetoothGattServerCallback() {
+                override fun onCharacteristicReadRequest(
+                    device: BluetoothDevice?,
+                    requestId: Int,
+                    offset: Int,
+                    characteristic: BluetoothGattCharacteristic?
+                ) {
+                    super.onCharacteristicReadRequest(device, requestId, offset, characteristic)
+
+                    val result: Int?
+                    var value: ByteArray? = null
+
+                    when {
+                        offset != 0 -> {
+                            result = BluetoothGatt.GATT_INVALID_OFFSET
+                        }
+                        characteristic?.uuid == characteristicUUID -> {
+                            val cen = cenGenerator.generate()
+                            cenVisitor.visit(cen)
+                            value = cen.data
+                            result = BluetoothGatt.GATT_SUCCESS
+                        }
+                        else -> result = BluetoothGatt.GATT_FAILURE
+                    }
+
+                    Log.i(
+                        ContentValues.TAG, "CENGattCallback result=$result device=$device " +
+                                "requestId=$requestId offset=$offset characteristic=$characteristic"
+                    )
+
+                    bluetoothGattServer?.sendResponse(device, requestId, result, offset, value)
+                }
+            })
+
+        bluetoothGattServer?.clearServices()
+
+        // add CEN service
+        val service = BluetoothGattService(
+            serviceUUID,
+            BluetoothGattService.SERVICE_TYPE_PRIMARY
+        )
+        service.addCharacteristic(
+            BluetoothGattCharacteristic(
+                characteristicUUID,
+                BluetoothGattCharacteristic.PROPERTY_READ or BluetoothGattCharacteristic.PROPERTY_WRITE,
+                BluetoothGattCharacteristic.PERMISSION_READ or BluetoothGattCharacteristic.PERMISSION_WRITE
+            )
+        )
+
+        return bluetoothGattServer?.addService(service)
     }
 
     /**

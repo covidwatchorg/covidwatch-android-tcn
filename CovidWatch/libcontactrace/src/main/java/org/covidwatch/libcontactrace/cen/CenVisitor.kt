@@ -8,7 +8,7 @@ package org.covidwatch.libcontactrace.cen
  * in a class that implements this visitor.
  *
  */
-interface CENVisitor {
-    fun visit(cen: GeneratedCEN)
-    fun visit(cen: ObservedCEN)
+interface CenVisitor {
+    fun visit(cen: GeneratedCen)
+    fun visit(cen: ObservedCen)
 }

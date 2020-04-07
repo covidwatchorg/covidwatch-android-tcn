@@ -5,7 +5,7 @@ package org.covidwatch.libcontactrace.cen
  * exchanged in an interaction between peer-phones using this library, or
  * iPhones/iPads running the iOS counterpart.
  */
-interface CEN {
+interface Cen {
     val data: ByteArray
     companion object
 }
