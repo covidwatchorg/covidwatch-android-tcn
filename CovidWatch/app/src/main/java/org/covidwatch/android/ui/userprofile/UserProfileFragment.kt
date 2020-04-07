@@ -2,21 +2,16 @@ package org.covidwatch.android.ui.userprofile
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import org.covidwatch.android.R
 import org.covidwatch.android.adapters.FragmentDataBindingComponent
-import org.covidwatch.android.ble.BLEForegroundService
-import org.covidwatch.android.data.ContactEventDAO
-import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.databinding.FragmentUserProfileBinding
 
 

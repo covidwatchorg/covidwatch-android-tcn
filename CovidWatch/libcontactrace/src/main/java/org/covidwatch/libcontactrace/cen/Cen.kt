@@ -7,5 +7,4 @@ package org.covidwatch.libcontactrace.cen
  */
 interface Cen {
     val data: ByteArray
-    companion object
 }
