@@ -1,4 +1,4 @@
-package org.covidwatch.android.ui.userprofile
+package org.covidwatch.android.tagsUi.userprofile
 
 import android.annotation.SuppressLint
 import android.content.Context

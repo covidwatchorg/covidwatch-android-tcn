@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.userprofile.UserProfileFragment"
+        tools:context=".tagsUi.userprofile.UserProfileFragment"
         android:background="@{viewModel.isCurrentUserSick ? @color/colorIsCurrentUserSick : @color/colorIsCurrentUserNotSick }" >
 
         <LinearLayout
@@ -54,7 +54,7 @@
         <import type="org.covidwatch.android.R" />
         <variable
             name="viewModel"
-            type="org.covidwatch.android.ui.userprofile.UserProfileViewModel" />
+            type="org.covidwatch.android.tagsUi.userprofile.UserProfileViewModel" />
     </data>
 
 </layout>

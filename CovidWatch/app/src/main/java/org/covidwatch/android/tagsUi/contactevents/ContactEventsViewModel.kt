@@ -1,11 +1,10 @@
-package org.covidwatch.android.ui.contactevents
+package org.covidwatch.android.tagsUi.contactevents
 
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import org.covidwatch.android.R

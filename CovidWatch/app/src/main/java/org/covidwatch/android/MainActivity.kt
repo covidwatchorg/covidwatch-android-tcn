@@ -8,11 +8,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -94,7 +96,7 @@ class MainActivity : AppCompatActivity() {
      * TODO add GPS initialization here, for now we just ask for location permissions
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private fun initLocationManager() {
+    public fun initLocationManager() {
         val permissionCheck = ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -122,4 +124,16 @@ class MainActivity : AppCompatActivity() {
             // Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
         }
     }
+
+    /**
+     * TODO: Move this to fragment
+     */
+    fun showDatePicker(view: View?) {
+        val newFragment: DialogFragment = DatePickerFragment()
+        newFragment.show(
+            supportFragmentManager,
+            getString(R.string.datepicker)
+        )
+    }
+
 }

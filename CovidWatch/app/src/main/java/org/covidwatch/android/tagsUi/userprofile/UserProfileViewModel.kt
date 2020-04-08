@@ -1,4 +1,4 @@
-package org.covidwatch.android.ui.userprofile
+package org.covidwatch.android.tagsUi.userprofile
 
 import android.app.Application
 import android.content.Context

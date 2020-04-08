@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_contact_events"
-        android:name="org.covidwatch.android.ui.contactevents.ContactEventsFragment"
+        android:name="org.covidwatch.android.tagsUi.contactevents.ContactEventsFragment"
         android:label="@string/title_contact_events"
         tools:layout="@layout/fragment_contact_events" />
 
     <fragment
         android:id="@+id/navigation_user_profile"
-        android:name="org.covidwatch.android.ui.userprofile.UserProfileFragment"
+        android:name="org.covidwatch.android.tagsUi.userprofile.UserProfileFragment"
         android:label="@string/title_my_profile"
         tools:layout="@layout/fragment_user_profile" />
 

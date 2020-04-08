@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.covidwatch.android.SelfReportFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/header"
+            android:name="org.covidwatch.android.HeaderFragment"
+            tools:layout="@layout/fragment_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/questionText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="left"
+            android:text="Have you been confirmed with COVID-19?"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <TextView
+            android:id="@+id/questionDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/question_margin"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="@dimen/question_margin"
+            android:fontFamily="@font/roboto"
+            android:gravity="left"
+            android:text="Date of first symptoms?"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toggleGroup" />
+
+        <Button
+            android:id="@+id/report"
+            android:layout_width="347dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/primaryBackground"
+            android:fontFamily="@font/roboto"
+            android:onClick="onClickShowConfirm"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Report"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/report_button_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/report_button_disclaimer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/toggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionText">
+
+            <RadioButton
+                android:id="@+id/question_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+
+                android:background="@drawable/button_selector"
+                android:button="@null"
+                android:fontFamily="@font/roboto"
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="onClickShowAlert"
+
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="@string/self_report_option1"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="26dp"
+                tools:layout_editor_absoluteY="61dp" />
+
+            <RadioButton
+                android:id="@+id/question_button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/button_selector"
+                android:button="@null"
+                android:fontFamily="@font/roboto"
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="onClickShowAlert"
+                android:paddingLeft="32dp"
+
+                android:paddingRight="32dp"
+                android:text="@string/self_report_option2"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="124dp"
+                tools:layout_editor_absoluteY="61dp" />
+
+            <RadioButton
+                android:id="@+id/question_button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/button_selector"
+                android:button="@null"
+                android:fontFamily="@font/roboto"
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="onClickShowAlert"
+
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+
+
+                android:text="@string/self_report_option3"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="222dp"
+                tools:layout_editor_absoluteY="61dp" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/rounded_corner"
+            android:contentDescription="@string/date"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:inputType="date"
+            android:onClick="showDatePicker"
+            android:paddingLeft="16dp"
+            android:paddingTop="24dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionDate" />
+
+        <TextView
+            android:id="@+id/report_button_disclaimer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="65dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginEnd="65dp"
+            android:layout_marginRight="65dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="@string/disclaimer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <!--        <RadioGroup android:id="@+id/toggleGroup"-->
+        <!--            android:layout_width="fill_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="24dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            >-->
+
+        <!--            <ToggleButton android:id="@+id/btn_Letter"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_width="fill_parent"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:textSize="14sp"-->
+        <!--                android:textOn="Letter"-->
+        <!--                android:textOff="Letter"-->
+        <!--                android:onClick="onToggle"-->
+        <!--                android:checked="true"-->
+        <!--                />-->
+        <!--            <ToggleButton android:id="@+id/btn_A4"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_width="fill_parent"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:textSize="14sp"-->
+        <!--                android:textOn="A4"-->
+        <!--                android:textOff="A4"-->
+        <!--                android:onClick="onToggle"-->
+        <!--                />-->
+        <!--        </RadioGroup>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

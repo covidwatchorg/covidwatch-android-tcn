@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tags!</string>
+    <string name="app_name">COVID Watch</string>
     <string name="title_contact_events">Seen Tags</string>
     <string name="title_my_profile">Settings</string>
     <string name="title_notifications">Notifications</string>
@@ -16,4 +16,29 @@
     <string name="channel_name">Channel Name</string>
     <string name="channel_description">Channel Description</string>
     <string name="notification_current_user_was_exposed">You have been notified</string>
+
+    <!--  FROM THE UX REPO  -->
+    <string name="title_welcome">Welcome to COVID Watch</string>
+    <string name="title_welcome_subtitle">Join the neighborhood watch for the era of COVID-19. Together, we can save lives.</string>
+    <string name="title_get_started">Get Started </string>
+    <string name="title_learn_data">Learn about how we protect your data.</string>
+    <string name="title_no_information">No identifying information collected.</string>
+
+    <string name="onboarding_button">Let\'s do this!</string>
+    <string name="onboarding_steps">Protect your privacy and your community with just 3 steps.</string>
+    <string name="onboarding_step1">Turn on Bluetooth.</string>
+    <string name="onboarding_step2">Allow us to send you Push notifications to warn you of potential contact.</string>
+    <string name="onboarding_share">Share</string>
+
+    <string name="share_subj">Secure COVID-19 contact alert app</string>
+    <string name="share_body">I found this privacy-aware COVID-19 app that doesn\'t upload any information.</string>
+
+    <string name="self_report_option1">Yes</string>
+    <string name="self_report_option2">No</string>
+    <string name="self_report_option3">Not Tested</string>
+    <string name="date">Date</string>
+    <string name="datepicker">datePicker</string>
+    <string name="textView" />
+    <string name="disclaimer"><![CDATA[By clicking Report, you acknowledge, understand and further agree to our Privacy Policy and Terms & Conditions]]></string>
+
 </resources>
