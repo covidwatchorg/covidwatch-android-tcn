@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/titleFragment"
-        android:name="com.example.covidwatch.TitleFragment"
+        android:name="org.covidwatch.android.TitleFragment"
         android:label="fragment_title"
         tools:layout="@layout/fragment_title" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.example.covidwatch.OnboardingFragment"
+        android:name="org.covidwatch.android.OnboardingFragment"
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.covidwatch.MainFragment"
+        android:name="org.covidwatch.android.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/selfReportFragment"
-        android:name="com.example.covidwatch.SelfReportFragment"
+        android:name="org.covidwatch.android.SelfReportFragment"
         android:label="fragment_self_report"
         tools:layout="@layout/fragment_self_report" />
 </navigation>
