@@ -43,7 +43,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        initBluetoothAdapter()
+        // TODO #15: COMMENTING OUT BECAUSE USING EMULATOR
+        // BRING BACK AFTER MERGING UX FIRST RUN
+        // initBluetoothAdapter()
         initLocationManager()
     }
 
