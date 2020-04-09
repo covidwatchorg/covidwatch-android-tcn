@@ -89,7 +89,7 @@ class BluetoothManagerImpl(
         )
 
         return NotificationCompat.Builder(app, CHANNEL_ID)
-            .setContentTitle("Tags is logging")
+            .setContentTitle(app.getString(R.string.foreground_notification_title))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .setCategory(Notification.CATEGORY_SERVICE)

@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 Toast.makeText(
                     this,
-                    "The permission to get BLE location data is required",
+                    getString(R.string.ble_location_permission),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
