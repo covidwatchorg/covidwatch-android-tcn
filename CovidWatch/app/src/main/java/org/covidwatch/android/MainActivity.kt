@@ -35,17 +35,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_contact_events, R.id.navigation_user_profile
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
         // TODO #15: COMMENTING OUT BECAUSE USING EMULATOR
         // BRING BACK AFTER MERGING UX FIRST RUN
         // initBluetoothAdapter()
