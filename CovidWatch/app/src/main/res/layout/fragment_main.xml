@@ -203,7 +203,7 @@
             android:background="@color/primaryBackground"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="@string/self_report_text"
+            android:text="@string/self_report"
             android:textColor="@color/primaryText"
             app:cornerRadius="@dimen/small_button_corner_radius"
             app:layout_constraintBottom_toBottomOf="@id/selfReportCard"
