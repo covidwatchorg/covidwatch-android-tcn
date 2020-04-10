@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/covidwatch-android.iml" filepath="$PROJECT_DIR$/.idea/covidwatch-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/COVIDWatch.iml" filepath="$PROJECT_DIR$/COVIDWatch.iml" group="COVIDWatch" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CovidWatch.iml" filepath="$PROJECT_DIR$/.idea/CovidWatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="COVIDWatch/app" />
     </modules>
   </component>
 </project>
