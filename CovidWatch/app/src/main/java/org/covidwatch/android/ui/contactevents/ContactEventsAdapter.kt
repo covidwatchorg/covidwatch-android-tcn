@@ -1,4 +1,4 @@
-package org.covidwatch.android.tagsUi.contactevents
+package org.covidwatch.android.ui.contactevents
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

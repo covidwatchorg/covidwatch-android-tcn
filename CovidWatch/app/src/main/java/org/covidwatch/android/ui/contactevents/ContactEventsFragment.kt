@@ -1,4 +1,4 @@
-package org.covidwatch.android.tagsUi.contactevents
+package org.covidwatch.android.ui.contactevents
 
 import android.app.Application
 import android.content.Context
@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import org.covidwatch.android.R
-import org.covidwatch.android.adapters.FragmentDataBindingComponent
+import org.covidwatch.android.ui.contactevents.adapters.FragmentDataBindingComponent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.databinding.FragmentContactEventsBinding

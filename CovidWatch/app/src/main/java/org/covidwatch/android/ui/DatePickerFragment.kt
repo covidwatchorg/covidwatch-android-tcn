@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.annotation.NonNull
 import androidx.fragment.app.DialogFragment
+import org.covidwatch.android.ui.MainActivity
 import java.util.*
 
 /**

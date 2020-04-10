@@ -1,6 +1,5 @@
 package org.covidwatch.android
 
-import android.app.AlertDialog
 import android.content.Context
 import androidx.appcompat.view.ContextThemeWrapper
 import android.os.Bundle
@@ -12,20 +11,11 @@ import android.widget.Toast
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import org.covidwatch.android.adapters.FragmentDataBindingComponent
+import org.covidwatch.android.ui.contactevents.adapters.FragmentDataBindingComponent
 import org.covidwatch.android.databinding.FragmentSelfReportBinding
 import org.covidwatch.android.ui.selfreport.SelfReportViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SelfReportFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SelfReportFragment : Fragment() {
 
     private val selfReportProfileViewModel: SelfReportViewModel by viewModels()
@@ -68,10 +58,10 @@ class SelfReportFragment : Fragment() {
                 report.setOnClickListener {
                     val confirmBuilder: androidx.appcompat.app.AlertDialog.Builder = androidx.appcompat.app.AlertDialog.Builder(
                         ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom)
-                    );
+                    )
                     // customize style of confirmation alert
-                    confirmBuilder.setTitle("Correct Information?");
-                    confirmBuilder.setMessage("I attest that the information I've submitted is true to the best of my knowledge");
+                    confirmBuilder.setTitle("Correct Information?")
+                    confirmBuilder.setMessage("I attest that the information I've submitted is true to the best of my knowledge")
 
                     confirmBuilder.setPositiveButton(
                         "CONFIRM"
@@ -93,7 +83,7 @@ class SelfReportFragment : Fragment() {
                         ).show()
                     }
 
-                    confirmBuilder.show();
+                    confirmBuilder.show()
                 }
 
             }

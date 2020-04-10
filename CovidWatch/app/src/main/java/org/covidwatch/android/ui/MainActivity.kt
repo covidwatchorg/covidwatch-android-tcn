@@ -1,4 +1,4 @@
-package org.covidwatch.android
+package org.covidwatch.android.ui
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
@@ -14,25 +14,19 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_self_report.*
+import org.covidwatch.android.DatePickerFragment
+import org.covidwatch.android.R
 import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.firestore.ContactEventsDownloadWorker
-import org.covidwatch.libcontactrace.cen.*
+import org.covidwatch.android.data.firestore.ContactEventsDownloadWorker
 
 class MainActivity : AppCompatActivity() {
 
@@ -143,7 +137,8 @@ class MainActivity : AppCompatActivity() {
      * TODO: Move this to fragment
      */
     fun showDatePicker(view: View?) {
-        val newFragment: DialogFragment = DatePickerFragment()
+        val newFragment: DialogFragment =
+            DatePickerFragment()
         newFragment.show(
             supportFragmentManager,
             getString(R.string.datepicker)
@@ -162,7 +157,7 @@ class MainActivity : AppCompatActivity() {
 
         val dateMessage = "$month_name $day_string, $year_string"
 
-        textView.text = dateMessage;
+        textView.text = dateMessage
     }
 
 

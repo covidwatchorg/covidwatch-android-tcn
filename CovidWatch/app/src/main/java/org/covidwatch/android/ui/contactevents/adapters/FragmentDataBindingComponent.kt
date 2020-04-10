@@ -1,4 +1,4 @@
-package org.covidwatch.android.adapters
+package org.covidwatch.android.ui.contactevents.adapters
 
 import androidx.databinding.DataBindingComponent
 import androidx.fragment.app.Fragment

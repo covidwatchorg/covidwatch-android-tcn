@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import org.covidwatch.android.databinding.FragmentOnboardingBinding
-import org.covidwatch.android.MainActivity
+import org.covidwatch.android.ui.MainActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +31,7 @@ class OnboardingFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        (getActivity() as MainActivity).initLocationManager();
+        (getActivity() as MainActivity).initLocationManager()
     }
 
     override fun onCreateView(
