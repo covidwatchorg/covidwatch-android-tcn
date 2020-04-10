@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "883354278284",
-    "firebase_url": "https://tagsfour-f6fe7.firebaseio.com",
-    "project_id": "tagsfour-f6fe7",
-    "storage_bucket": "tagsfour-f6fe7.appspot.com"
+    "project_number": "33417715047",
+    "firebase_url": "https://tagsthree-fbde4.firebaseio.com",
+    "project_id": "tagsthree-fbde4",
+    "storage_bucket": "tagsthree-fbde4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:883354278284:android:214520d01715bf1c99dea9",
+        "mobilesdk_app_id": "1:33417715047:android:b9c562313794b1e28fe3c2",
         "android_client_info": {
           "package_name": "org.covidwatch.tags.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "883354278284-pm5ihpha7crj0ftt8hc8hp6ithd3kfg5.apps.googleusercontent.com",
+          "client_id": "33417715047-j221heq4io6kjkomtbr60fdlu6ka8lv1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBLX7bme1r1IpB8dXFuaHdp4UROCL_XSPY"
+          "current_key": "AIzaSyDCxObbjuMClvodDJBVxeBtEwty-efvYKM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "883354278284-pm5ihpha7crj0ftt8hc8hp6ithd3kfg5.apps.googleusercontent.com",
+              "client_id": "33417715047-j221heq4io6kjkomtbr60fdlu6ka8lv1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
