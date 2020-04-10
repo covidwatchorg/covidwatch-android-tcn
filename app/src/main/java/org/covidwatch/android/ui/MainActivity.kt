@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         // TODO #15: COMMENTING OUT BECAUSE USING EMULATOR
         // BRING BACK AFTER MERGING UX FIRST RUN
         // REMOVE adding example CEN
-//        initBluetoothAdapter()
+        initBluetoothAdapter()
         Log.i("test", "did we make it here?")
         addDummyCEN()
 
