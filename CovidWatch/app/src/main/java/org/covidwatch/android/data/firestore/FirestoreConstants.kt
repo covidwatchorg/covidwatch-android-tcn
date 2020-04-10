@@ -1,4 +1,4 @@
-package org.covidwatch.android.firestore
+package org.covidwatch.android.data.firestore
 
 import java.util.*
 import java.util.concurrent.TimeUnit
