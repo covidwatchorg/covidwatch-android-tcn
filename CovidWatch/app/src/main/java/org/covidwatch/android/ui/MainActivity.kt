@@ -40,8 +40,21 @@ class MainActivity : AppCompatActivity() {
         // TODO #15: COMMENTING OUT BECAUSE USING EMULATOR
         // BRING BACK AFTER MERGING UX FIRST RUN
         // REMOVE adding example CEN
-        // initBluetoothAdapter()
+        initBluetoothAdapter()
         Log.i("test", "did we make it here?")
+        addDummyCEN()
+
+        setContactEventLogging(true)
+
+        initLocationManager()
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        refreshPublicContactEvents()
+    }
+
+    public fun addDummyCEN() {
         val cen = BluetoothManagerImpl.DefaultCenGenerator().generate()
         Log.i("test", "how about here?")
         Log.i("CEN BOI", cen.data.toString())
@@ -55,13 +68,21 @@ class MainActivity : AppCompatActivity() {
             contactEvent.wasPotentiallyInfectious = isCurrentUserSick
             dao.insert(contactEvent)
         }
-
-        initLocationManager()
     }
 
-    public override fun onResume() {
-        super.onResume()
-        refreshPublicContactEvents()
+    private fun setContactEventLogging(enabled: Boolean) {
+
+        val application = this?.applicationContext ?: return
+        val sharedPref = application.getSharedPreferences(
+            application.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        ) ?: return
+        with(sharedPref.edit()) {
+            putBoolean(
+                application.getString(org.covidwatch.android.R.string.preference_is_contact_event_logging_enabled),
+                enabled
+            )
+            commit()
+        }
     }
 
     private fun refreshPublicContactEvents() {
