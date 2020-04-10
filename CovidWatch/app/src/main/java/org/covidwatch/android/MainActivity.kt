@@ -10,6 +10,7 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -26,7 +27,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_self_report.*
+import org.covidwatch.android.ble.BluetoothManagerImpl
+import org.covidwatch.android.data.ContactEventDAO
+import org.covidwatch.android.data.ContactEvent
+import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.firestore.ContactEventsDownloadWorker
+import org.covidwatch.libcontactrace.cen.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,7 +45,23 @@ class MainActivity : AppCompatActivity() {
 
         // TODO #15: COMMENTING OUT BECAUSE USING EMULATOR
         // BRING BACK AFTER MERGING UX FIRST RUN
+        // REMOVE adding example CEN
         // initBluetoothAdapter()
+        Log.i("test", "did we make it here?")
+        val cen = BluetoothManagerImpl.DefaultCenGenerator().generate()
+        Log.i("test", "how about here?")
+        Log.i("CEN BOI", cen.data.toString())
+        CovidWatchDatabase.databaseWriteExecutor.execute {
+            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(this).contactEventDAO()
+            val contactEvent = ContactEvent(cen.data.toString())
+            val isCurrentUserSick = this.getSharedPreferences(
+                this.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ).getBoolean(this.getString(R.string.preference_is_current_user_sick), false)
+            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
+            dao.insert(contactEvent)
+        }
+
         initLocationManager()
     }
 
