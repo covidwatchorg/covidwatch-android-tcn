@@ -9,8 +9,8 @@ import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.firestore.ContactEventsDownloadWorker
 import org.covidwatch.android.data.firestore.LocalContactEventsUploader
-import org.covidwatch.libcontactrace.cen.GeneratedCen
-import org.covidwatch.libcontactrace.toBytes
+import org.tcncoalition.tcnclient.cen.GeneratedCen
+import org.tcncoalition.tcnclient.toBytes
 import java.util.*
 import java.util.concurrent.TimeUnit
 

@@ -28,9 +28,6 @@ android {
         }
     }
 
-// To inline the bytecode built with JVM target 1.8 into
-// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
-
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -68,9 +65,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.5"
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     kapt 'androidx.room:room-compiler:2.2.5'
-    implementation 'androidx.fragment:fragment-ktx:1.2.3'
+    implementation 'androidx.fragment:fragment-ktx:1.2.4'
     implementation "androidx.work:work-runtime-ktx:2.3.4"
-    implementation "com.google.firebase:firebase-firestore-ktx:21.4.1"
+    implementation "com.google.firebase:firebase-firestore-ktx:21.4.2"
     implementation 'com.google.guava:guava:28.2-jre'
-    implementation project(":libcontactrace")
+    implementation 'com.github.TCNCoalition:tcn-client-android:0.0.1'
 }

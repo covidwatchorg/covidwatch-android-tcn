@@ -16,11 +16,11 @@ import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.libcontactrace.BluetoothService
-import org.covidwatch.libcontactrace.BluetoothService.LocalBinder
-import org.covidwatch.libcontactrace.cen.*
-import org.covidwatch.libcontactrace.toBytes
-import org.covidwatch.libcontactrace.toUUID
+import org.tcncoalition.tcnclient.BluetoothService
+import org.tcncoalition.tcnclient.BluetoothService.LocalBinder
+import org.tcncoalition.tcnclient.cen.*
+import org.tcncoalition.tcnclient.toBytes
+import org.tcncoalition.tcnclient.toUUID
 import java.util.*
 import java.util.concurrent.TimeUnit
 
