@@ -48,6 +48,17 @@ class MainActivity : AppCompatActivity() {
         // REMOVE adding example CEN
         // initBluetoothAdapter()
         Log.i("test", "did we make it here?")
+        addDummyCEN()
+
+        initLocationManager()
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        refreshPublicContactEvents()
+    }
+
+    public fun addDummyCEN() {
         val cen = BluetoothManagerImpl.DefaultCenGenerator().generate()
         Log.i("test", "how about here?")
         Log.i("CEN BOI", cen.data.toString())
@@ -61,13 +72,6 @@ class MainActivity : AppCompatActivity() {
             contactEvent.wasPotentiallyInfectious = isCurrentUserSick
             dao.insert(contactEvent)
         }
-
-        initLocationManager()
-    }
-
-    public override fun onResume() {
-        super.onResume()
-        refreshPublicContactEvents()
     }
 
     private fun refreshPublicContactEvents() {
