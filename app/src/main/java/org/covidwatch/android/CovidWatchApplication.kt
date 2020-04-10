@@ -82,7 +82,7 @@ class CovidWatchApplication : Application() {
             getString(R.string.preference_is_contact_event_logging_enabled),
             false
         )
-        configureAdvertising(isContactEventLoggingEnabled)
+//        configureAdvertising(isContactEventLoggingEnabled)
     }
 
     private fun schedulePeriodicPublicContactEventsRefresh() {

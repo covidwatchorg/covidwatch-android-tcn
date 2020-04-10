@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/COVIDWatch.iml" filepath="$PROJECT_DIR$/COVIDWatch.iml" group="COVIDWatch" />
       <module fileurl="file://$PROJECT_DIR$/.idea/CovidWatch.iml" filepath="$PROJECT_DIR$/.idea/CovidWatch.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="COVIDWatch/app" />
+      <module fileurl="file://$PROJECT_DIR$/covidwatch-android-COVIDWatch.iml" filepath="$PROJECT_DIR$/covidwatch-android-COVIDWatch.iml" group="COVIDWatch" />
+      <module fileurl="file://$PROJECT_DIR$/app/covidwatch-android-app.iml" filepath="$PROJECT_DIR$/app/covidwatch-android-app.iml" group="COVIDWatch/app" />
     </modules>
   </component>
 </project>
