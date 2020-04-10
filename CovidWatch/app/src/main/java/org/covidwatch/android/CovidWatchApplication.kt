@@ -7,8 +7,8 @@ import android.util.Log
 import androidx.work.*
 import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.firestore.ContactEventsDownloadWorker
-import org.covidwatch.android.firestore.LocalContactEventsUploader
+import org.covidwatch.android.data.firestore.ContactEventsDownloadWorker
+import org.covidwatch.android.data.firestore.LocalContactEventsUploader
 import org.covidwatch.libcontactrace.cen.GeneratedCen
 import org.covidwatch.libcontactrace.toBytes
 import java.util.*

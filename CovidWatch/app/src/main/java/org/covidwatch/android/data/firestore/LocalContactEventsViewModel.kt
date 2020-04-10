@@ -1,4 +1,4 @@
-package org.covidwatch.android.firestore
+package org.covidwatch.android.data.firestore
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

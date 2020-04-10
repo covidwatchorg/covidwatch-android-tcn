@@ -1,4 +1,4 @@
-package org.covidwatch.android.firestore
+package org.covidwatch.android.data.firestore
 
 import android.content.Context
 import android.util.Log
@@ -96,7 +96,8 @@ class ContactEventsDownloadWorker(var context: Context, workerParams: WorkerPara
                         null
                     })
 
-        Tasks.await(task)
+        // TODO #14 RE-ADD THIS AFTER FIREBASE QUOTA INCREASED
+         Tasks.await(task)
 
         Log.i(TAG, "Finish task")
 

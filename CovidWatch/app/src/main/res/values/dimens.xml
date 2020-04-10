@@ -2,4 +2,14 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Imported from the UX repo -->
+    <dimen name="big_button_width">300dp</dimen>
+    <dimen name="big_button_height">60dp</dimen>
+    <dimen name="big_button_text_size">20dp</dimen>
+    <dimen name="button_corner_radius">20dp</dimen>
+    <dimen name="small_button_corner_radius">10dp</dimen>
+    <dimen name="low_button_vert_bias">.85</dimen>
+    <dimen name="report_button_text_size">30sp</dimen>
+    <dimen name="question_margin">32dp</dimen>
 </resources>

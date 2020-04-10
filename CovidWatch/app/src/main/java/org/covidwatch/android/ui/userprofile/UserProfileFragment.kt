@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import org.covidwatch.android.R
-import org.covidwatch.android.adapters.FragmentDataBindingComponent
+import org.covidwatch.android.ui.contactevents.adapters.FragmentDataBindingComponent
 import org.covidwatch.android.databinding.FragmentUserProfileBinding
 
 
