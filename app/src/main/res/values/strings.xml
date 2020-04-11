@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">COVID Watch</string>
+    <string name="app_name">COVID WATCH</string>
     <string name="title_contact_events">Seen Tags</string>
     <string name="title_my_profile">Settings</string>
     <string name="title_notifications">Notifications</string>
@@ -18,11 +18,8 @@
     <string name="notification_current_user_was_exposed">You have been notified</string>
 
     <!--  FROM THE UX REPO  -->
-    <string name="title_welcome">Welcome to COVID Watch</string>
-    <string name="title_welcome_subtitle">Join the neighborhood watch for the era of COVID-19. Together, we can save lives.</string>
-    <string name="title_get_started">Get Started </string>
-    <string name="title_learn_data">Learn about how we protect your data.</string>
-    <string name="title_no_information">No identifying information collected.</string>
+    <string name="splash_text">Help your community stay safe, anonymously.</string>
+    <string name="splash_start_button">Start</string>
 
     <string name="onboarding_button">Let\'s do this!</string>
     <string name="onboarding_steps">Protect your privacy and your community with just 3 steps.</string>

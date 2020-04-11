@@ -7,82 +7,53 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@drawable/splash_bkgd"
         >
 
         <ImageView
             android:id="@+id/circle"
-            android:layout_width="520dp"
-            android:layout_height="380dp"
-            android:src="@drawable/home_lower_circle"
-            app:layout_constraintTop_toTopOf="@+id/rectangle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangle"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintVertical_bias="0.7"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/splash_circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.2"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
 
-        <ImageView
-            android:id="@+id/rectangle"
-            android:layout_width="140dp"
-            android:layout_height="160dp"
-            android:src="@drawable/square"
-            android:background="@drawable/below_shadow"
-            android:elevation="1dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-             />
         <TextView
+            android:id="@+id/app_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/primaryText"
+            android:textColor="@color/secondaryText"
             android:text="@string/app_name"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangle"
-            android:elevation="5dp"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toTopOf="@+id/rectangle"
-            android:textSize="18dp"
-            app:layout_constraintVertical_bias="0.95"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circle"
+            android:elevation="5dp"
+            android:textSize="40sp"
+            app:layout_constraintVertical_bias="0.05"
             />
+
 
         <TextView
             android:id="@+id/welcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
             android:gravity="center"
-            android:text="@string/title_welcome"
-            android:textColor="@color/black"
-            android:textSize="25dp"
+            android:text="@string/splash_text"
+            android:textColor="@color/secondaryText"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:cornerRadius="@dimen/button_corner_radius"
-            app:layout_constraintBottom_toTopOf="@id/welcomeSubtitle"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <TextView
-            android:id="@+id/welcomeSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:text="@string/title_welcome_subtitle"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            app:cornerRadius="@dimen/button_corner_radius"
+            app:layout_constraintTop_toBottomOf="@id/app_title"
             app:layout_constraintBottom_toTopOf="@id/getStarted"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.9" />
 
         <Button
             android:id="@+id/getStarted"
@@ -90,55 +61,16 @@
             android:layout_height="wrap_content"
             android:minWidth="@dimen/big_button_width"
             android:minHeight="@dimen/big_button_height"
-            android:text="@string/title_get_started"
+            android:text="@string/splash_start_button"
             android:textColor="@color/primaryText"
+            android:background="@drawable/rounded_corner"
             android:textSize="30dp"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.9" />
-
-        <TextView
-            android:textStyle="bold"
-            android:id="@+id/disclaimer1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_learn_data"
-            android:textColor="@color/maroon"
-            android:textSize="15dp"
-            android:gravity="center"
-            app:cornerRadius="@dimen/button_corner_radius"
-            app:layout_constraintTop_toBottomOf="@id/getStarted"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/help_ico"
-            android:src="@drawable/ic_help_black_24dp"
-            app:layout_constraintRight_toLeftOf="@+id/disclaimer1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintHorizontal_bias="0.93"
-            app:layout_constraintTop_toBottomOf="@+id/getStarted"
-            />
-        <TextView
-            android:id="@+id/disclaimer2"
-            android:textStyle="italic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_no_information"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:gravity="center"
-            app:cornerRadius="@dimen/button_corner_radius"
-            app:layout_constraintTop_toBottomOf="@id/disclaimer1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
