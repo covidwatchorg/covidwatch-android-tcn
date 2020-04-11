@@ -17,7 +17,7 @@
             android:src="@drawable/splash_circle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintVertical_bias="0.15"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
@@ -39,6 +39,17 @@
             />
 
 
+        <ImageView
+            android:id="@+id/family"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:src="@mipmap/splash_superhero_icon_fgd"
+            app:layout_constraintBottom_toTopOf="@id/welcome"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_title"
+            app:layout_constraintVertical_bias="0.7" />
+
         <TextView
             android:id="@+id/welcome"
             android:layout_width="wrap_content"
@@ -49,11 +60,11 @@
             android:textSize="25sp"
             android:textStyle="bold"
             app:cornerRadius="@dimen/button_corner_radius"
-            app:layout_constraintTop_toBottomOf="@id/app_title"
             app:layout_constraintBottom_toTopOf="@id/getStarted"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintVertical_bias="0.9" />
+            app:layout_constraintTop_toBottomOf="@id/family"
+            app:layout_constraintVertical_bias="0.1" />
 
         <Button
             android:id="@+id/getStarted"
@@ -69,8 +80,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.9" />
+            app:layout_constraintTop_toBottomOf="@id/welcome"
+            app:layout_constraintVertical_bias="0.4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
