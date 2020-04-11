@@ -14,6 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/tested_horizontal_margin"
+        android:layout_marginEnd="@dimen/tested_horizontal_margin"
         android:orientation="vertical">
 
         <fragment
@@ -23,117 +25,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.01"
             />
 
         <TextView
             android:id="@+id/questionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
             android:fontFamily="@font/roboto"
             android:gravity="left"
             android:text="@string/question_text"
             android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="16sp"
+            android:textSize="32sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header" />
-
-        <TextView
-            android:id="@+id/questionDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/question_margin"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="@dimen/question_margin"
-            android:fontFamily="@font/roboto"
-            android:gravity="left"
-            android:text="@string/question_date"
-            android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toggleGroup" />
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toTopOf="@id/toggleGroup"
+            app:layout_constraintVertical_bias="0.01"
+            />
 
-        <Button
-            android:id="@+id/report"
-            android:layout_width="347dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@color/primaryBackground"
-            android:fontFamily="@font/roboto"
-            android:onClick="onClickShowConfirm"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="@string/report"
-            android:textColor="@color/primaryText"
-            android:textSize="@dimen/report_button_text_size"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/report_button_disclaimer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <RadioGroup
             android:id="@+id/toggleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center"
-            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionText">
+            app:layout_constraintTop_toBottomOf="@+id/questionText"
+            app:layout_constraintBottom_toTopOf="@+id/questionDate"
+            android:gravity="center"
+            android:orientation="vertical"
+
+            >
 
             <RadioButton
-                android:id="@+id/question_button"
-                android:layout_width="wrap_content"
+                android:id="@+id/not_yet_tested"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:gravity="center"
+
+                android:paddingTop="@dimen/button_vertical_padding"
+                android:paddingBottom="@dimen/button_vertical_padding"
+                android:layout_marginBottom="@dimen/tested_button_vertical_margin"
 
                 android:background="@drawable/button_selector"
                 android:button="@null"
                 android:fontFamily="@font/roboto"
-                android:gravity="center_vertical|center_horizontal"
-                android:onClick="onClickShowAlert"
 
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:text="@string/self_report_option1"
+                android:text="@string/not_yet_tested"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
 
                 android:textStyle="bold"
-                tools:layout_editor_absoluteX="26dp"
-                tools:layout_editor_absoluteY="61dp" />
+                />
 
             <RadioButton
-                android:id="@+id/question_button2"
-                android:layout_width="wrap_content"
+                android:id="@+id/tested_negative"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:gravity="center"
+
+                android:paddingTop="@dimen/button_vertical_padding"
+                android:paddingBottom="@dimen/button_vertical_padding"
+                android:layout_marginBottom="@dimen/tested_button_vertical_margin"
+
                 android:background="@drawable/button_selector"
                 android:button="@null"
                 android:fontFamily="@font/roboto"
-                android:gravity="center_vertical|center_horizontal"
-                android:onClick="onClickShowAlert"
-                android:paddingLeft="32dp"
 
-                android:paddingRight="32dp"
-                android:text="@string/self_report_option2"
+                android:text="@string/tested_negative"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
 
@@ -142,40 +106,54 @@
                 tools:layout_editor_absoluteY="61dp" />
 
             <RadioButton
-                android:id="@+id/question_button3"
-                android:layout_width="wrap_content"
+                android:id="@+id/tested_positive"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:gravity="center"
+
+                android:paddingTop="@dimen/button_vertical_padding"
+                android:paddingBottom="@dimen/button_vertical_padding"
                 android:background="@drawable/button_selector"
                 android:button="@null"
                 android:fontFamily="@font/roboto"
-                android:gravity="center_vertical|center_horizontal"
-                android:onClick="onClickShowAlert"
 
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
 
 
-                android:text="@string/self_report_option3"
+                android:text="@string/tested_positive"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
 
                 android:textStyle="bold"
-                tools:layout_editor_absoluteX="222dp"
-                tools:layout_editor_absoluteY="61dp" />
+                />
         </RadioGroup>
 
+
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/questionDate"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
+            app:layout_constraintBottom_toTopOf="@+id/date_picker"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="@string/question_date"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/date_picker"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionDate"
+            app:layout_constraintBottom_toTopOf="@+id/report"
+
             android:background="@drawable/rounded_corner"
             android:contentDescription="@string/date"
             android:ems="10"
@@ -186,52 +164,47 @@
             android:paddingTop="24dp"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/report"
+            android:layout_width="347dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionDate" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_picker"
+            app:layout_constraintBottom_toTopOf="@+id/report_button_disclaimer"
+            app:layout_constraintHorizontal_bias="0.5"
+
+            android:background="@color/primaryBackground"
+            android:fontFamily="@font/roboto"
+            android:onClick="onClickShowConfirm"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/report"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/report_button_text_size"
+            android:textStyle="bold"
+            />
 
         <TextView
             android:id="@+id/report_button_disclaimer"
+            app:layout_constraintTop_toBottomOf="@id/report"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+
             android:layout_marginStart="65dp"
             android:layout_marginLeft="65dp"
             android:layout_marginEnd="65dp"
             android:layout_marginRight="65dp"
-            android:layout_marginBottom="24dp"
+
             android:gravity="center"
             android:text="@string/disclaimer"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            />
 
 
-        <!--        <RadioGroup android:id="@+id/toggleGroup"-->
-        <!--            android:layout_width="fill_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="24dp"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            >-->
-
-        <!--            <ToggleButton android:id="@+id/btn_Letter"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_width="fill_parent"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:textSize="14sp"-->
-        <!--                android:textOn="Letter"-->
-        <!--                android:textOff="Letter"-->
-        <!--                android:onClick="onToggle"-->
-        <!--                android:checked="true"-->
-        <!--                />-->
-        <!--            <ToggleButton android:id="@+id/btn_A4"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_width="fill_parent"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:textSize="14sp"-->
-        <!--                android:textOn="A4"-->
-        <!--                android:textOff="A4"-->
-        <!--                android:onClick="onToggle"-->
-        <!--                />-->
-        <!--        </RadioGroup>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

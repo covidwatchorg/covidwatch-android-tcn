@@ -13,7 +13,11 @@
     <color name="splashBackgroundLight">#43C4D9</color>
     <color name="splashBackgroundDark">#2C58B1</color>
 
-    <color name="primaryBackground">#BE3E49</color>
+    <color name="headerCircleBackgroundLight">#3DBFB2</color>
+    <color name="headerCircleBackgroundDark">#2C58B1</color>
+
+
+    <color name="primaryBackground">#43C4D9</color>
     <color name="primaryText">#585858</color>
     <color name="secondaryText">#FFFFFF</color>
     <color name="black">#000000</color>

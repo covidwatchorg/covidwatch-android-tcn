@@ -11,5 +11,9 @@
     <dimen name="small_button_corner_radius">10dp</dimen>
     <dimen name="low_button_vert_bias">.85</dimen>
     <dimen name="report_button_text_size">30sp</dimen>
-    <dimen name="question_margin">32dp</dimen>
+
+    <dimen name="tested_horizontal_margin">32dp</dimen>
+    <dimen name="button_vertical_padding">10dp</dimen>
+    <dimen name="tested_button_vertical_margin">10dp</dimen>
+
 </resources>
