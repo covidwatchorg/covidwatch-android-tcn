@@ -35,17 +35,15 @@
             android:id="@+id/questionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
             android:gravity="left"
             android:text="@string/question_text"
-            android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="32sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/toggleGroup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header"
-            app:layout_constraintVertical_bias="0.01" />
+            />
 
 
         <RadioGroup
@@ -71,7 +69,6 @@
 
                 android:background="@drawable/button_selector"
                 android:button="@null"
-                android:fontFamily="@font/roboto"
 
                 android:gravity="center"
                 android:paddingTop="@dimen/button_vertical_padding"
@@ -79,7 +76,8 @@
 
                 android:text="@string/not_yet_tested"
                 android:textColor="@color/primaryText"
-                android:textSize="24sp"
+                android:textSize="@dimen/tested_button_font_size"
+                android:fontFamily="@font/montserrat"
 
                 android:textStyle="bold" />
 
@@ -91,7 +89,6 @@
 
                 android:background="@drawable/button_selector"
                 android:button="@null"
-                android:fontFamily="@font/roboto"
 
                 android:gravity="center"
                 android:paddingTop="@dimen/button_vertical_padding"
@@ -99,7 +96,8 @@
 
                 android:text="@string/tested_negative"
                 android:textColor="@color/primaryText"
-                android:textSize="24sp"
+                android:textSize="@dimen/tested_button_font_size"
+                android:fontFamily="@font/montserrat"
 
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="124dp"
@@ -112,7 +110,6 @@
                 android:background="@drawable/button_selector"
 
                 android:button="@null"
-                android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:paddingLeft="8dp"
                 android:paddingTop="@dimen/button_vertical_padding"
@@ -123,7 +120,8 @@
 
                 android:text="@string/tested_positive"
                 android:textColor="@color/primaryText"
-                android:textSize="24sp"
+                android:textSize="@dimen/tested_button_font_size"
+                android:fontFamily="@font/montserrat"
 
                 android:textStyle="bold" />
         </RadioGroup>
@@ -133,13 +131,12 @@
             android:id="@+id/questionDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
             android:gravity="center"
             android:text="@string/question_date"
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/date_picker"
-
+            app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="0.9"
@@ -153,7 +150,6 @@
             android:background="@drawable/rounded_corner"
             android:contentDescription="@string/date"
             android:ems="10"
-            android:fontFamily="@font/roboto"
 
             android:inputType="date"
             android:onClick="showDatePicker"
@@ -164,24 +160,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
+            app:layout_constraintTop_toBottomOf="@+id/questionDate"
             />
 
         <Button
             android:id="@+id/report"
-            android:layout_width="347dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/primaryBackground"
-            android:fontFamily="@font/roboto"
-            android:onClick="onClickShowConfirm"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
+            android:background="@drawable/primary_rounded_corner"
+            android:paddingTop="@dimen/button_vertical_padding"
+            android:paddingBottom="@dimen/button_vertical_padding"
             app:layout_constraintVertical_chainStyle="packed"
 
             android:text="@string/report"
-            android:textColor="@color/primaryText"
-            android:textSize="@dimen/report_button_text_size"
-            android:textStyle="bold"
+            android:textColor="@color/secondaryText"
+            android:textSize="@dimen/tested_button_font_size"
+            android:textAllCaps="false"
+
+            android:onClick="onClickShowConfirm"
             app:layout_constraintBottom_toTopOf="@+id/report_button_disclaimer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -191,14 +187,15 @@
             android:id="@+id/report_button_disclaimer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="65dp"
-            android:layout_marginEnd="65dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
 
+            android:fontFamily="@font/montserrat"
             android:gravity="center"
             android:text="@string/disclaimer"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
 
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/report" />
 

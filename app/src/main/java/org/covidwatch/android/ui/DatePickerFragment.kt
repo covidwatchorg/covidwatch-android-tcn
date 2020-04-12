@@ -59,6 +59,6 @@ class DatePickerFragment : DialogFragment(), OnDateSetListener {
         // Set the activity to the Main Activity.
         val activity: MainActivity = getActivity() as MainActivity
         // Invoke Main Activity's processDatePickerResult() method.
-        activity.processDatePickerResult(year, month, day)
+//        activity.processDatePickerResult(year, month, day)
     }
 }

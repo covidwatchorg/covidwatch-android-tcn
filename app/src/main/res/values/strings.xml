@@ -43,6 +43,7 @@
     <string name="share_text">Share this app</string>
     <string name="share_sub_text">Ask family and friends to join the COVID Watch Team</string>
     <string name="self_report">Self Report</string>
+    <string name="self_report_text">Self Report</string>
 
     <!-- Test Flow -->
     <string name="question_text">Have you been tested for COVID-19?</string>
