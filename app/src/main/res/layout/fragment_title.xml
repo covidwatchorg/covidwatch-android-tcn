@@ -43,7 +43,7 @@
             android:id="@+id/family"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:src="@mipmap/splash_superhero_icon_fgd"
+            android:src="@drawable/splash_superhero_icon_fgd"
             app:layout_constraintBottom_toTopOf="@id/welcome"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
