@@ -1,8 +1,7 @@
 package org.covidwatch.android.ui
 
 import android.Manifest
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.Manifest.permission.*
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
@@ -138,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                    val permissions = arrayOf(ACCESS_COARSE_LOCATION,ACCESS_FINE_LOCATION)
+                    val permissions = arrayOf(ACCESS_COARSE_LOCATION,ACCESS_FINE_LOCATION,ACCESS_BACKGROUND_LOCATION)
                     ActivityCompat.requestPermissions(this, permissions, LOCATION_REQUEST_CODE)
                 }
             }
