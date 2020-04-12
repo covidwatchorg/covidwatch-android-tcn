@@ -90,7 +90,12 @@ class CovidWatchApplication : Application() {
             getString(R.string.preference_is_contact_event_logging_enabled),
             false
         )
-        mainScope.launch { configureAdvertising(isContactEventLoggingEnabled)  }
+        try {
+            mainScope.launch { configureAdvertising(isContactEventLoggingEnabled)  }
+        } catch (e: IllegalStateException){
+            Log.e(this.javaClass::getSimpleName.toString(),"Attempted to configure advertising while backgrounded",e)
+        }
+
     }
 
     private fun schedulePeriodicPublicContactEventsRefresh() {

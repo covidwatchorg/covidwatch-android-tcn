@@ -62,9 +62,13 @@
     <string name="share_the_app">Share the app</string>
     <string name="text_for_covid_text">Tested for COVID-19?</string>
     <string name="you_re_all_set_title">You’re all set!</string>
-    <string name="thank_you_text">Thank you for helping protect your communities. You will be notified of potential contact to COVID-19.</string>
+    <string name="thank_you_text">Thank you for helping protect your communities. You will be notified of potential contact to COVID-19..</string>
+    <string name="welcome_back_title">Welcome Back!</string>
+    <string name="not_detected_text">Covid Watch has not detected exposure to COVID-19. Share the app with family and friends to help your community stay safe.</string>
+    <string name="detected_thank_you_text">Thank you for helping your community stay safe, anonymously.</string>
     <string name="main_subtext_1">It works best when everyone uses it.</string>
     <string name="main_subtext_2">Share your result anonymously to help your community stay safe.</string>
     <string name="contact_alert_text">You may have been in contact with COVID-19</string>
+    <string name="share_intent_text">Help your community stay safe, anonymously:</string>
 
 </resources>

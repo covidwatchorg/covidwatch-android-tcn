@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.covidwatch.android.MainFragment">
-    <?xml version="1.0" encoding="utf-8"?>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,9 +52,11 @@
 
             <TextView
                 android:id="@+id/main_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
                 android:text="@string/you_re_all_set_title"
                 android:textColor="@color/primaryText"
                 android:textSize="32sp"
@@ -68,13 +68,11 @@
                 android:id="@+id/main_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:text="@string/thank_you_text"
                 android:textColor="@color/primaryText"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/main_title"
+                app:layout_constraintStart_toStartOf="@+id/main_title"
                 app:layout_constraintTop_toBottomOf="@+id/main_title" />
 
             <RelativeLayout
@@ -123,16 +121,16 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/main_subtext_1"
                     android:layout_marginLeft="24dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginRight="24dp"
                     android:background="@drawable/rounded_corner_secondary"
                     android:minWidth="@dimen/big_button_width"
                     android:minHeight="@dimen/big_button_height"
                     android:text="@string/text_for_covid_text"
-                    android:textColor="@color/primaryText"
-                    android:textSize="30sp"
-
                     android:textAllCaps="false"
+                    android:textColor="@color/primaryText"
+
+                    android:textSize="30sp"
                     app:cornerRadius="10dp" />
 
                 <TextView
