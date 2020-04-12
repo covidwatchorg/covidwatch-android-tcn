@@ -31,7 +31,6 @@ class OnboardingFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        (getActivity() as MainActivity).initLocationManager()
     }
 
     override fun onCreateView(

@@ -29,4 +29,15 @@
     <color name="maroon">#B04040</color>
     <color name="maroon_shadow">#A0A0A0</color>
     <color name="colorPrimaryLight">#DFDFDF</color>
+
+<!-- FROM DESIGN LIBRARY AT https://www.figma.com/file/0qkRp3TrKBRnpEnmQeA5m4/-->
+    <color name="bluejay">#2C58B1</color>
+    <color name="aqua">#43C4D9</color>
+    <color name="plum">#4B0A70</color>
+    <color name="elderberry">#2C007B</color>
+    <color name="lavender">#A680B7</color>
+    <color name="tangerine">#F05452</color>
+
+
+
 </resources>
