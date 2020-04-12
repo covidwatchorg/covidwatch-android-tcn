@@ -1,6 +1,8 @@
 package org.covidwatch.android.ui
 
 import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
@@ -45,8 +47,6 @@ class MainActivity : AppCompatActivity() {
         addDummyCEN()
 
         setContactEventLogging(true)
-
-        initLocationManager()
     }
 
     public override fun onResume() {
@@ -118,6 +118,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
     /**
      * Initializes the Location Manager used to obtain coarse bluetooth/wifi location
      * and fine GPS location, logged on a contact event.
@@ -125,32 +133,24 @@ class MainActivity : AppCompatActivity() {
      * TODO add GPS initialization here, for now we just ask for location permissions
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public fun initLocationManager() {
+    fun initLocationManager(permissionGrantedCallback: ()->Unit) {
         val permissionCheck = ContextCompat.checkSelfPermission(
             this,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            ACCESS_FINE_LOCATION
         )
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
+            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)){
                 Toast.makeText(
                     this,
                     getString(R.string.ble_location_permission),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ), 1
-                )
+                val permissions = arrayOf(ACCESS_COARSE_LOCATION,ACCESS_FINE_LOCATION)
+                requestPermissions(permissions, 1)
             }
         } else {
-            // Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
+            permissionGrantedCallback()
         }
     }
 

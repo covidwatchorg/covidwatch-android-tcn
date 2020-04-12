@@ -50,8 +50,11 @@
     <string name="question_text">Have you been confirmed with COVID-19?</string>
     <string name="question_date">Date of first symptoms?</string>
     <string name="report">Report</string>
-    <string name="bluetooth_explanation_subtext">Apps using Bluetooth® Low Energy (BLE) are required to have location access enabled.</string>
+    <string name="bluetooth_explanation_subtext">This is required for the app to work.</string>
     <string name="bluetooth_explanation_text">We use Bluetooth to anonymously log interactions with other Covid Watch users. Your personal data is always private and never shared.</string>
     <string name="bluetooth_explanation_title">Privately Connect</string>
+    <string name="logo_image_content_descriptor">Logo image</string>
+    <string name="menu_button_content_descriptor">Menu button</string>
+    <string name="people_bluetooth_connection_content_descriptor">People connecting over bluetooth</string>
 
 </resources>
