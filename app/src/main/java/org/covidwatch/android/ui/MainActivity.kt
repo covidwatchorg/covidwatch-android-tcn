@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -165,21 +166,21 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.datepicker)
         )
     }
-//    @RequiresApi(Build.VERSION_CODES.N)
-//    fun processDatePickerResult(year: Int, month: Int, day: Int) {
-//
-//        val day_string = Integer.toString(day)
-//        val year_string = Integer.toString(year)
-//
-//        val cal: Calendar = Calendar.getInstance()
-//        val month_date = SimpleDateFormat("MMMM")
-//        cal.set(Calendar.MONTH, month)
-//        val month_name: String = month_date.format(cal.getTime())
-//
-//        val dateMessage = "$month_name $day_string, $year_string"
-//
-//        textView.text = dateMessage
-//    }
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun processDatePickerResult(year: Int, month: Int, day: Int) {
+
+        val day_string = Integer.toString(day)
+        val year_string = Integer.toString(year)
+
+        val cal: Calendar = Calendar.getInstance()
+        val month_date = SimpleDateFormat("MMMM")
+        cal.set(Calendar.MONTH, month)
+        val month_name: String = month_date.format(cal.getTime())
+
+        val dateMessage = "$month_name $day_string, $year_string"
+
+        findViewById<TextView>(R.id.date_picker).setText(dateMessage)
+    }
 
 
 }
