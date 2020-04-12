@@ -30,9 +30,6 @@
     <string name="share_subj">Secure COVID-19 contact alert app</string>
     <string name="share_body">I found this privacy-aware COVID-19 app that doesn\'t upload any information.</string>
 
-    <string name="self_report_option1">Yes</string>
-    <string name="self_report_option2">No</string>
-    <string name="self_report_option3">Not Tested</string>
     <string name="date">Date</string>
     <string name="datepicker">datePicker</string>
     <string name="textView" />
@@ -46,9 +43,14 @@
     <string name="share_text">Share this app</string>
     <string name="share_sub_text">Ask family and friends to join the COVID Watch Team</string>
     <string name="self_report">Self Report</string>
-    <string name="self_report_text">Confirmed COVID-19?</string>
-    <string name="question_text">Have you been confirmed with COVID-19?</string>
-    <string name="question_date">Date of first symptoms?</string>
+    <string name="self_report_text">Self Report</string>
+
+    <!-- Test Flow -->
+    <string name="question_text">Have you been tested for COVID-19?</string>
+    <string name="question_date">When did your symptoms start?</string>
+    <string name="not_yet_tested">Not yet tested</string>
+    <string name="tested_positive">Tested positive</string>
+    <string name="tested_negative">Tested negative</string>
     <string name="report">Report</string>
     <string name="bluetooth_explanation_subtext">This is required for the app to work.</string>
     <string name="bluetooth_explanation_text">We use Bluetooth to anonymously log interactions with other Covid Watch users. Your personal data is always private and never shared.</string>

@@ -1,5 +1,6 @@
 package org.covidwatch.android
 
+import android.app.DatePickerDialog
 import android.content.Context
 import androidx.appcompat.view.ContextThemeWrapper
 import android.os.Bundle
@@ -14,6 +15,8 @@ import androidx.fragment.app.viewModels
 import org.covidwatch.android.ui.contactevents.adapters.FragmentDataBindingComponent
 import org.covidwatch.android.databinding.FragmentSelfReportBinding
 import org.covidwatch.android.ui.selfreport.SelfReportViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class SelfReportFragment : Fragment() {
@@ -21,6 +24,7 @@ class SelfReportFragment : Fragment() {
     private val selfReportProfileViewModel: SelfReportViewModel by viewModels()
     private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private lateinit var binding: FragmentSelfReportBinding
+    private val symptomsStartDateCalendar: Calendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +57,15 @@ class SelfReportFragment : Fragment() {
                         )
                         commit()
                     }
+                }
+
+                datePicker.setOnClickListener {
+                    DatePickerDialog(context,
+                        getSymptomsStartDateListener(),
+                        symptomsStartDateCalendar.get(Calendar.YEAR),
+                        symptomsStartDateCalendar.get(Calendar.MONTH),
+                        symptomsStartDateCalendar.get(Calendar.DAY_OF_MONTH))
+                        .show()
                 }
 
                 report.setOnClickListener {
@@ -88,33 +101,20 @@ class SelfReportFragment : Fragment() {
 
             }
 
+        updateSymptomsStartDateLabel()
+
         return binding.root
     }
 
+    private fun getSymptomsStartDateListener() : DatePickerDialog.OnDateSetListener {
+        return DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            symptomsStartDateCalendar.set(year, month, dayOfMonth)
+            updateSymptomsStartDateLabel()
+        }
+    }
 
-
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment SelfReportFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            SelfReportFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
-
-
-
-
-
+    private fun updateSymptomsStartDateLabel() {
+        val dateFormat = SimpleDateFormat.getDateInstance()
+        binding.datePicker.setText(dateFormat.format(symptomsStartDateCalendar.time))
+    }
 }
