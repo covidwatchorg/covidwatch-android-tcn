@@ -8,20 +8,14 @@
     tools:context=".HeaderFragment">
 
     <ImageView
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:src="@drawable/bkgd_card"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/header_circle"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/square"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
         />
 
 
