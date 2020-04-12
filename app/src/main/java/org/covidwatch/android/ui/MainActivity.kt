@@ -42,8 +42,6 @@ class MainActivity : AppCompatActivity() {
         initBluetoothAdapter()
         Log.i("test", "did we make it here?")
         addDummyCEN()
-
-        setContactEventLogging(true)
     }
 
     public override fun onResume() {
@@ -152,6 +150,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode){
             LOCATION_REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    setContactEventLogging(true)
                     vm.permissionRequestResultLiveData.value = true
                 }
             }
