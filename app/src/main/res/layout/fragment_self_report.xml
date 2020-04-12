@@ -16,20 +16,20 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/tested_horizontal_margin"
         android:layout_marginEnd="@dimen/tested_horizontal_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <fragment
             android:id="@+id/header"
             android:name="org.covidwatch.android.HeaderFragment"
-            tools:layout="@layout/fragment_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.01"
-            />
+            tools:layout="@layout/fragment_header" />
 
         <TextView
             android:id="@+id/questionText"
@@ -41,24 +41,23 @@
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="32sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintBottom_toTopOf="@id/toggleGroup"
-            app:layout_constraintVertical_bias="0.01"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintVertical_bias="0.01" />
 
 
         <RadioGroup
             android:id="@+id/toggleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/questionDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/questionText"
-            app:layout_constraintBottom_toTopOf="@+id/questionDate"
-            android:gravity="center"
-            android:orientation="vertical"
 
             >
 
@@ -66,36 +65,35 @@
                 android:id="@+id/not_yet_tested"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-
-                android:paddingTop="@dimen/button_vertical_padding"
-                android:paddingBottom="@dimen/button_vertical_padding"
                 android:layout_marginBottom="@dimen/tested_button_vertical_margin"
 
                 android:background="@drawable/button_selector"
                 android:button="@null"
                 android:fontFamily="@font/roboto"
+
+                android:gravity="center"
+                android:paddingTop="@dimen/button_vertical_padding"
+                android:paddingBottom="@dimen/button_vertical_padding"
 
                 android:text="@string/not_yet_tested"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
 
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <RadioButton
                 android:id="@+id/tested_negative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-
-                android:paddingTop="@dimen/button_vertical_padding"
-                android:paddingBottom="@dimen/button_vertical_padding"
                 android:layout_marginBottom="@dimen/tested_button_vertical_margin"
 
                 android:background="@drawable/button_selector"
                 android:button="@null"
                 android:fontFamily="@font/roboto"
+
+                android:gravity="center"
+                android:paddingTop="@dimen/button_vertical_padding"
+                android:paddingBottom="@dimen/button_vertical_padding"
 
                 android:text="@string/tested_negative"
                 android:textColor="@android:color/white"
@@ -109,101 +107,98 @@
                 android:id="@+id/tested_positive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-
-                android:paddingTop="@dimen/button_vertical_padding"
-                android:paddingBottom="@dimen/button_vertical_padding"
                 android:background="@drawable/button_selector"
+
                 android:button="@null"
                 android:fontFamily="@font/roboto"
-
+                android:gravity="center"
                 android:paddingLeft="8dp"
+                android:paddingTop="@dimen/button_vertical_padding"
+
                 android:paddingRight="8dp"
+                android:paddingBottom="@dimen/button_vertical_padding"
 
 
                 android:text="@string/tested_positive"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
 
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
         </RadioGroup>
 
 
         <TextView
             android:id="@+id/questionDate"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
-            app:layout_constraintBottom_toTopOf="@+id/date_picker"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:gravity="center"
             android:text="@string/question_date"
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/date_picker"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.9"
             />
 
         <TextView
             android:id="@+id/date_picker"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionDate"
-            app:layout_constraintBottom_toTopOf="@+id/report"
-
+            android:layout_marginBottom="218dp"
             android:background="@drawable/rounded_corner"
             android:contentDescription="@string/date"
             android:ems="10"
             android:fontFamily="@font/roboto"
+
             android:inputType="date"
             android:onClick="showDatePicker"
             android:paddingLeft="16dp"
-            android:paddingTop="24dp"
             android:textColor="@android:color/black"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
             />
 
         <Button
             android:id="@+id/report"
             android:layout_width="347dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_picker"
-            app:layout_constraintBottom_toTopOf="@+id/report_button_disclaimer"
-            app:layout_constraintHorizontal_bias="0.5"
-
             android:background="@color/primaryBackground"
             android:fontFamily="@font/roboto"
             android:onClick="onClickShowConfirm"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            app:layout_constraintVertical_chainStyle="packed"
+
             android:text="@string/report"
             android:textColor="@color/primaryText"
             android:textSize="@dimen/report_button_text_size"
             android:textStyle="bold"
-            />
+            app:layout_constraintBottom_toTopOf="@+id/report_button_disclaimer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_picker" />
 
         <TextView
             android:id="@+id/report_button_disclaimer"
-            app:layout_constraintTop_toBottomOf="@id/report"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="65dp"
-            android:layout_marginLeft="65dp"
             android:layout_marginEnd="65dp"
-            android:layout_marginRight="65dp"
 
             android:gravity="center"
             android:text="@string/disclaimer"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/report" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
