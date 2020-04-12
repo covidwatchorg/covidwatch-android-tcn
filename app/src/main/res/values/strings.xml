@@ -58,5 +58,13 @@
     <string name="logo_image_content_descriptor">Logo image</string>
     <string name="menu_button_content_descriptor">Menu button</string>
     <string name="people_bluetooth_connection_content_descriptor">People connecting over bluetooth</string>
+    <string name="female_superhero_content_descriptor">Female superhero</string>
+    <string name="share_the_app">Share the app</string>
+    <string name="text_for_covid_text">Tested for COVID-19?</string>
+    <string name="you_re_all_set_title">You’re all set!</string>
+    <string name="thank_you_text">Thank you for helping protect your communities. You will be notified of potential contact to COVID-19.</string>
+    <string name="main_subtext_1">It works best when everyone uses it.</string>
+    <string name="main_subtext_2">Share your result anonymously to help your community stay safe.</string>
+    <string name="contact_alert_text">You may have been in contact with COVID-19</string>
 
 </resources>
