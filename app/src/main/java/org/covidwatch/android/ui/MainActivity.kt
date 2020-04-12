@@ -16,9 +16,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.work.*
 import org.covidwatch.android.R
 import org.covidwatch.android.ble.BluetoothManagerImpl
+import org.covidwatch.android.data.BluetoothViewModel
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.CovidWatchDatabase
@@ -27,12 +30,13 @@ import org.covidwatch.android.data.firestore.ContactEventsDownloadWorker
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bluetoothAdapter: BluetoothAdapter
+    private lateinit var vm: BluetoothViewModel
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        vm = ViewModelProvider(this).get(BluetoothViewModel::class.java)
         // TODO #15: COMMENTING OUT BECAUSE USING EMULATOR
         // BRING BACK AFTER MERGING UX FIRST RUN
         // REMOVE adding example CEN
@@ -112,39 +116,47 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     /**
      * Initializes the Location Manager used to obtain coarse bluetooth/wifi location
      * and fine GPS location, logged on a contact event.
      *
      * TODO add GPS initialization here, for now we just ask for location permissions
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    fun initLocationManager(permissionGrantedCallback: ()->Unit) {
-        val permissionCheck = ContextCompat.checkSelfPermission(
-            this,
-            ACCESS_FINE_LOCATION
-        )
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)){
-                Toast.makeText(
-                    this,
-                    getString(R.string.ble_location_permission),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                val permissions = arrayOf(ACCESS_COARSE_LOCATION,ACCESS_FINE_LOCATION)
-                requestPermissions(permissions, 1)
+    private val LOCATION_REQUEST_CODE = 1
+    fun initLocationManager() {
+        runOnUiThread {
+            val permissionStatus = ContextCompat.checkSelfPermission(
+                this,
+                ACCESS_FINE_LOCATION
+            )
+            when (permissionStatus){
+                PackageManager.PERMISSION_GRANTED -> vm.permissionRequestResultLiveData.value = true
+                PackageManager.PERMISSION_DENIED -> {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,ACCESS_FINE_LOCATION)){
+                        Toast.makeText(this,
+                            getString(R.string.ble_location_permission),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    val permissions = arrayOf(ACCESS_COARSE_LOCATION,ACCESS_FINE_LOCATION)
+                    ActivityCompat.requestPermissions(this, permissions, LOCATION_REQUEST_CODE)
+                }
             }
-        } else {
-            permissionGrantedCallback()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode){
+            LOCATION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    vm.permissionRequestResultLiveData.value = true
+                }
+            }
+            else -> {}//Ignore all other requests
         }
     }
 }

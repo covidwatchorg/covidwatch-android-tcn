@@ -4,7 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.firestore.ContactEventsDownloadWorker
@@ -14,11 +21,12 @@ import org.tcncoalition.tcnclient.toBytes
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+
 class CovidWatchApplication : Application() {
 
     private lateinit var localContactEventsUploader: LocalContactEventsUploader
     private lateinit var currentUserExposureNotifier: CurrentUserExposureNotifier
-
+    private val mainScope = CoroutineScope(Dispatchers.Main)
     //TODO: Move to DI module
     private val bluetoothManager = BluetoothManagerImpl(this)
 
@@ -82,7 +90,7 @@ class CovidWatchApplication : Application() {
             getString(R.string.preference_is_contact_event_logging_enabled),
             false
         )
-        configureAdvertising(isContactEventLoggingEnabled)
+        mainScope.launch { configureAdvertising(isContactEventLoggingEnabled)  }
     }
 
     private fun schedulePeriodicPublicContactEventsRefresh() {

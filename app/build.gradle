@@ -13,7 +13,7 @@ android {
     }
     defaultConfig {
         applicationId "org.covidwatch.tags.android"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -53,6 +53,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime:2.3.0-alpha01'
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha01'
+    implementation 'android.arch.lifecycle:extensions:2.3.0-alpha01'
     //noinspection LifecycleAnnotationProcessorWithJava8
     annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.3.0-alpha01'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
