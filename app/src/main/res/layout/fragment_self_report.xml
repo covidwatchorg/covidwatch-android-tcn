@@ -50,15 +50,17 @@
 
         <RadioGroup
             android:id="@+id/toggleGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/questionDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/questionText"
 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+
+            android:textColor="@color/primaryText"
             >
 
             <RadioButton
@@ -76,7 +78,7 @@
                 android:paddingBottom="@dimen/button_vertical_padding"
 
                 android:text="@string/not_yet_tested"
-                android:textColor="@android:color/white"
+                android:textColor="@color/primaryText"
                 android:textSize="24sp"
 
                 android:textStyle="bold" />
@@ -96,7 +98,7 @@
                 android:paddingBottom="@dimen/button_vertical_padding"
 
                 android:text="@string/tested_negative"
-                android:textColor="@android:color/white"
+                android:textColor="@color/primaryText"
                 android:textSize="24sp"
 
                 android:textStyle="bold"
@@ -120,7 +122,7 @@
 
 
                 android:text="@string/tested_positive"
-                android:textColor="@android:color/white"
+                android:textColor="@color/primaryText"
                 android:textSize="24sp"
 
                 android:textStyle="bold" />
