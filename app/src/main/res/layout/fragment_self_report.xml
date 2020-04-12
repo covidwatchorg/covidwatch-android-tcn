@@ -91,9 +91,7 @@
                     android:textColor="@color/primaryText"
                     android:textSize="@dimen/tested_button_font_size"
                     android:fontFamily="@font/montserrat"
-                    android:textStyle="bold"
-                    tools:layout_editor_absoluteX="124dp"
-                    tools:layout_editor_absoluteY="61dp" />
+                    android:textStyle="bold"/>
 
                 <RadioButton
                     android:id="@+id/tested_positive"
@@ -112,7 +110,6 @@
                     android:fontFamily="@font/montserrat"
                     android:textStyle="bold" />
             </RadioGroup>
-
 
             <TextView
                 android:id="@+id/questionDate"
@@ -149,7 +146,8 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/questionDate"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:inputType="date" />
 
             <Button
                 android:id="@+id/report"

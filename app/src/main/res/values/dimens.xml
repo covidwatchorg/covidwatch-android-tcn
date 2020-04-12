@@ -14,7 +14,7 @@
     <dimen name="tested_horizontal_margin">32dp</dimen>
     <dimen name="button_vertical_padding">15dp</dimen>
     <dimen name="tested_button_vertical_margin">10dp</dimen>
-    <dimen name="tested_button_font_size">18sp</dimen>
+    <dimen name="tested_button_font_size">18dp</dimen>
     <dimen name="default_padding">16dp</dimen>
 
 </resources>
