@@ -28,12 +28,12 @@ class LocationPermissionFragment : Fragment() {
     }
 
     val requestObserver = Observer<Boolean> { permissionGranted ->
-        if (permissionGranted) view?.findNavController()?.navigate(R.id.action_locationPermissionFragment_to_onboardingFragment)
+        if (permissionGranted) view?.findNavController()?.navigate(R.id.action_locationPermissionFragment_to_mainFragment)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentLocationPermissionBinding>(inflater,
-            R.layout.fragment_location_permission,container,false)
+            R.layout.fragment_location_permission, container,false)
         binding.getStarted2.setOnClickListener { (getActivity() as MainActivity).initLocationManager() }
         return binding.root
     }
