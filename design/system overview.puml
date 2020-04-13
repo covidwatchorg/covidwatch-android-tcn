@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+package ui {
+    class MainActivity
+}
+package ble {
+  class BluetoothManagerImpl {
+    class DefaultCenGenerator
+  }
+  BluetoothManagerImpl -() BluetoothManager
+}
+package data {
+    class LocalContactEventsUploader
+    class CovidWatchDatabase
+}
+
+class CovidWatchApplication
+class CurrentUserExposureNotifier
+
+CovidWatchApplication *-- LocalContactEventsUploader
+CovidWatchApplication *-- CurrentUserExposureNotifier
+CovidWatchApplication --> CovidWatchDatabase
+CovidWatchApplication --> BluetoothManagerImpl
+BluetoothManagerImpl --> MainActivity
+MainActivity --> BluetoothManagerImpl::DefaultCenGenerator
+
+@enduml
