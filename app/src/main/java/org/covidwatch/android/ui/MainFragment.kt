@@ -1,5 +1,6 @@
 package org.covidwatch.android
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -18,7 +19,7 @@ import org.covidwatch.android.databinding.FragmentMainBinding
  * create an instance of this fragment.
  */
 class MainFragment : Fragment() {
-    private var preferences : SharedPreferences? = null
+    private lateinit var preferences : SharedPreferences
     private val INITIAL_VISIT = "INITIAL_VISIT"
 
     override fun onCreateView(
@@ -31,8 +32,12 @@ class MainFragment : Fragment() {
         binding.selfReportButton.setOnClickListener { view : View ->
             view.findNavController().navigate(R.id.action_mainFragment_to_selfReportFragment)
         }
-        preferences = activity?.getPreferences(Context.MODE_PRIVATE) ?: return binding.root
-        val initialVisit = preferences?.getBoolean(INITIAL_VISIT,true) ?: true
+        val application = context?.applicationContext ?: return binding.root
+        preferences = application.getSharedPreferences(
+            application.getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        val initialVisit = preferences.getBoolean(INITIAL_VISIT,true)
         if (!initialVisit) {
             binding.mainTitle.text = getString(R.string.welcome_back_title)
             binding.mainText.text = getString(R.string.not_detected_text)
@@ -42,10 +47,7 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        with (preferences?.edit() ?: return) {
-            putBoolean(INITIAL_VISIT, false)
-            commit()
-        }
+        with (preferences.edit()) { putBoolean(INITIAL_VISIT, false); apply() }
     }
 
     private fun shareApp() {
