@@ -19,7 +19,8 @@
 
     <!--  FROM THE UX REPO  -->
     <string name="splash_text">Help your community stay safe, anonymously.</string>
-    <string name="splash_start_button">Start</string>
+    <string name="start">Start</string>
+    <string name="grant_location_access">Grant Location Access</string>
 
     <string name="onboarding_button">Let\'s do this!</string>
     <string name="onboarding_steps">Protect your privacy and your community with just 3 steps.</string>
@@ -52,7 +53,7 @@
     <string name="tested_positive">Tested positive</string>
     <string name="tested_negative">Tested negative</string>
     <string name="report">Report</string>
-    <string name="bluetooth_explanation_subtext">This is required for the app to work.</string>
+    <string name="bluetooth_explanation_subtext">Apps using Bluetooth® Low Energy (BLE) are required to have location access enabled.</string>
     <string name="bluetooth_explanation_text">We use Bluetooth to anonymously log interactions with other Covid Watch users. Your personal data is always private and never shared.</string>
     <string name="bluetooth_explanation_title">Privately Connect</string>
     <string name="logo_image_content_descriptor">Logo image</string>
