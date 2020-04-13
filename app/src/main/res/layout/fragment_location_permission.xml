@@ -7,28 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/menuImageButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="24dp"
-            android:background="#00FFFFFF"
-            app:layout_constraintBottom_toBottomOf="@+id/logoImageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/logoImageView"
-            app:srcCompat="@drawable/menu"
-            android:contentDescription="@string/menu_button_content_descriptor" />
-
-        <ImageView
-            android:id="@+id/logoImageView"
-            android:layout_width="wrap_content"
+        <fragment
+            android:id="@+id/header"
+            android:name="org.covidwatch.android.HeaderFragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/logo_image_content_descriptor"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo_icon" />
+            tools:layout="@layout/fragment_header" />
+
 
         <ImageView
             android:id="@+id/peopleBluetoothConnectionImageView"
@@ -38,7 +24,7 @@
             android:contentDescription="@string/people_bluetooth_connection_content_descriptor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logoImageView"
+            app:layout_constraintTop_toBottomOf="@+id/header"
             app:srcCompat="@drawable/people_bluetooth_connect" />
 
         <Button
