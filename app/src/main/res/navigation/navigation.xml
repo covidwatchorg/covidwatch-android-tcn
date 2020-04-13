@@ -7,11 +7,11 @@
 
     <fragment
         android:id="@+id/titleFragment"
-        android:name="org.covidwatch.android.TitleFragment"
+        android:name="org.covidwatch.android.SplashFragment"
         android:label="fragment_title"
-        tools:layout="@layout/fragment_title" >
+        tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_titleFragment_to_locationPermissionFragment"
+            android:id="@+id/action_splashFragment_to_locationPermissionFragment"
             app:destination="@id/locationPermissionFragment" />
     </fragment>
     <fragment

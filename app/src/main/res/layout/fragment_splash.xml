@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.covidwatch.android.TitleFragment">
+    tools:context="org.covidwatch.android.SplashFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -76,6 +76,7 @@
                 android:textColor="@color/primaryText"
                 android:background="@drawable/rounded_corner"
                 android:textSize="30sp"
+                android:textAllCaps="false"
                 app:cornerRadius="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

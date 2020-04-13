@@ -7,23 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
-import org.covidwatch.android.databinding.FragmentTitleBinding
+import org.covidwatch.android.databinding.FragmentSplashBinding
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TitleFragment.newInstance] factory method to
+ * Use the [SplashFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TitleFragment : Fragment() {
+class SplashFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflater,
-            R.layout.fragment_title, container,false)
+        val binding = DataBindingUtil.inflate<FragmentSplashBinding>(inflater,
+            R.layout.fragment_splash, container,false)
         binding.getStarted.setOnClickListener { view : View ->
-            view.findNavController().navigate(R.id.action_titleFragment_to_locationPermissionFragment)
+            view.findNavController().navigate(R.id.action_splashFragment_to_locationPermissionFragment)
         }
         return binding.root
     }
@@ -36,6 +36,6 @@ class TitleFragment : Fragment() {
          * @return A new instance of fragment TitleFragment.
          */
         @JvmStatic
-        fun newInstance() = TitleFragment()
+        fun newInstance() = SplashFragment()
     }
 }
