@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_temmp"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="org.covidwatch.android.presentation.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_setupBluetoothFragment2"
+            app:destination="@id/setupBluetoothFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupBluetoothFragment"
+        android:name="org.covidwatch.android.presentation.SetupBluetoothFragment"
+        android:label="SetupBluetoothFragment"
+        tools:layout="@layout/fragment_setup_bluetooth">
+        <action
+            android:id="@+id/action_setupBluetoothFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="org.covidwatch.android.presentation.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
+</navigation>

@@ -15,7 +15,7 @@ import org.covidwatch.android.databinding.FragmentSplashBinding
  * create an instance of this fragment.
  */
 class SplashFragment : Fragment() {
-
+/*
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +27,7 @@ class SplashFragment : Fragment() {
         }
         return binding.root
     }
+*/
 
     companion object {
         /**
