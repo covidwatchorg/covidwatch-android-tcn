@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingHorizontal="32dp">
 
@@ -37,28 +37,25 @@
         android:layout_marginTop="16dp"
         android:text="Have you tested positive for COVID-19?"
         android:textAllCaps="false"
-        android:textColor="#585858"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#585858"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <RadioGroup
+    <Button
+        android:id="@+id/negative_button"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:text="Not Tested or Negative" />
 
-        <RadioButton
-            android:id="@+id/negative_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Not Tested or Negative" />
-
-        <RadioButton
-            android:id="@+id/positive_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yes, Tested Positive" />
-    </RadioGroup>
+    <Button
+        android:id="@+id/positive_button"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Yes, Tested Positive" />
 
     <TextView
         android:id="@+id/positive_button_text"
@@ -75,6 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/bluejay"
         android:text="Continue"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -93,6 +91,7 @@
 
     <Button
         android:id="@+id/date_button"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="8dp"

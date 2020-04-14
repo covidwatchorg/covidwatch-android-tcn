@@ -34,10 +34,12 @@ class TestQuestionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         testQuestionsViewModel.testDate.observe(viewLifecycleOwner, Observer {
+            val checkedIconId = if (it.isChecked) R.drawable.ic_check_true else 0
+            binding.dateButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, checkedIconId, 0)
             binding.dateButton.text = it?.formattedDate
         })
         testQuestionsViewModel.isTested.observe(viewLifecycleOwner, Observer {
-            toggleButtonVisibility(it)
+            toggleButtons(it)
         })
         testQuestionsViewModel.isReportButtonVisible.observe(viewLifecycleOwner, Observer {
             toggleReportButton(it)
@@ -72,10 +74,14 @@ class TestQuestionsFragment : Fragment() {
         _binding = null
     }
 
-    private fun toggleButtonVisibility(isTested: Boolean) {
+    private fun toggleButtons(isTested: Boolean) {
+        val negativeIconId = if (isTested) 0 else R.drawable.ic_check_true
+        val positiveIconId = if (isTested) R.drawable.ic_check_true else 0
+        binding.negativeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, negativeIconId, 0)
+        binding.positiveButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, positiveIconId, 0)
+
         binding.positiveButtonText.isVisible = !isTested
         binding.continueButton.isVisible = !isTested
-
         binding.negativeButtonText.isVisible = isTested
         binding.dateButton.isVisible = isTested
     }
