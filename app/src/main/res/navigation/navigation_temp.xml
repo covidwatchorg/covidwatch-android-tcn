@@ -36,5 +36,14 @@
         android:id="@+id/testQuestionsFragment"
         android:name="org.covidwatch.android.presentation.test.TestQuestionsFragment"
         android:label="TestFragment"
-        tools:layout="@layout/fragment_test_questions" />
+        tools:layout="@layout/fragment_test_questions">
+        <action
+            android:id="@+id/action_testQuestionsFragment_to_testConfirmationFragment"
+            app:destination="@id/testConfirmationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/testConfirmationFragment"
+        android:name="org.covidwatch.android.presentation.test.TestConfirmationFragment"
+        android:label="TestConfirmationFragment"
+        tools:layout="@layout/fragment_test_confirmation" />
 </navigation>

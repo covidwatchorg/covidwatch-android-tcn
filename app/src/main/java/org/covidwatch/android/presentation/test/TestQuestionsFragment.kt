@@ -14,7 +14,7 @@ import org.covidwatch.android.R
 import org.covidwatch.android.databinding.FragmentTestQuestionsBinding
 import java.util.*
 
-class TestQuestionsFragment : Fragment(R.layout.fragment_test_questions) {
+class TestQuestionsFragment : Fragment() {
 
     private var _binding: FragmentTestQuestionsBinding? = null
     private val binding get() = _binding!!
@@ -50,17 +50,20 @@ class TestQuestionsFragment : Fragment(R.layout.fragment_test_questions) {
         binding.closeButton.setOnClickListener {
             findNavController().popBackStack()
         }
+        binding.negativeButton.setOnClickListener {
+            testQuestionsViewModel.onRadioButtonClicked(false)
+        }
+        binding.positiveButton.setOnClickListener {
+            testQuestionsViewModel.onRadioButtonClicked(true)
+        }
         binding.continueButton.setOnClickListener {
             findNavController().popBackStack()
         }
         binding.dateButton.setOnClickListener {
             showDatePicker()
         }
-        binding.positiveButton.setOnClickListener {
-            testQuestionsViewModel.onRadioButtonClicked(true)
-        }
-        binding.negativeButton.setOnClickListener {
-            testQuestionsViewModel.onRadioButtonClicked(false)
+        binding.reportButton.setOnClickListener {
+            findNavController().navigate(R.id.testConfirmationFragment)
         }
     }
 
