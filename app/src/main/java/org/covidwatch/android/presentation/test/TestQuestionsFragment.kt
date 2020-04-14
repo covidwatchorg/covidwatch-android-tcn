@@ -59,7 +59,7 @@ class TestQuestionsFragment : Fragment() {
             testQuestionsViewModel.onRadioButtonClicked(true)
         }
         binding.continueButton.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().popBackStack(R.id.homeFragment, false)
         }
         binding.dateButton.setOnClickListener {
             showDatePicker()
