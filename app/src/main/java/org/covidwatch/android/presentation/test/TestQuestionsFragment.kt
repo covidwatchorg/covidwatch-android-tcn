@@ -11,35 +11,35 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.R
-import org.covidwatch.android.databinding.FragmentTestBinding
+import org.covidwatch.android.databinding.FragmentTestQuestionsBinding
 import java.util.*
 
-class TestFragment : Fragment(R.layout.fragment_test) {
+class TestQuestionsFragment : Fragment(R.layout.fragment_test_questions) {
 
-    private var _binding: FragmentTestBinding? = null
+    private var _binding: FragmentTestQuestionsBinding? = null
     private val binding get() = _binding!!
 
-    private val testViewModel: TestViewModel by viewModels()
+    private val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTestBinding.inflate(inflater, container, false)
+        _binding = FragmentTestQuestionsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        testViewModel.testDate.observe(viewLifecycleOwner, Observer {
+        testQuestionsViewModel.testDate.observe(viewLifecycleOwner, Observer {
             binding.dateButton.text = it?.formattedDate
         })
-        testViewModel.isTested.observe(viewLifecycleOwner, Observer {
+        testQuestionsViewModel.isTested.observe(viewLifecycleOwner, Observer {
             toggleButtonVisibility(it)
         })
-        testViewModel.isReportButtonVisible.observe(viewLifecycleOwner, Observer {
+        testQuestionsViewModel.isReportButtonVisible.observe(viewLifecycleOwner, Observer {
             toggleReportButton(it)
         })
 
@@ -57,10 +57,10 @@ class TestFragment : Fragment(R.layout.fragment_test) {
             showDatePicker()
         }
         binding.positiveButton.setOnClickListener {
-            testViewModel.onRadioButtonClicked(true)
+            testQuestionsViewModel.onRadioButtonClicked(true)
         }
         binding.negativeButton.setOnClickListener {
-            testViewModel.onRadioButtonClicked(false)
+            testQuestionsViewModel.onRadioButtonClicked(false)
         }
     }
 
@@ -91,7 +91,7 @@ class TestFragment : Fragment(R.layout.fragment_test) {
                 calendar.set(Calendar.MONTH, monthOfYear)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                testViewModel.onDateSelected(calendar.time)
+                testQuestionsViewModel.onDateSelected(calendar.time)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),

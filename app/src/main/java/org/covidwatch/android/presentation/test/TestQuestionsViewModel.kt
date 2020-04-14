@@ -9,7 +9,7 @@ import org.covidwatch.android.presentation.util.combineAndCompute
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TestViewModel : ViewModel() {
+class TestQuestionsViewModel : ViewModel() {
 
     private val _isTested = MutableLiveData<Boolean>()
     val isTested: LiveData<Boolean> get() = _isTested

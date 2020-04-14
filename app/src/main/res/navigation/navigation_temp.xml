@@ -30,11 +30,11 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_testFragment"
-            app:destination="@id/testFragment" />
+            app:destination="@id/testQuestionsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/testFragment"
-        android:name="org.covidwatch.android.presentation.test.TestFragment"
+        android:id="@+id/testQuestionsFragment"
+        android:name="org.covidwatch.android.presentation.test.TestQuestionsFragment"
         android:label="TestFragment"
-        tools:layout="@layout/fragment_test" />
+        tools:layout="@layout/fragment_test_questions" />
 </navigation>

@@ -13,7 +13,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         val testedButton: Button = view.findViewById(R.id.tested_button)
         testedButton.setOnClickListener {
-            findNavController().navigate(R.id.testFragment)
+            findNavController().navigate(R.id.testQuestionsFragment)
         }
     }
 }
