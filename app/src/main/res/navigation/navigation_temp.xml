@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_homeFragment_to_testFragment"
             app:destination="@id/testQuestionsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
     </fragment>
     <fragment
         android:id="@+id/testQuestionsFragment"
@@ -46,4 +49,21 @@
         android:name="org.covidwatch.android.presentation.test.TestConfirmationFragment"
         android:label="TestConfirmationFragment"
         tools:layout="@layout/fragment_test_confirmation" />
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="org.covidwatch.android.presentation.menu.MenuFragment"
+        android:label="MenuFragment"
+        tools:layout="@layout/fragment_menu">
+        <action
+            android:id="@+id/action_menuFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_testQuestionsFragment"
+            app:destination="@id/testQuestionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="org.covidwatch.android.presentation.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
