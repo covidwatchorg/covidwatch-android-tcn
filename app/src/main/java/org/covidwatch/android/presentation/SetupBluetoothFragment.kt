@@ -1,14 +1,20 @@
 package org.covidwatch.android.presentation
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.R
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
-class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth) {
+private const val LOCATION_PERMISSION = 100
+
+class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth),
+    EasyPermissions.PermissionCallbacks {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -18,14 +24,37 @@ class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth) {
         }
     }
 
+    @AfterPermissionGranted(LOCATION_PERMISSION)
     private fun grantLocationPermission() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Grant Location Access")
-            .setMessage("Apps using Bluetooth® Low Energy (BLE) are required to have location access enabled")
-            .setPositiveButton(android.R.string.ok) { dialog, which ->
-                // ask user to turn on the bluetooth here
-                findNavController().navigate(R.id.homeFragment)
-            }
-            .show()
+        val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
+            findNavController().navigate(R.id.homeFragment)
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                this,
+                getString(R.string.bluetooth_explanation_subtext),
+                LOCATION_PERMISSION, *perms
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        findNavController().navigate(R.id.homeFragment)
     }
 }

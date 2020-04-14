@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Privately Connect"
+            android:text="@string/bluetooth_explanation_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="We use Bluetooth to anonymously log interactions with other Covid Watch users. Your personal data is always private and never shared."
+            android:text="@string/bluetooth_explanation_text"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <View
@@ -52,13 +52,13 @@
             android:layout_height="56dp"
             android:layout_marginTop="32dp"
             android:backgroundTint="@color/bluejay"
-            android:text="Grant Location Access"
+            android:text="@string/grant_location_access"
             android:textColor="@color/white" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Apps using Bluetooth® Low Energy (BLE) are required to have location access enabled."
+            android:text="@string/bluetooth_explanation_subtext"
             android:textAlignment="center" />
 
     </LinearLayout>
