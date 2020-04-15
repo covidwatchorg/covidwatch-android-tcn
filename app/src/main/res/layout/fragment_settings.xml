@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Settings"
+        android:text="@string/settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="The following issue needs to be resolved for the app to work propertly."
+        android:text="@string/issues_needs_to_be_resolved"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -37,13 +37,13 @@
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/bluejay"
-        android:text="Turn on Bluetooth"
+        android:text="@string/turn_on_bluetooth"
         android:textColor="@color/white" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bluetooth is required for this app to work."
+        android:text="@string/turn_on_bluetooth_subtext"
         android:textAlignment="center" />
 
     <Button
@@ -52,12 +52,12 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
-        android:text="Location Access On" />
+        android:text="@string/location_access_on" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Apps using Bluetooth® Low Energy (BLE) are required to have location access enabled."
+        android:text="@string/bluetooth_explanation_subtext"
         android:textAlignment="center" />
 
 </LinearLayout>

@@ -10,7 +10,7 @@ class MenuItemViewHolder(root: View) : RecyclerView.ViewHolder(root) {
     private val title: TextView = root.findViewById(R.id.title)
 
     fun bind(item: MenuItem) {
-        title.text = item.title
+        title.setText(item.title)
         title.setCompoundDrawablesWithIntrinsicBounds(0, 0, item.iconEnd, 0)
     }
 }

@@ -10,13 +10,13 @@ class MenuAdapter(
 ) : RecyclerView.Adapter<MenuItemViewHolder>() {
 
     private val items = listOf(
-        MenuItem("Settings", 0, Settings),
-        MenuItem("Test Results", 0, TestResults),
-        MenuItem("How does this work?", R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
-        MenuItem("Covid Watch Website", R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
-        MenuItem("Health Guidelines", R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
-        MenuItem("Terms of Use", R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
-        MenuItem("Privacy Policy", R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/"))
+        MenuItem(R.string.settings, 0, Settings),
+        MenuItem(R.string.test_results, 0, TestResults),
+        MenuItem(R.string.how_does_this_work, R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
+        MenuItem(R.string.covid_watch_website, R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
+        MenuItem(R.string.health_guidelines, R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
+        MenuItem(R.string.terms_of_use, R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/")),
+        MenuItem(R.string.privacy_policy, R.drawable.ic_exit_to_app, Browser("https://www.covid-watch.org/"))
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuItemViewHolder {

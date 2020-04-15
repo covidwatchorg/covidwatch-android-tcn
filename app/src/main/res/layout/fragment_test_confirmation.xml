@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Have you tested positive for COVID-19?"
+            android:text="@string/question_text"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#585858"
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Please confirm your test results"
+                android:text="@string/confirm_results"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -66,21 +66,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="This report is completely anonymous and the community relies on you to be truthful and responsible. Depending on anoymous interaction logs, other Covid Watch users may get notified to self-quarantine and get tested."
+                android:text="@string/confirm_results_disclaimer"
                 android:textSize="18sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="COVID-19 Test"
+                android:text="@string/covid_19_test"
                 android:textAlignment="center"
                 android:textSize="18sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="POSITIVE"
+                android:text="@string/positive"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@android:color/holo_red_light"
@@ -92,7 +92,7 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/bluejay"
-                android:text="Confirm"
+                android:text="@string/confirm"
                 android:textColor="@color/white" />
 
             <Button
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:text="Cancel" />
+                android:text="@string/cancel" />
         </LinearLayout>
 
     </LinearLayout>

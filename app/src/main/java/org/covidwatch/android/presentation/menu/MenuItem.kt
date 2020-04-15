@@ -1,7 +1,7 @@
 package org.covidwatch.android.presentation.menu
 
 data class MenuItem(
-    val title: String,
+    val title: Int,
     val iconEnd: Int,
     val destination: Destination
 )

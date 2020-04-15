@@ -30,14 +30,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A project in collaboration with"
+        android:text="@string/menu_footer_text"
         android:textAlignment="center"
         android:textSize="12sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Stanford University"
+        android:text="@string/stanford_university"
         android:textAlignment="center"
         android:textSize="30sp" />
 </LinearLayout>
