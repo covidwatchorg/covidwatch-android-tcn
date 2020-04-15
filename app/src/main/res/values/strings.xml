@@ -47,12 +47,37 @@
     <string name="self_report_text">Self Report</string>
 
     <!-- Test Flow -->
-    <string name="question_text">Have you been tested for COVID-19?</string>
+    <string name="question_text">Have you tested positive for COVID-19?</string>
     <string name="question_date">When did your symptoms start?</string>
     <string name="not_yet_tested">Not yet tested</string>
-    <string name="tested_positive">Tested positive</string>
-    <string name="tested_negative">Tested negative</string>
+    <string name="tested_positive">Yes, Tested Positive</string>
+    <string name="tested_negative">Not Tested or Negative</string>
+    <string name="continue_button">Continue</string>
     <string name="report">Report</string>
+    <string name="thanks_for_update">Thanks for the update. You can come back here if you test positive to help keep your community safe.</string>
+    <string name="confirm_results">Please confirm your test results</string>
+    <string name="confirm_results_disclaimer">This report is completely anonymous and the community relies on you to be truthful and responsible. Depending on anonymous interaction logs, other Covid Watch users may get notified to self-quarantine and get tested.</string>
+    <string name="covid_19_test">COVID-19 Test</string>
+    <string name="positive">POSITIVE</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="settings">Settings</string>
+    <string name="test_results">Test Results</string>
+    <string name="how_does_this_work">How does this work?</string>
+    <string name="covid_watch_website">Covid Watch Website</string>
+    <string name="health_guidelines">Health Guidelines</string>
+    <string name="terms_of_use">Terms of Use</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
+    <string name="issues_needs_to_be_resolved">The following issue needs to be resolved</string>
+    <string name="turn_on_bluetooth">Turn on Bluetooth</string>
+    <string name="turn_on_bluetooth_subtext">Bluetooth is required for this app to work</string>
+    <string name="location_access_on">Location Access On</string>
+
+    <string name="menu_footer_text">A project in collaboration with</string>
+    <string name="stanford_university">Stanford University</string>
+
     <string name="bluetooth_explanation_subtext">Apps using Bluetooth® Low Energy (BLE) are required to have location access enabled.</string>
     <string name="bluetooth_explanation_text">We use Bluetooth to anonymously log interactions with other Covid Watch users. Your personal data is always private and never shared.</string>
     <string name="bluetooth_explanation_title">Privately Connect</string>

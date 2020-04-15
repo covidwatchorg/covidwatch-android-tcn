@@ -4,10 +4,10 @@
     <color name="colorIsCurrentUserNotSick">#4CAF50</color>
 
     <!-- Imported from UX Repo -->
-    <color name="colorPrimary">#BE3E49</color>
+    <color name="colorPrimary">#6200EE</color>
     <color name="colorSecondary">#FFFFFF</color>
     <color name="colorTertiary">#779F98</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
     <color name="splashBackgroundLight">#43C4D9</color>
