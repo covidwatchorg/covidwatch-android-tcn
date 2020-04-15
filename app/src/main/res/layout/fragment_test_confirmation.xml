@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:srcCompat="@drawable/bg_circle_image" />
+                app:srcCompat="@drawable/ic_cw_brandmark_blue" />
 
             <View
                 android:layout_width="0dp"
