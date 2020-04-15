@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Observer
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.firestore.LocalContactEventsViewModel
+import org.covidwatch.android.data.backend.LocalContactEventsViewModel
 
 class CurrentUserExposureNotifier(var application: Application) {
 

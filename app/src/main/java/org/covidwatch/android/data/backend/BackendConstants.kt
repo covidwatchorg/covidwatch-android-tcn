@@ -1,9 +1,9 @@
-package org.covidwatch.android.data.firestore
+package org.covidwatch.android.data.backend
 
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-object FirestoreConstants {
+object BackendConstants {
 
     const val COLLECTION_CONTACT_EVENTS: String = "contact_events"
 

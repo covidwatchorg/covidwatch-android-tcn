@@ -10,7 +10,7 @@ import java.util.*
 @TypeConverters(DateConverter::class, UploadStateConverter::class)
 class ContactEvent {
     @PrimaryKey
-    var identifier: String = UUID.randomUUID().toString().toUpperCase()
+    var identifier: String = UUID.randomUUID().toString().toUpperCase(Locale.ROOT)
 
     @ColumnInfo(name = "timestamp")
     var timestamp: Date = Date()
@@ -27,7 +27,7 @@ class ContactEvent {
      * @param CEI The contact event number
      */
     constructor(CEI: String) {
-        identifier = CEI.toUpperCase()
+        identifier = CEI.toUpperCase(Locale.ROOT)
     }
 
     constructor() {}
