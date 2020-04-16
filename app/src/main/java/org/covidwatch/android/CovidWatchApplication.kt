@@ -11,6 +11,9 @@ import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.contactevent.ContactEventsDownloadWorker
 import org.covidwatch.android.data.contactevent.LocalContactEventsUploader
+import org.covidwatch.android.di.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import org.tcncoalition.tcnclient.cen.GeneratedCen
 import org.tcncoalition.tcnclient.toBytes
 import java.util.*
@@ -64,6 +67,11 @@ class CovidWatchApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        startKoin {
+            androidContext(applicationContext)
+            modules(appModule)
+        }
 
         getSharedPreferences(
             getString(R.string.preference_file_key),

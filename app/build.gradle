@@ -39,6 +39,9 @@ android {
     dataBinding {
         enabled = true
     }
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -71,4 +74,9 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore-ktx:21.4.2"
     implementation 'com.google.guava:guava:28.2-jre'
     implementation 'com.github.TCNCoalition:tcn-client-android:0.0.1'
+
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    implementation "org.koin:koin-android:2.1.5"
+    implementation "org.koin:koin-androidx-viewmodel:2.1.5"
 }

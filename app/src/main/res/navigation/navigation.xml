@@ -7,11 +7,11 @@
 
     <fragment
         android:id="@+id/titleFragment"
-        android:name="org.covidwatch.android.TitleFragment"
+        android:name="org.covidwatch.android.SplashFragment"
         android:label="fragment_title"
-        tools:layout="@layout/fragment_title" >
+        tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_titleFragment_to_locationPermissionFragment"
+            android:id="@+id/action_splashFragment_to_locationPermissionFragment"
             app:destination="@id/locationPermissionFragment" />
     </fragment>
     <fragment
@@ -20,16 +20,7 @@
         android:label="fragment_location_permission"
         tools:layout="@layout/fragment_location_permission" >
         <action
-            android:id="@+id/action_locationPermissionFragment_to_onboardingFragment"
-            app:destination="@id/onboardingFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/onboardingFragment"
-        android:name="org.covidwatch.android.OnboardingFragment"
-        android:label="fragment_onboarding"
-        tools:layout="@layout/fragment_onboarding" >
-        <action
-            android:id="@+id/action_onboardingFragment_to_mainFragment"
+            android:id="@+id/action_locationPermissionFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
     <fragment
