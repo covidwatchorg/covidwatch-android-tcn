@@ -1,0 +1,36 @@
+@startuml
+class CovidWatchApplication {}
+class CurrentUserExposureNotifier {}
+note top of CurrentUserExposureNotifier
+Shouldn't this be somewhere
+in a packages?
+end note
+package data.backend {
+    class ContactEventsDownloadWorker {}
+    class LocalContactEventsUploader {}
+    class LocalContactEventsViewModel {}
+    note bottom of LocalContactEventsViewModel
+    Is the backend package really the
+    right place for this class?
+    end note
+    interface ContactEventFetcher {
+        fetch(timeWindowStart, timeWindowEnd)
+    }
+    interface ContactEventPublisher {
+        uploadContactEvents(contactEvents)
+    }
+    package firebase {
+        class FirebaseContactEventFetcher
+        class FirebaseContactEventPublisher
+    }
+}
+
+CovidWatchApplication *-- LocalContactEventsUploader
+CovidWatchApplication *-- CurrentUserExposureNotifier
+CovidWatchApplication --> ContactEventsDownloadWorker: Periodic invoke
+CurrentUserExposureNotifier *-- LocalContactEventsViewModel
+ContactEventsDownloadWorker *-- ContactEventFetcher
+LocalContactEventsUploader *-- ContactEventPublisher
+ContactEventFetcher <-- FirebaseContactEventFetcher
+ContactEventPublisher <-- FirebaseContactEventPublisher
+@enduml
