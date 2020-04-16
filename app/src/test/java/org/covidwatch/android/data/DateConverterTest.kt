@@ -8,7 +8,7 @@ import java.util.*
 
 internal class DateConverterTest {
 
-    private val dateConv = DateConverter()
+    private val dateConv: DateConverter = DateConverter()
 
     @Nested
     inner class ToDate() {

@@ -8,7 +8,7 @@ import java.lang.IllegalArgumentException
 
 internal class UploadStateConverterTest {
 
-    private val uploadStateConv = UploadStateConverter()
+    private val uploadStateConv: UploadStateConverter = UploadStateConverter()
 
     @Nested
     inner class toUploadState() {
