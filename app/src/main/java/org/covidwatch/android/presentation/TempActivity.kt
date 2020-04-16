@@ -11,14 +11,4 @@ class TempActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp)
     }
-
-    override fun onResume() {
-        super.onResume()
-        hideStatusBar()
-    }
-
-    private fun hideStatusBar() {
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        actionBar?.hide()
-    }
 }
