@@ -17,5 +17,6 @@ sealed class Banner(val action: BannerAction) {
 
 sealed class BannerAction {
     object TurnOnBluetooth : BannerAction()
+    object PotentialRisk : BannerAction()
     object NoAction : BannerAction()
 }

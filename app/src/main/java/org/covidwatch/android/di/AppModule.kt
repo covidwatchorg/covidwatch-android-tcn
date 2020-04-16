@@ -1,6 +1,7 @@
 package org.covidwatch.android.di
 
 import android.content.Context
+import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.data.UserFlowRepositoryImpl
 import org.covidwatch.android.presentation.home.HomeViewModel
@@ -24,7 +25,18 @@ val appModule = module {
 
     viewModel {
         HomeViewModel(
-            userFlowRepository = get()
+            userFlowRepository = get(),
+            contactEventDAO = get()
         )
+    }
+
+    single {
+        CovidWatchDatabase.getInstance(androidContext())
+    }
+
+    single {
+        val database: CovidWatchDatabase = get()
+
+        database.contactEventDAO()
     }
 }
