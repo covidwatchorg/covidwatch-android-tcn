@@ -46,6 +46,7 @@
             android:drawableStart="@drawable/ic_info"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right"
             android:drawablePadding="8dp"
+            android:gravity="center_vertical"
             android:padding="32dp"
             android:textColor="@color/white"
             android:textSize="18sp"
