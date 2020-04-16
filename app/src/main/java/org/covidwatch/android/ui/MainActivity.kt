@@ -19,10 +19,10 @@ import androidx.work.*
 import org.covidwatch.android.R
 import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.BluetoothViewModel
-import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.ContactEvent
+import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.backend.ContactEventsDownloadWorker
+import org.covidwatch.android.data.contactevent.ContactEventsDownloadWorker
 
 class MainActivity : AppCompatActivity() {
 

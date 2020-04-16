@@ -1,4 +1,4 @@
-package org.covidwatch.android.data.backend.firebase
+package org.covidwatch.android.data.contactevent.firebase
 
 import android.util.Log
 import com.google.firebase.Timestamp
@@ -6,13 +6,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.backend.BackendConstants
-import org.covidwatch.android.data.backend.ContactEventPublisher
+import org.covidwatch.android.data.contactevent.ContactEventPublisher
 
 /**
  * Firebase implementaton of the ContactEventPublisher interface.
  */
-class FireBaseContactEventPublisher(
+class FirebaseContactEventPublisher(
     private val contactEventDAO: ContactEventDAO
 ) : ContactEventPublisher {
 
@@ -37,10 +36,10 @@ class FireBaseContactEventPublisher(
         db.runBatch { batch ->
             contactEvents.forEach {
                 batch.set(
-                    db.collection(BackendConstants.COLLECTION_CONTACT_EVENTS)
+                    db.collection(FirestoreConstants.COLLECTION_CONTACT_EVENTS)
                         .document(it.identifier),
                     hashMapOf(
-                        BackendConstants.FIELD_TIMESTAMP to Timestamp(
+                        FirestoreConstants.FIELD_TIMESTAMP to Timestamp(
                             it.timestamp
                         )
                     )

@@ -1,4 +1,4 @@
-package org.covidwatch.android.data.backend
+package org.covidwatch.android.data.contactevent
 
 /**
  * Enumeration of all possible infection states of a person

@@ -20,8 +20,8 @@ package data.backend {
         uploadContactEvents(contactEvents)
     }
     package firebase {
-        class FireBaseContactEventFetcher
-        class FireBaseContactEventPublisher
+        class FirebaseContactEventFetcher
+        class FirebaseContactEventPublisher
     }
 }
 
@@ -31,6 +31,6 @@ CovidWatchApplication --> ContactEventsDownloadWorker: Periodic invoke
 CurrentUserExposureNotifier *-- LocalContactEventsViewModel
 ContactEventsDownloadWorker *-- ContactEventFetcher
 LocalContactEventsUploader *-- ContactEventPublisher
-ContactEventFetcher <-- FireBaseContactEventFetcher
-ContactEventPublisher <-- FireBaseContactEventPublisher
+ContactEventFetcher <-- FirebaseContactEventFetcher
+ContactEventPublisher <-- FirebaseContactEventPublisher
 @enduml

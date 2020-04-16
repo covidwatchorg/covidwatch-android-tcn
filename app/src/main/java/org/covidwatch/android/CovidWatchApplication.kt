@@ -9,8 +9,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.backend.ContactEventsDownloadWorker
-import org.covidwatch.android.data.backend.LocalContactEventsUploader
+import org.covidwatch.android.data.contactevent.ContactEventsDownloadWorker
+import org.covidwatch.android.data.contactevent.LocalContactEventsUploader
 import org.tcncoalition.tcnclient.cen.GeneratedCen
 import org.tcncoalition.tcnclient.toBytes
 import java.util.*

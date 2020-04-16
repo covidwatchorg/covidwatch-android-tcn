@@ -1,10 +1,10 @@
-package org.covidwatch.android.data.backend
+package org.covidwatch.android.data.contactevent
 
 import android.app.Application
 import androidx.lifecycle.Observer
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.backend.firebase.FireBaseContactEventPublisher
+import org.covidwatch.android.data.contactevent.firebase.FirebaseContactEventPublisher
 
 class LocalContactEventsUploader(var application: Application) {
 
@@ -16,7 +16,7 @@ class LocalContactEventsUploader(var application: Application) {
     private val contactEventDAO = CovidWatchDatabase.getInstance(application).contactEventDAO()
 
     // TODO: Get ContactEventPublisher via DI
-    private val publisher: ContactEventPublisher = FireBaseContactEventPublisher(contactEventDAO)
+    private val publisher: ContactEventPublisher = FirebaseContactEventPublisher(contactEventDAO)
 
     fun startUploading() {
         viewModel.contactEvents.observeForever(Observer {

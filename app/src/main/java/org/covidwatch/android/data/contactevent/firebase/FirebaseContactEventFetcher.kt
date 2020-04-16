@@ -1,20 +1,19 @@
-package org.covidwatch.android.data.backend.firebase
+package org.covidwatch.android.data.contactevent.firebase
 
 import android.content.Context
 import android.util.Log
 import androidx.work.ListenableWorker
 import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import kotlin.ranges.ClosedRange
 import org.covidwatch.android.R
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.backend.ContactEventFetcher
-import org.covidwatch.android.data.backend.BackendConstants
-import org.covidwatch.android.data.backend.InfectionState
+import org.covidwatch.android.data.contactevent.ContactEventFetcher
+import org.covidwatch.android.data.contactevent.InfectionState
 import java.util.*
 
 /**
@@ -33,9 +32,9 @@ class FirebaseContactEventFetcher(
         markLocalContactEventsCb: List<String>.(InfectionState) -> Unit
     ) {
         val task = FirebaseFirestore.getInstance()
-            .collection(BackendConstants.COLLECTION_CONTACT_EVENTS)
+            .collection(FirestoreConstants.COLLECTION_CONTACT_EVENTS)
             .whereGreaterThan(
-                BackendConstants.FIELD_TIMESTAMP,
+                FirestoreConstants.FIELD_TIMESTAMP,
                 Timestamp(timeWindow.start)
             )
             .get()
@@ -45,9 +44,13 @@ class FirebaseContactEventFetcher(
                     it.result?.handleQueryResult(timeWindow, markLocalContactEventsCb)
                 })
 
-
-        // TODO #14 RE-ADD THIS AFTER FIREBASE QUOTA INCREASED
         Tasks.await(task)
+        checkResultForErrors(task)
+    }
+
+    private fun checkResultForErrors(task: Task<Unit>) {
+        if (!task.isSuccessful)
+            throw task.exception ?: RuntimeException("Could not fetch contacts")
     }
 
     private fun QuerySnapshot.handleQueryResult(
