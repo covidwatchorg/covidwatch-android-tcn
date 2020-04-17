@@ -2,8 +2,10 @@ package org.covidwatch.android.di
 
 import android.content.Context
 import org.covidwatch.android.data.CovidWatchDatabase
+import org.covidwatch.android.data.TestRepositoryImpl
 import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.data.UserFlowRepositoryImpl
+import org.covidwatch.android.domain.TestRepository
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -38,5 +40,11 @@ val appModule = module {
         val database: CovidWatchDatabase = get()
 
         database.contactEventDAO()
+    }
+
+    factory {
+        TestRepositoryImpl(
+            preferences = get()
+        ) as TestRepository
     }
 }
