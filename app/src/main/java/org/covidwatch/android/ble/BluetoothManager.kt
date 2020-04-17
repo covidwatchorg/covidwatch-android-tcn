@@ -15,7 +15,7 @@ import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.presentation.TempActivity
+import org.covidwatch.android.presentation.MainActivitiy
 import org.tcncoalition.tcnclient.BluetoothService
 import org.tcncoalition.tcnclient.BluetoothService.LocalBinder
 import org.tcncoalition.tcnclient.cen.*
@@ -83,7 +83,7 @@ class BluetoothManagerImpl(
     private fun foregroundNotification(): Notification {
         createNotificationChannelIfNeeded()
 
-        val notificationIntent = Intent(app, TempActivity::class.java)
+        val notificationIntent = Intent(app, MainActivitiy::class.java)
         val pendingIntent = PendingIntent.getActivity(
             app, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT
         )

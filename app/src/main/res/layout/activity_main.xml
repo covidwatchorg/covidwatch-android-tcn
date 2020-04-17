@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.covidwatch.android.presentation.TempActivity">
+    tools:context="org.covidwatch.android.presentation.MainActivitiy">
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -13,6 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation_temp" />
+        app:navGraph="@navigation/navigation_main" />
 
 </FrameLayout>
