@@ -14,4 +14,8 @@ class TestRepositoryImpl(
             .putBoolean(IS_CURRENT_USER_SICK_KEY, true)
             .apply()
     }
+
+    override fun isUserTestedPositive(): Boolean {
+        return preferences.getBoolean(IS_CURRENT_USER_SICK_KEY, false)
+    }
 }

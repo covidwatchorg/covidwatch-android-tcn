@@ -10,12 +10,17 @@ import org.covidwatch.android.presentation.util.Event
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
+    private val testRepository: TestRepository,
     private val refreshPublicContactEventsUseCase: RefreshPublicContactEventsUseCase,
     private val maybeEnableContactEventLoggingUseCase: MaybeEnableContactEventLoggingUseCase,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
+
+    private val isUserTestedPositive: Boolean get() = testRepository.isUserTestedPositive()
+    private val _userTestedPositive = MutableLiveData<Unit>()
+    val userTestedPositive: LiveData<Unit> get() = _userTestedPositive
 
     private val _turnOnBluetoothAction = MutableLiveData<Event<Unit>>()
     val turnOnBluetoothAction: LiveData<Event<Unit>> = _turnOnBluetoothAction
@@ -33,7 +38,7 @@ class HomeViewModel(
             }
         }
     private val interactedWithInfectedObserver = Observer<Boolean> { hasPossiblyInteractedWithInfected ->
-        if (hasPossiblyInteractedWithInfected) {
+        if (hasPossiblyInteractedWithInfected && !isUserTestedPositive) {
             _banner.value = Banner.Warning(R.string.contact_alert_text, BannerAction.PotentialRisk)
         }
     }
@@ -54,6 +59,7 @@ class HomeViewModel(
         }
         if (userFlow !is Setup) {
             ensureBluetoothIsOn()
+            checkIfTestedPositive()
             refreshPublicContactEventsUseCase.execute()
             maybeEnableContactEventLoggingUseCase.execute()
         }
@@ -80,6 +86,12 @@ class HomeViewModel(
     private fun ensureBluetoothIsOn() {
         if (bluetoothAdapter?.isEnabled == false) {
             _banner.value = Banner.Info(R.string.turn_bluetooth_on, BannerAction.TurnOnBluetooth)
+        }
+    }
+
+    private fun checkIfTestedPositive() {
+        if (isUserTestedPositive) {
+            _userTestedPositive.value = Unit
         }
     }
 }

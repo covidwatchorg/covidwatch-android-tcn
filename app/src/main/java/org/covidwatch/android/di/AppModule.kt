@@ -31,6 +31,7 @@ val appModule = module {
     viewModel {
         HomeViewModel(
             userFlowRepository = get(),
+            testRepository = get(),
             refreshPublicContactEventsUseCase = get(),
             maybeEnableContactEventLoggingUseCase = get(),
             contactEventDAO = get()

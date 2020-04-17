@@ -59,6 +59,9 @@ class HomeFragment : Fragment() {
         homeViewModel.turnOnBluetoothAction.observe(viewLifecycleOwner, EventObserver {
             turnOnBluetooth()
         })
+        homeViewModel.userTestedPositive.observe(viewLifecycleOwner, Observer {
+            updateUiForTestedPositive()
+        })
 
         initClickListeners()
     }
@@ -112,6 +115,12 @@ class HomeFragment : Fragment() {
     private fun updateUiForReturnUser() {
         binding.homeTitle.setText(R.string.welcome_back_title)
         binding.homeSubtitle.setText(R.string.not_detected_text)
+    }
+
+    private fun updateUiForTestedPositive() {
+        binding.homeSubtitle.setText(R.string.reported_tested_positive_text)
+        binding.testedButton.isVisible = false
+        binding.testedButtonText.isVisible = false
     }
 
     private fun maybeShowBanner(banner: Banner) {
