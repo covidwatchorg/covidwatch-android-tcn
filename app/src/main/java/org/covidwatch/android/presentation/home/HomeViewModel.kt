@@ -5,14 +5,13 @@ import androidx.lifecycle.*
 import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
-import org.covidwatch.android.domain.FirstTimeUser
-import org.covidwatch.android.domain.Setup
-import org.covidwatch.android.domain.UserFlow
-import org.covidwatch.android.domain.UserFlowRepository
+import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.util.Event
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
+    private val refreshPublicContactEventsUseCase: RefreshPublicContactEventsUseCase,
+    private val maybeEnableContactEventLoggingUseCase: MaybeEnableContactEventLoggingUseCase,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
 
@@ -55,6 +54,8 @@ class HomeViewModel(
         }
         if (userFlow !is Setup) {
             ensureBluetoothIsOn()
+            refreshPublicContactEventsUseCase.execute()
+            maybeEnableContactEventLoggingUseCase.execute()
         }
         _userFlow.value = userFlow
     }

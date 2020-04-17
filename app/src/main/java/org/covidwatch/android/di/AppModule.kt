@@ -1,10 +1,13 @@
 package org.covidwatch.android.di
 
 import android.content.Context
+import androidx.work.WorkManager
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestRepositoryImpl
 import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.data.UserFlowRepositoryImpl
+import org.covidwatch.android.domain.MaybeEnableContactEventLoggingUseCase
+import org.covidwatch.android.domain.RefreshPublicContactEventsUseCase
 import org.covidwatch.android.domain.TestRepository
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.koin.android.ext.koin.androidContext
@@ -28,6 +31,8 @@ val appModule = module {
     viewModel {
         HomeViewModel(
             userFlowRepository = get(),
+            refreshPublicContactEventsUseCase = get(),
+            maybeEnableContactEventLoggingUseCase = get(),
             contactEventDAO = get()
         )
     }
@@ -46,5 +51,18 @@ val appModule = module {
         TestRepositoryImpl(
             preferences = get()
         ) as TestRepository
+    }
+
+    factory {
+        val workManager = WorkManager.getInstance(androidContext())
+
+        RefreshPublicContactEventsUseCase(workManager)
+    }
+
+    factory {
+        MaybeEnableContactEventLoggingUseCase(
+            context = androidContext(),
+            preferences = get()
+        )
     }
 }
