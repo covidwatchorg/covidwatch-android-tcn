@@ -1,3 +1,5 @@
+![](https://github.com/covid19risk/covidwatch-android/workflows/android-develop/badge.svg)
+
 # CovidWatch Android POC
 Android POC for www.covid-watch.org
 
