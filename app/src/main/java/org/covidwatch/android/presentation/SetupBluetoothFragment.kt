@@ -7,6 +7,8 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.R
+import org.covidwatch.android.domain.UserFlowRepository
+import org.koin.android.ext.android.inject
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -15,6 +17,8 @@ private const val LOCATION_PERMISSION = 100
 
 class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth),
     EasyPermissions.PermissionCallbacks {
+
+    private val userFlowRepository: UserFlowRepository by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,7 +32,7 @@ class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth),
     private fun grantLocationPermission() {
         val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
         if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
-            findNavController().navigate(R.id.homeFragment)
+            permissionGranted()
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(
@@ -55,6 +59,11 @@ class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth),
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        findNavController().navigate(R.id.homeFragment)
+        permissionGranted()
+    }
+
+    private fun permissionGranted() {
+        userFlowRepository.updateSetupUserFlow()
+        findNavController().popBackStack(R.id.homeFragment, false)
     }
 }
