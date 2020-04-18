@@ -1,6 +1,7 @@
 package org.covidwatch.android.ble
 
 import android.app.*
+import android.bluetooth.BluetoothAdapter
 import android.content.ComponentName
 import android.content.Context
 import android.content.Context.BIND_AUTO_CREATE
@@ -57,7 +58,7 @@ class BluetoothManagerImpl(
                         foregroundNotification()
                     )
                 )
-                start()
+                if (BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser != null) start()
             }
 
             runTimer()
