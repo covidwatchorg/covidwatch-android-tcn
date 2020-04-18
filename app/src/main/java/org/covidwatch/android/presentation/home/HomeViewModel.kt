@@ -40,6 +40,8 @@ class HomeViewModel(
     private val interactedWithInfectedObserver = Observer<Boolean> { hasPossiblyInteractedWithInfected ->
         if (hasPossiblyInteractedWithInfected && !isUserTestedPositive) {
             _banner.value = Banner.Warning(R.string.contact_alert_text, BannerAction.PotentialRisk)
+        } else {
+            _banner.value = Banner.Warning(R.string.reported_alert_text, BannerAction.PotentialRisk)
         }
     }
 
