@@ -24,6 +24,7 @@ import org.tcncoalition.tcnclient.toUUID
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+
 interface BluetoothManager {
     fun startAdvertiser(cen: Cen)
     fun stopAdvertiser()
@@ -109,7 +110,8 @@ class BluetoothManagerImpl(
     override fun startService(cen: Cen) {
         cenGenerator.cen = cen
         app.bindService(intent, serviceConnection, BIND_AUTO_CREATE)
-        app.startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) app.startForegroundService(intent)
+        else app.startService(intent)
     }
 
     override fun stopAdvertiser() {
