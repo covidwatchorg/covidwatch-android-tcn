@@ -9,13 +9,13 @@ import org.covidwatch.android.data.ContactEventDAO
 class NotifyAboutPossibleExposureUseCase(
     private val context: Context,
     private val notificationFactory: NotificationFactory,
-    private val testRepository: TestRepository,
+    private val testedRepository: TestedRepository,
     private val contactEventDAO: ContactEventDAO
 ) {
 
     @WorkerThread
     fun execute() {
-        if (testRepository.isUserTestedPositive()) return
+        if (testedRepository.isUserTestedPositive()) return
 
         val contactEvents = contactEventDAO.all
         if (contactEvents.any { it.wasPotentiallyInfectious }) {

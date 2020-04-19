@@ -3,16 +3,16 @@ package org.covidwatch.android.presentation
 import androidx.lifecycle.*
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
-import org.covidwatch.android.domain.TestRepository
+import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.presentation.util.Event
 import org.covidwatch.android.presentation.util.getDistinct
 
 class MainViewModel(
-    private val testRepository: TestRepository,
+    private val testedRepository: TestedRepository,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
 
-    private val isUserTestedPositive: Boolean get() = testRepository.isUserTestedPositive()
+    private val isUserTestedPositive: Boolean get() = testedRepository.isUserTestedPositive()
 
     private val hasPossiblyInteractedWithInfected: LiveData<Boolean> =
         Transformations

@@ -11,14 +11,14 @@ import org.covidwatch.android.presentation.util.getDistinct
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
-    private val testRepository: TestRepository,
+    private val testedRepository: TestedRepository,
     private val maybeEnableContactEventLoggingUseCase: MaybeEnableContactEventLoggingUseCase,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
 
-    private val isUserTestedPositive: Boolean get() = testRepository.isUserTestedPositive()
+    private val isUserTestedPositive: Boolean get() = testedRepository.isUserTestedPositive()
     private val _userTestedPositive = MutableLiveData<Unit>()
     val userTestedPositive: LiveData<Unit> get() = _userTestedPositive
 

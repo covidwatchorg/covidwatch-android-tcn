@@ -3,7 +3,7 @@ package org.covidwatch.android.di
 import android.content.Context
 import org.covidwatch.android.NotificationFactory
 import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.TestRepositoryImpl
+import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
 import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.MainViewModel
@@ -28,7 +28,7 @@ val appModule = module {
 
     viewModel {
         MainViewModel(
-            testRepository = get(),
+            testedRepository = get(),
             contactEventDAO = get()
         )
     }
@@ -36,7 +36,7 @@ val appModule = module {
     viewModel {
         HomeViewModel(
             userFlowRepository = get(),
-            testRepository = get(),
+            testedRepository = get(),
             maybeEnableContactEventLoggingUseCase = get(),
             contactEventDAO = get()
         )
@@ -53,9 +53,9 @@ val appModule = module {
     }
 
     factory {
-        TestRepositoryImpl(
+        TestedRepositoryImpl(
             preferences = get()
-        ) as TestRepository
+        ) as TestedRepository
     }
 
     factory {
@@ -69,7 +69,7 @@ val appModule = module {
         NotifyAboutPossibleExposureUseCase(
             context = androidContext(),
             notificationFactory = get(),
-            testRepository = get(),
+            testedRepository = get(),
             contactEventDAO = get()
         )
     }
