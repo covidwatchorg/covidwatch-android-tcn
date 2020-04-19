@@ -36,7 +36,8 @@
     <string name="textView" />
     <string name="disclaimer"><![CDATA[By clicking Report, you acknowledge, understand and further agree to our Privacy Policy and Terms & Conditions]]></string>
     <string name="ble_location_permission">The permission to get BLE location data is required</string>
-    <string name="foreground_notification_title">Tags is logging</string>
+    <string name="foreground_notification_title">Covid Watch is running</string>
+    <string name="foreground_notification_ble_off">Covid Watch needs Bluetooth to be turned on</string>
     <string name="not_contacted">You have NOT been contacted.</string>
     <string name="based_on">Based on last 14 days of activity.</string>
     <string name="we_dont_share">We don\'t share with Big Brother.</string>
