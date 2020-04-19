@@ -11,25 +11,25 @@ internal class UploadStateConverterTest {
     private val uploadStateConv: UploadStateConverter = UploadStateConverter()
 
     @Nested
-    inner class toUploadState() {
+    inner class ToUploadState() {
 
         @Test
-        fun `check conversion to NOTUPLOADED`() {
+        fun `Convert Long to NOTUPLOADED`() {
             assertThat(uploadStateConv.toUploadState(ContactEvent.UploadState.NOTUPLOADED.code))
                 .isEqualTo(ContactEvent.UploadState.NOTUPLOADED)
         }
         @Test
-        fun `check conversion to UPLOADING`() {
+        fun `Convert Long to UPLOADING`() {
             assertThat(uploadStateConv.toUploadState(ContactEvent.UploadState.UPLOADING.code))
                 .isEqualTo(ContactEvent.UploadState.UPLOADING)
         }
         @Test
-        fun `check conversion to UPLOADED`() {
+        fun `Convert Long to UPLOADED`() {
             assertThat(uploadStateConv.toUploadState(ContactEvent.UploadState.UPLOADED.code))
                 .isEqualTo(ContactEvent.UploadState.UPLOADED)
         }
         @Test
-        fun `check IllegalArgumentException`() {
+        fun `Input Invalid Long Throw IllegalArgumentException`() {
             assertThatThrownBy {uploadStateConv.toUploadState(-1)}
                 .isExactlyInstanceOf(IllegalArgumentException::class.java)
         }
@@ -37,20 +37,20 @@ internal class UploadStateConverterTest {
     }
 
     @Nested
-    inner class toInteger() {
+    inner class ToInteger() {
 
         @Test
-        fun `check conversion from NOTUPLOADED`() {
+        fun `Convert NOTUPLOADED to Long`() {
             assertThat(uploadStateConv.toInteger(ContactEvent.UploadState.NOTUPLOADED))
                 .isEqualTo(ContactEvent.UploadState.NOTUPLOADED.code)
         }
         @Test
-        fun `check conversion from UPLOADING`() {
+        fun `Convert UPLOADING to Long`() {
             assertThat(uploadStateConv.toInteger(ContactEvent.UploadState.UPLOADING))
                 .isEqualTo(ContactEvent.UploadState.UPLOADING.code)
         }
         @Test
-        fun `check conversion from UPLOADED`() {
+        fun `Convert UPLOADED to Long`() {
             assertThat(uploadStateConv.toInteger(ContactEvent.UploadState.UPLOADED))
                 .isEqualTo(ContactEvent.UploadState.UPLOADED.code)
         }

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import org.covidwatch.android.R
 
-class MainActivitiy : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
