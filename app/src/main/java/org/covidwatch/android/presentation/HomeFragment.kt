@@ -14,10 +14,7 @@ import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.BuildConfig
 import org.covidwatch.android.R
 import org.covidwatch.android.databinding.FragmentHomeBinding
-import org.covidwatch.android.domain.FirstTimeUser
-import org.covidwatch.android.domain.ReturnUser
-import org.covidwatch.android.domain.Setup
-import org.covidwatch.android.domain.UserFlow
+import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.home.Banner
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.covidwatch.android.presentation.util.EventObserver
@@ -103,6 +100,9 @@ class HomeFragment : Fragment() {
             }
             is ReturnUser -> {
                 updateUiForReturnUser()
+            }
+            is PotentialRisk -> {
+                findNavController().navigate(R.id.action_homeFragment_to_potentialRiskFragment)
             }
         }
     }

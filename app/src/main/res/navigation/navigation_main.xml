@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_homeFragment_to_splashFragment"
             app:destination="@id/splashFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_potentialRiskFragment"
+            app:destination="@id/action_homeFragment_to_potentialRiskFragment" />
     </fragment>
     <fragment
         android:id="@+id/testQuestionsFragment"
@@ -66,4 +69,9 @@
         android:name="org.covidwatch.android.presentation.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/action_homeFragment_to_potentialRiskFragment"
+        android:name="org.covidwatch.android.presentation.test.PotentialRiskFragment"
+        android:label="PotentialRiskFragment"
+        tools:layout="@layout/fragment_potential_risk"/>
 </navigation>

@@ -78,7 +78,7 @@ class HomeViewModel(
                 _turnOnBluetoothAction.value = Event(Unit)
             }
             is BannerAction.PotentialRisk -> {
-                // TODO: navigate to Potential Risk screen
+                _userFlow.value = PotentialRisk
             }
         }
     }
