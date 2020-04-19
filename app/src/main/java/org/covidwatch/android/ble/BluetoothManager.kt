@@ -58,7 +58,7 @@ class BluetoothManagerImpl(
                         foregroundNotification()
                     )
                 )
-                if (BluetoothAdapter.getDefaultAdapter().bluetoothLeAdvertiser != null) start()
+                if (BluetoothAdapter.getDefaultAdapter()?.bluetoothLeAdvertiser != null) start()
             }
 
             runTimer()

@@ -12,7 +12,7 @@ import org.covidwatch.android.presentation.util.getDistinct
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testedRepository: TestedRepository,
-    private val maybeEnableContactEventLoggingUseCase: MaybeEnableContactEventLoggingUseCase,
+    private val enableContactEventLoggingUseCase: EnableContactEventLoggingUseCase,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
 
@@ -21,6 +21,9 @@ class HomeViewModel(
     private val isUserTestedPositive: Boolean get() = testedRepository.isUserTestedPositive()
     private val _userTestedPositive = MutableLiveData<Unit>()
     val userTestedPositive: LiveData<Unit> get() = _userTestedPositive
+
+    private val _locationPermissionAction = MutableLiveData<Event<Unit>>()
+    val locationPermissionAction: LiveData<Event<Unit>> = _locationPermissionAction
 
     private val _turnOnBluetoothAction = MutableLiveData<Event<Unit>>()
     val turnOnBluetoothAction: LiveData<Event<Unit>> = _turnOnBluetoothAction
@@ -50,6 +53,10 @@ class HomeViewModel(
 
     init {
         hasPossiblyInteractedWithInfected.observeForever(interactedWithInfectedObserver)
+        val userFlow = userFlowRepository.getUserFlow()
+        if (userFlow !is Setup) {
+            _locationPermissionAction.value = Event(Unit)
+        }
     }
 
     override fun onCleared() {
@@ -65,7 +72,6 @@ class HomeViewModel(
         if (userFlow !is Setup) {
             ensureBluetoothIsOn()
             checkIfTestedPositive()
-            maybeEnableContactEventLoggingUseCase.execute()
         }
         _userFlow.value = userFlow
     }
@@ -81,6 +87,10 @@ class HomeViewModel(
                 // TODO: navigate to Potential Risk screen
             }
         }
+    }
+
+    fun locationPermissionIsGranted() {
+        enableContactEventLoggingUseCase.execute()
     }
 
     fun bluetoothIsOn() {

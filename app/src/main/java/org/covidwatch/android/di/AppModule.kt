@@ -29,7 +29,7 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
-            maybeEnableContactEventLoggingUseCase = get(),
+            enableContactEventLoggingUseCase = get(),
             contactEventDAO = get()
         )
     }
@@ -51,8 +51,7 @@ val appModule = module {
     }
 
     factory {
-        MaybeEnableContactEventLoggingUseCase(
-            context = androidContext(),
+        EnableContactEventLoggingUseCase(
             preferences = get()
         )
     }

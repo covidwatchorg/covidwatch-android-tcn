@@ -1,5 +1,6 @@
 package org.covidwatch.android.presentation
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
@@ -22,15 +23,26 @@ import org.covidwatch.android.presentation.home.Banner
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.covidwatch.android.presentation.util.EventObserver
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
+private const val LOCATION_PERMISSION = 100
 private const val REQUEST_ENABLE_BT = 101
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by viewModel()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        homeViewModel.locationPermissionAction.observe(this, EventObserver {
+            ensureLocationPermissionIsGranted()
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -139,6 +151,40 @@ class HomeFragment : Fragment() {
                 binding.bannerText.isVisible = false
             }
         }
+    }
+
+    @AfterPermissionGranted(LOCATION_PERMISSION)
+    private fun ensureLocationPermissionIsGranted() {
+        val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
+            homeViewModel.locationPermissionIsGranted()
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                this,
+                getString(R.string.bluetooth_explanation_subtext),
+                LOCATION_PERMISSION, *perms
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        homeViewModel.locationPermissionIsGranted()
     }
 
     private fun turnOnBluetooth() {
