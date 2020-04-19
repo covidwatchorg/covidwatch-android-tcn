@@ -44,13 +44,13 @@ class PotentialRiskFragment : Fragment() {
         binding.closeButton.setOnClickListener {
             findNavController().popBackStack()
         }
-        binding.negativeButton.setOnClickListener {
+        binding.riskNegativeButton.setOnClickListener {
             testQuestionsViewModel.onRadioButtonClicked(false)
         }
-        binding.positiveButton.setOnClickListener {
+        binding.riskPositiveButton.setOnClickListener {
             testQuestionsViewModel.onRadioButtonClicked(true)
         }
-        binding.continueButton.setOnClickListener {
+        binding.riskContinueButton.setOnClickListener {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
     }
@@ -63,10 +63,10 @@ class PotentialRiskFragment : Fragment() {
     private fun updateUi(isTested: Boolean) {
         val negativeIconId = if (isTested) 0 else R.drawable.ic_check_true
         val positiveIconId = if (isTested) R.drawable.ic_check_true else 0
-        binding.negativeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, negativeIconId, 0)
-        binding.positiveButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, positiveIconId, 0)
+        binding.riskNegativeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, negativeIconId, 0)
+        binding.riskPositiveButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, positiveIconId, 0)
 
         binding.negativeButtonText.isVisible = !isTested
-        binding.continueButton.isVisible = !isTested
+        binding.riskContinueButton.isVisible = !isTested
     }
 }

@@ -16,6 +16,7 @@ import org.covidwatch.android.R
 import org.covidwatch.android.databinding.FragmentHomeBinding
 import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.home.Banner
+import org.covidwatch.android.presentation.home.BannerAction
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.covidwatch.android.presentation.util.EventObserver
 import org.koin.androidx.viewmodel.ext.android.viewModel
