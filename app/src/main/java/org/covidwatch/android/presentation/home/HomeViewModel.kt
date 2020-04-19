@@ -7,6 +7,7 @@ import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
 import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.util.Event
+import org.covidwatch.android.presentation.util.getDistinct
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
@@ -32,11 +33,14 @@ class HomeViewModel(
     val userFlow: LiveData<UserFlow> get() = _userFlow
 
     private val hasPossiblyInteractedWithInfected: LiveData<Boolean> =
-        Transformations.map(contactEventDAO.allSortedByDescTimestamp) { cenList ->
-            cenList.fold(initial = false) { isInfected: Boolean, event: ContactEvent ->
-                isInfected || event.wasPotentiallyInfectious
+        Transformations
+            .map(contactEventDAO.allSortedByDescTimestamp) { cenList ->
+                cenList.fold(initial = false) { isInfected: Boolean, event: ContactEvent ->
+                    isInfected || event.wasPotentiallyInfectious
+                }
             }
-        }
+            .getDistinct()
+
     private val interactedWithInfectedObserver = Observer<Boolean> { hasPossiblyInteractedWithInfected ->
         if (hasPossiblyInteractedWithInfected && !isUserTestedPositive) {
             _banner.value = Banner.Warning(R.string.contact_alert_text, BannerAction.PotentialRisk)

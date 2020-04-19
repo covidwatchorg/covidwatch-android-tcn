@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.work.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.contactevent.ContactEventsDownloadWorker
@@ -23,8 +21,6 @@ import java.util.concurrent.TimeUnit
 class CovidWatchApplication : Application() {
 
     private lateinit var localContactEventsUploader: LocalContactEventsUploader
-    private lateinit var currentUserExposureNotifier: CurrentUserExposureNotifier
-    private val mainScope = CoroutineScope(Dispatchers.Main)
     //TODO: Move to DI module
     private val bluetoothManager = BluetoothManagerImpl(this)
 
@@ -82,10 +78,6 @@ class CovidWatchApplication : Application() {
         localContactEventsUploader.startUploading()
 
         schedulePeriodicPublicContactEventsRefresh()
-
-        currentUserExposureNotifier =
-            CurrentUserExposureNotifier(this)
-        currentUserExposureNotifier.startObservingLocalContactEvents()
 
         val isContactEventLoggingEnabled = getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
