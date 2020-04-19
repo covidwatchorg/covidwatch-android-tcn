@@ -12,7 +12,6 @@ import org.covidwatch.android.presentation.util.getDistinct
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testRepository: TestRepository,
-    private val refreshPublicContactEventsUseCase: RefreshPublicContactEventsUseCase,
     private val maybeEnableContactEventLoggingUseCase: MaybeEnableContactEventLoggingUseCase,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
@@ -66,7 +65,6 @@ class HomeViewModel(
         if (userFlow !is Setup) {
             ensureBluetoothIsOn()
             checkIfTestedPositive()
-            refreshPublicContactEventsUseCase.execute()
             maybeEnableContactEventLoggingUseCase.execute()
         }
         _userFlow.value = userFlow

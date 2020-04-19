@@ -6,17 +6,18 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import org.covidwatch.android.CHANNEL_ID
+import org.covidwatch.android.NotificationFactory
 import org.covidwatch.android.R
 import org.covidwatch.android.presentation.util.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-private const val CHANNEL_ID = "CurrentUserExposureNotifier"
 
 class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModel()
+    private val notificationFactory: NotificationFactory by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun notifyUserOfPossibleExposure() {
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentText(application.getString(R.string.notification_current_user_was_exposed))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setCategory(NotificationCompat.CATEGORY_EVENT)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .build()
-
+        val notification = notificationFactory.possibleExposure()
         NotificationManagerCompat.from(this).notify(0, notification)
     }
 }

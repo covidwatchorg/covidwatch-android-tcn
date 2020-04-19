@@ -1,14 +1,11 @@
 package org.covidwatch.android.di
 
 import android.content.Context
-import androidx.work.WorkManager
+import org.covidwatch.android.NotificationFactory
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestRepositoryImpl
-import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.data.UserFlowRepositoryImpl
-import org.covidwatch.android.domain.MaybeEnableContactEventLoggingUseCase
-import org.covidwatch.android.domain.RefreshPublicContactEventsUseCase
-import org.covidwatch.android.domain.TestRepository
+import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.MainViewModel
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.koin.android.ext.koin.androidContext
@@ -40,7 +37,6 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testRepository = get(),
-            refreshPublicContactEventsUseCase = get(),
             maybeEnableContactEventLoggingUseCase = get(),
             contactEventDAO = get()
         )
@@ -63,15 +59,22 @@ val appModule = module {
     }
 
     factory {
-        val workManager = WorkManager.getInstance(androidContext())
-
-        RefreshPublicContactEventsUseCase(workManager)
-    }
-
-    factory {
         MaybeEnableContactEventLoggingUseCase(
             context = androidContext(),
             preferences = get()
         )
+    }
+
+    factory {
+        NotifyAboutPossibleExposureUseCase(
+            context = androidContext(),
+            notificationFactory = get(),
+            testRepository = get(),
+            contactEventDAO = get()
+        )
+    }
+
+    factory {
+        NotificationFactory(androidContext())
     }
 }
