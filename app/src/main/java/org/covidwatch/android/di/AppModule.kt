@@ -6,7 +6,6 @@ import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
 import org.covidwatch.android.domain.*
-import org.covidwatch.android.presentation.MainViewModel
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -24,13 +23,6 @@ val appModule = module {
         val context = androidContext()
 
         context.getSharedPreferences("org.covidwatch.android.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE)
-    }
-
-    viewModel {
-        MainViewModel(
-            testedRepository = get(),
-            contactEventDAO = get()
-        )
     }
 
     viewModel {

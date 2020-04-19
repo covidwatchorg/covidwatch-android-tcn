@@ -1,8 +1,11 @@
 package org.covidwatch.android
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.util.Log
 import androidx.work.*
 import org.covidwatch.android.ble.BluetoothManagerImpl
@@ -77,6 +80,7 @@ class CovidWatchApplication : Application() {
         localContactEventsUploader = LocalContactEventsUploader(this)
         localContactEventsUploader.startUploading()
 
+        createNotificationChannel()
         schedulePeriodicPublicContactEventsRefresh()
 
         val isContactEventLoggingEnabled = getSharedPreferences(
@@ -86,8 +90,20 @@ class CovidWatchApplication : Application() {
             false
         )
         configureAdvertising(isContactEventLoggingEnabled)
+    }
 
-
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = getString(R.string.channel_description)
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     private fun schedulePeriodicPublicContactEventsRefresh() {
@@ -97,7 +113,7 @@ class CovidWatchApplication : Application() {
             .build()
 
         val downloadRequest =
-            PeriodicWorkRequestBuilder<ContactEventsDownloadWorker>(3, TimeUnit.HOURS)
+            PeriodicWorkRequestBuilder<ContactEventsDownloadWorker>(1, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
 
