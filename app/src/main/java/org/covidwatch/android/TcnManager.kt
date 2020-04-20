@@ -14,7 +14,9 @@ import org.tcncoalition.tcnclient.toUUID
 class TcnManager(
     private val context: Context,
     private val tcnKeys: TcnKeys,
-    private val bluetoothManager: BluetoothManager
+    private val bluetoothManager: BluetoothManager,
+    private val contactEventDAO: ContactEventDAO,
+    private val sharedPreferences: SharedPreferences
 ) {
 
     private var sharedPreferenceChangeListener =
@@ -31,10 +33,7 @@ class TcnManager(
         }
 
     fun start() {
-        context.getSharedPreferences(
-            context.getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE
-        ).registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
 
         bluetoothManager.setCallback(object : TcnBluetoothServiceCallback {
             override fun generateTcn() = tcnKeys.generateTcn()
@@ -53,15 +52,12 @@ class TcnManager(
 
     private fun logTcn(tcn: ByteArray) {
         CovidWatchDatabase.databaseWriteExecutor.execute {
-
-            val dao: ContactEventDAO = CovidWatchDatabase.getInstance(context).contactEventDAO()
             val contactEvent = ContactEvent(tcn.toUUID().toString())
-            val isCurrentUserSick = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            ).getBoolean(context.getString(R.string.preference_is_current_user_sick), false)
-            contactEvent.wasPotentiallyInfectious = isCurrentUserSick
-            dao.insert(contactEvent)
+            contactEvent.wasPotentiallyInfectious = sharedPreferences.getBoolean(
+                context.getString(R.string.preference_is_current_user_sick),
+                false
+            )
+            contactEventDAO.insert(contactEvent)
         }
     }
 }

@@ -90,7 +90,9 @@ val appModule = module {
         TcnManager(
             context = androidApplication(),
             tcnKeys = TcnKeys(androidApplication()),
-            bluetoothManager = get()
+            bluetoothManager = get(),
+            contactEventDAO = get(),
+            sharedPreferences = get()
         )
     }
 }
