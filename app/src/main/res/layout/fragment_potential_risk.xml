@@ -90,16 +90,12 @@
                 android:orientation="horizontal"
                 android:layout_marginHorizontal="32dp">
 
-                <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/checkmark_image_content_descriptor"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/check" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/check"
+                    android:drawablePadding="24dp"
+                    android:paddingStart="24dp"
                     android:text="@string/monitor_symptoms"
                     android:textSize="18sp" />
 
@@ -113,16 +109,12 @@
                 android:orientation="horizontal"
                 android:layout_marginHorizontal="32dp">
 
-                <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/checkmark_image_content_descriptor"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/check" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/check"
+                    android:drawablePadding="24dp"
+                    android:paddingStart="24dp"
                     android:text="@string/isolate_from_others"
                     android:textSize="18sp" />
 
@@ -136,18 +128,14 @@
                 android:orientation="horizontal"
                 android:layout_marginHorizontal="32dp">
 
-                <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/checkmark_image_content_descriptor"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/check" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/check"
+                    android:drawablePadding="24dp"
                     android:text="@string/rest_and_take_care"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:paddingStart="24dp" />
 
             </LinearLayout>
 
@@ -159,16 +147,12 @@
                 android:orientation="horizontal"
                 android:layout_marginHorizontal="32dp">
 
-                <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/checkmark_image_content_descriptor"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/check" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/check"
+                    android:drawablePadding="24dp"
+                    android:paddingStart="24dp"
                     android:text="@string/get_tested_if_advised"
                     android:textSize="18sp" />
 
@@ -182,15 +166,12 @@
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginBottom="32dp">
 
-                <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/checkmark_image_content_descriptor"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/check" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/check"
+                    android:drawablePadding="24dp"
+                    android:paddingStart="24dp"
                     android:text="@string/refer_to_local_agencies"
                     android:textSize="18sp" />
 
