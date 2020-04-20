@@ -57,6 +57,9 @@ class HomeFragment : Fragment() {
         homeViewModel.turnOnBluetoothAction.observe(viewLifecycleOwner, EventObserver {
             turnOnBluetooth()
         })
+        homeViewModel.potentialRiskAction.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigate(R.id.action_homeFragment_to_potentialRiskFragment)
+        })
         homeViewModel.userTestedPositive.observe(viewLifecycleOwner, Observer {
             updateUiForTestedPositive()
         })
@@ -101,9 +104,6 @@ class HomeFragment : Fragment() {
             }
             is ReturnUser -> {
                 updateUiForReturnUser()
-            }
-            is PotentialRisk -> {
-                findNavController().navigate(R.id.action_homeFragment_to_potentialRiskFragment)
             }
         }
     }
