@@ -56,7 +56,8 @@ val appModule = module {
 
     factory {
         TestedRepositoryImpl(
-            preferences = get()
+            preferences = get(),
+            contactEventDAO = get()
         ) as TestedRepository
     }
 
@@ -79,11 +80,10 @@ val appModule = module {
 
     single {
         TcnManager(
-            context = androidApplication(),
             tcnKeys = TcnKeys(androidApplication()),
             bluetoothManager = get(),
             contactEventDAO = get(),
-            sharedPreferences = get()
+            testedRepository = get()
         )
     }
 }
