@@ -13,7 +13,7 @@ android {
     }
     defaultConfig {
         applicationId "org.covidwatch.tags.android"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -74,7 +74,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.3.4"
     implementation "com.google.firebase:firebase-firestore-ktx:21.4.2"
     implementation 'com.google.guava:guava:29.0-android'
-    implementation 'com.github.TCNCoalition:tcn-client-android:0.0.1'
+    implementation 'com.github.TCNCoalition:tcn-client-android:0.0.2'
 
     implementation 'pub.devrel:easypermissions:3.0.0'
 
