@@ -14,12 +14,12 @@ import org.covidwatch.android.R
 import org.covidwatch.android.databinding.FragmentTestQuestionsBinding
 import java.util.*
 
-class TestQuestionsFragment : Fragment() {
+class TestQuestionsFragment : Fragment(), DatePickerMixin {
 
     private var _binding: FragmentTestQuestionsBinding? = null
     private val binding get() = _binding!!
 
-    private val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
+    override val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +62,7 @@ class TestQuestionsFragment : Fragment() {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
         binding.dateButton.setOnClickListener {
-            showDatePicker()
+            showDatePicker(this)
         }
         binding.reportButton.setOnClickListener {
             findNavController().navigate(R.id.testConfirmationFragment)
@@ -89,25 +89,5 @@ class TestQuestionsFragment : Fragment() {
     private fun toggleReportButton(isVisible: Boolean) {
         binding.reportButton.isVisible = isVisible
         binding.reportButtonText.isVisible = isVisible
-    }
-
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val dialog = DatePickerDialog(
-            requireContext(),
-            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-                testQuestionsViewModel.onDateSelected(calendar.time)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        dialog.datePicker.maxDate = Date().time
-
-        dialog.show()
     }
 }

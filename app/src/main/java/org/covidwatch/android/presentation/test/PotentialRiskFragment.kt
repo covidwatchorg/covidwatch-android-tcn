@@ -15,12 +15,12 @@ import org.covidwatch.android.databinding.FragmentPotentialRiskBinding
 import org.covidwatch.android.databinding.FragmentTestQuestionsBinding
 import java.util.*
 
-class PotentialRiskFragment : Fragment() {
+class PotentialRiskFragment : Fragment(), DatePickerMixin {
 
     private var _binding: FragmentPotentialRiskBinding? = null
     private val binding get() = _binding!!
 
-    private val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
+    override val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,9 +34,18 @@ class PotentialRiskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        testQuestionsViewModel.testDate.observe(viewLifecycleOwner, Observer {
+            val checkedIconId = if (it.isChecked) R.drawable.ic_check_true else 0
+            binding.riskDateButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, checkedIconId, 0)
+            binding.riskDateButton.text = it?.formattedDate
+        })
         testQuestionsViewModel.isTested.observe(viewLifecycleOwner, Observer {
             updateUi(it)
         })
+        testQuestionsViewModel.isReportButtonVisible.observe(viewLifecycleOwner, Observer {
+            toggleReportButton(it)
+        })
+
         initClickListeners()
     }
 
@@ -53,6 +62,12 @@ class PotentialRiskFragment : Fragment() {
         binding.riskContinueButton.setOnClickListener {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
+        binding.riskDateButton.setOnClickListener {
+            showDatePicker(this)
+        }
+        binding.riskReportButton.setOnClickListener {
+            findNavController().navigate(R.id.testConfirmationFragment)
+        }
     }
 
     override fun onDestroyView() {
@@ -68,5 +83,12 @@ class PotentialRiskFragment : Fragment() {
 
         binding.negativeButtonText.isVisible = !isTested
         binding.riskContinueButton.isVisible = !isTested
+        binding.positiveButtonText.isVisible = isTested
+        binding.riskDateButton.isVisible = isTested
+    }
+
+    private fun toggleReportButton(isVisible: Boolean) {
+        binding.riskReportButton.isVisible = isVisible
+        binding.reportButtonText.isVisible = isVisible
     }
 }
