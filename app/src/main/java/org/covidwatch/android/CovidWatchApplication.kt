@@ -9,7 +9,6 @@ import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.contactevent.ContactEventsDownloadWorker
 import org.covidwatch.android.data.contactevent.LocalContactEventsUploader
 import org.covidwatch.android.di.appModule
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
@@ -18,8 +17,6 @@ import java.util.concurrent.TimeUnit
 class CovidWatchApplication : Application() {
 
     private lateinit var localContactEventsUploader: LocalContactEventsUploader
-
-    private val tcnManager: TcnManager by inject()
 
     private var sharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
@@ -60,7 +57,6 @@ class CovidWatchApplication : Application() {
         localContactEventsUploader.startUploading()
 
         schedulePeriodicPublicContactEventsRefresh()
-        tcnManager.start()
     }
 
     private fun schedulePeriodicPublicContactEventsRefresh() {

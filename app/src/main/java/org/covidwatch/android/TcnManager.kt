@@ -19,35 +19,17 @@ class TcnManager(
     private val sharedPreferences: SharedPreferences
 ) {
 
-    private var sharedPreferenceChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-            when (key) {
-                context.getString(R.string.preference_is_contact_event_logging_enabled) -> {
-                    val isContactEventLoggingEnabled = sharedPreferences.getBoolean(
-                        context.getString(R.string.preference_is_contact_event_logging_enabled),
-                        true
-                    )
-                    configureContactTracing(isContactEventLoggingEnabled)
-                }
-            }
-        }
-
     fun start() {
-        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
-
         bluetoothManager.setCallback(object : TcnBluetoothServiceCallback {
             override fun generateTcn() = tcnKeys.generateTcn()
 
             override fun onTcnFound(tcn: ByteArray, estimatedDistance: Double?) = logTcn(tcn)
         })
+        bluetoothManager.startService()
     }
 
-    private fun configureContactTracing(enabled: Boolean) {
-        if (enabled) {
-            bluetoothManager.startService()
-        } else {
-            bluetoothManager.stopService()
-        }
+    fun stop() {
+        bluetoothManager.stopService()
     }
 
     private fun logTcn(tcn: ByteArray) {

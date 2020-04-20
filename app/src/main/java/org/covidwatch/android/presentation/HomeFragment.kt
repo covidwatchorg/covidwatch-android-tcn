@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.BuildConfig
 import org.covidwatch.android.R
+import org.covidwatch.android.TcnManager
 import org.covidwatch.android.databinding.FragmentHomeBinding
 import org.covidwatch.android.domain.FirstTimeUser
 import org.covidwatch.android.domain.ReturnUser
@@ -22,6 +23,7 @@ import org.covidwatch.android.domain.UserFlow
 import org.covidwatch.android.presentation.home.Banner
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.covidwatch.android.presentation.util.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -36,6 +38,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private val tcnManager: TcnManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,7 +160,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun ensureLocationPermissionIsGranted() {
         val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
         if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
-            homeViewModel.locationPermissionIsGranted()
+            tcnManager.start()
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(
@@ -181,10 +184,11 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this).build().show()
         }
+        tcnManager.stop()
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        homeViewModel.locationPermissionIsGranted()
+        tcnManager.start()
     }
 
     private fun turnOnBluetooth() {

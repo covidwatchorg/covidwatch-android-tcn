@@ -12,7 +12,6 @@ import org.covidwatch.android.presentation.util.getDistinct
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testedRepository: TestedRepository,
-    private val enableContactEventLoggingUseCase: EnableContactEventLoggingUseCase,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
 
@@ -87,10 +86,6 @@ class HomeViewModel(
                 // TODO: navigate to Potential Risk screen
             }
         }
-    }
-
-    fun locationPermissionIsGranted() {
-        enableContactEventLoggingUseCase.execute()
     }
 
     fun bluetoothIsOn() {
