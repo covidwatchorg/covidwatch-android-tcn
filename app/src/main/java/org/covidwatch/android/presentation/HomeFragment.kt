@@ -90,7 +90,8 @@ class HomeFragment : Fragment() {
             "$shareText https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID
         )
         sendIntent.type = "text/plain"
-        startActivity(sendIntent)
+        startActivity(Intent.createChooser(
+            sendIntent, resources.getString(R.string.share_text)));
     }
 
     private fun handleUserFlow(userFlow: UserFlow) {

@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/share_app_button"
+        android:id="@+id/bluetooth_button"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
@@ -47,7 +47,7 @@
         android:textAlignment="center" />
 
     <Button
-        android:id="@+id/date_button"
+        android:id="@+id/location_button"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="56dp"
