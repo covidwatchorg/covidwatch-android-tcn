@@ -10,12 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.R
-import org.covidwatch.android.databinding.FragmentTestQuestionsBinding
+import org.covidwatch.android.databinding.FragmentPotentialRiskBinding
 import org.covidwatch.android.presentation.util.showDatePicker
+import java.util.*
 
-class TestQuestionsFragment : Fragment() {
+class PotentialRiskFragment : Fragment() {
 
-    private var _binding: FragmentTestQuestionsBinding? = null
+    private var _binding: FragmentPotentialRiskBinding? = null
     private val binding get() = _binding!!
 
     private val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
@@ -25,7 +26,7 @@ class TestQuestionsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTestQuestionsBinding.inflate(inflater, container, false)
+        _binding = FragmentPotentialRiskBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,8 +35,8 @@ class TestQuestionsFragment : Fragment() {
 
         testQuestionsViewModel.testDate.observe(viewLifecycleOwner, Observer {
             val checkedIconId = if (it.isChecked) R.drawable.ic_check_true else 0
-            binding.dateButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, checkedIconId, 0)
-            binding.dateButton.text = it?.formattedDate
+            binding.riskDateButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, checkedIconId, 0)
+            binding.riskDateButton.text = it?.formattedDate
         })
         testQuestionsViewModel.isTested.observe(viewLifecycleOwner, Observer {
             updateUi(it)
@@ -51,21 +52,21 @@ class TestQuestionsFragment : Fragment() {
         binding.closeButton.setOnClickListener {
             findNavController().popBackStack()
         }
-        binding.negativeButton.setOnClickListener {
+        binding.riskNegativeButton.setOnClickListener {
             testQuestionsViewModel.onRadioButtonClicked(false)
         }
-        binding.positiveButton.setOnClickListener {
+        binding.riskPositiveButton.setOnClickListener {
             testQuestionsViewModel.onRadioButtonClicked(true)
         }
-        binding.continueButton.setOnClickListener {
+        binding.riskContinueButton.setOnClickListener {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
-        binding.dateButton.setOnClickListener {
+        binding.riskDateButton.setOnClickListener {
             showDatePicker {
                 testQuestionsViewModel.onDateSelected(it)
             }
         }
-        binding.reportButton.setOnClickListener {
+        binding.riskReportButton.setOnClickListener {
             findNavController().navigate(R.id.testConfirmationFragment)
         }
     }
@@ -78,17 +79,17 @@ class TestQuestionsFragment : Fragment() {
     private fun updateUi(isTested: Boolean) {
         val negativeIconId = if (isTested) 0 else R.drawable.ic_check_true
         val positiveIconId = if (isTested) R.drawable.ic_check_true else 0
-        binding.negativeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, negativeIconId, 0)
-        binding.positiveButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, positiveIconId, 0)
+        binding.riskNegativeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, negativeIconId, 0)
+        binding.riskPositiveButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, positiveIconId, 0)
 
         binding.negativeButtonText.isVisible = !isTested
-        binding.continueButton.isVisible = !isTested
+        binding.riskContinueButton.isVisible = !isTested
         binding.positiveButtonText.isVisible = isTested
-        binding.dateButton.isVisible = isTested
+        binding.riskDateButton.isVisible = isTested
     }
 
     private fun toggleReportButton(isVisible: Boolean) {
-        binding.reportButton.isVisible = isVisible
+        binding.riskReportButton.isVisible = isVisible
         binding.reportButtonText.isVisible = isVisible
     }
 }
