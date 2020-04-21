@@ -8,7 +8,6 @@ import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
-import org.covidwatch.android.domain.MaybeEnableContactEventLoggingUseCase
 import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
@@ -41,7 +40,6 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
-            maybeEnableContactEventLoggingUseCase = get(),
             contactEventDAO = get()
         )
     }
@@ -58,15 +56,9 @@ val appModule = module {
 
     factory {
         TestedRepositoryImpl(
-            preferences = get()
+            preferences = get(),
+            contactEventDAO = get()
         ) as TestedRepository
-    }
-
-    factory {
-        MaybeEnableContactEventLoggingUseCase(
-            context = androidContext(),
-            preferences = get()
-        )
     }
 
     factory {
@@ -88,11 +80,10 @@ val appModule = module {
 
     single {
         TcnManager(
-            context = androidApplication(),
             tcnKeys = TcnKeys(androidApplication()),
             bluetoothManager = get(),
             contactEventDAO = get(),
-            sharedPreferences = get()
+            testedRepository = get()
         )
     }
 }
