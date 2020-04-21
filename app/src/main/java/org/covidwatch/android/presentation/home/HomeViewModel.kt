@@ -31,6 +31,9 @@ class HomeViewModel(
     private val _userFlow = MutableLiveData<UserFlow>()
     val userFlow: LiveData<UserFlow> get() = _userFlow
 
+    private val _potentialRiskAction = MutableLiveData<Event<Unit>>()
+    val potentialRiskAction: LiveData<Event<Unit>> get() = _potentialRiskAction
+
     private val hasPossiblyInteractedWithInfected: LiveData<Boolean> =
         Transformations
             .map(contactEventDAO.allSortedByDescTimestamp) { cenList ->
@@ -78,7 +81,7 @@ class HomeViewModel(
                 _turnOnBluetoothAction.value = Event(Unit)
             }
             is BannerAction.PotentialRisk -> {
-                // TODO: navigate to Potential Risk screen
+                _potentialRiskAction.value = Event(Unit)
             }
         }
     }

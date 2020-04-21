@@ -100,5 +100,15 @@
     <string name="reported_alert_text">You reported that you tested positive for COVID-19</string>
     <string name="share_intent_text">Help your community stay safe, anonymously:</string>
     <string name="reported_tested_positive_text">Thank you for helping your community stay safe, anonymously.</string>
+    <string name="covid_title">COVID-19</string>
+    <string name="risk_subtitle">Potential Risk</string>
+    <string name="risk_description">of infection based on your anonymous exposure logs</string>
+    <string name="close_button_content_descriptor">Close button</string>
+    <string name="checkmark_image_content_descriptor">checkmark image</string>
+    <string name="monitor_symptoms">Monitor symptoms</string>
+    <string name="isolate_from_others">Isolate from others</string>
+    <string name="rest_and_take_care">Rest and take care</string>
+    <string name="get_tested_if_advised">Get tested if advised</string>
+    <string name="refer_to_local_agencies">Refer to local agencies for medical advice</string>
 
 </resources>

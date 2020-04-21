@@ -14,11 +14,9 @@ import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.BuildConfig
 import org.covidwatch.android.R
 import org.covidwatch.android.databinding.FragmentHomeBinding
-import org.covidwatch.android.domain.FirstTimeUser
-import org.covidwatch.android.domain.ReturnUser
-import org.covidwatch.android.domain.Setup
-import org.covidwatch.android.domain.UserFlow
+import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.home.Banner
+import org.covidwatch.android.presentation.home.BannerAction
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.covidwatch.android.presentation.util.EventObserver
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -58,6 +56,9 @@ class HomeFragment : Fragment() {
         })
         homeViewModel.turnOnBluetoothAction.observe(viewLifecycleOwner, EventObserver {
             turnOnBluetooth()
+        })
+        homeViewModel.potentialRiskAction.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigate(R.id.action_homeFragment_to_potentialRiskFragment)
         })
         homeViewModel.userTestedPositive.observe(viewLifecycleOwner, Observer {
             updateUiForTestedPositive()
