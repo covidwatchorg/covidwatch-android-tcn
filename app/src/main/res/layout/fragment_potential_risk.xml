@@ -81,15 +81,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="32dp">
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,17 +89,9 @@
                     android:paddingStart="24dp"
                     android:text="@string/monitor_symptoms"
                     android:textSize="18sp"
-                    tools:ignore="RtlSymmetry" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="32dp">
+                    tools:ignore="RtlSymmetry"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="24dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -118,17 +101,8 @@
                     android:paddingStart="24dp"
                     android:text="@string/isolate_from_others"
                     android:textSize="18sp"
-                    tools:ignore="RtlSymmetry" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="32dp">
+                    tools:ignore="RtlSymmetry"
+                    android:layout_marginBottom="24dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -138,17 +112,8 @@
                     android:text="@string/rest_and_take_care"
                     android:textSize="18sp"
                     android:paddingStart="24dp"
-                    tools:ignore="RtlSymmetry" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="32dp">
+                    tools:ignore="RtlSymmetry"
+                    android:layout_marginBottom="24dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -158,17 +123,8 @@
                     android:paddingStart="24dp"
                     android:text="@string/get_tested_if_advised"
                     android:textSize="18sp"
-                    tools:ignore="RtlSymmetry" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="32dp"
-                android:layout_marginBottom="32dp">
+                    tools:ignore="RtlSymmetry"
+                    android:layout_marginBottom="24dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -178,9 +134,9 @@
                     android:paddingStart="24dp"
                     android:text="@string/refer_to_local_agencies"
                     android:textSize="18sp"
-                    tools:ignore="RtlSymmetry" />
+                    tools:ignore="RtlSymmetry"
+                    android:layout_marginBottom="24dp" />
 
-            </LinearLayout>
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
