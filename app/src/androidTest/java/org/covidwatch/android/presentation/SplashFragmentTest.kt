@@ -1,6 +1,8 @@
 package org.covidwatch.android.presentation
 
+import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -39,8 +41,14 @@ class SplashFragmentTest {
 //        val factory = MyFragmentFactory()
 //        val scenario = launchFragmentInContainer<SplashFragment>()
 
+        val bundle = Bundle()
         // Launch splash fragment page
-        val scenario = launchFragmentInContainer<SplashFragment>()
+        val scenario = launchFragmentInContainer(bundle, R.style.Theme_AppCompat) {
+            SplashFragment()
+        }
+//        scenario.moveToState(Lifecycle.State.CREATED)
+//        scenario.moveToState(Lifecycle.State.STARTED)
+//        scenario.moveToState(Lifecycle.State.RESUMED)
 
         // Check is displayed
         onView(withId(R.id.splashFragment)).check(matches(isDisplayed()))
@@ -67,22 +75,22 @@ class SplashFragmentTest {
     @Test
     fun test_subtitleVisible() {
 
-        // Check subtitle text is displayed and matches "Help your community stay safe, anonymously."
+        // Check subtitle text is displayed and matches splash_text
         onView(withId(R.id.textView2)).check(matches(isCompletelyDisplayed()))
-        onView(withId(R.id.textView2)).check(matches(withText("Help your community stay safe, anonymously.")))
+        onView(withId(R.id.textView2)).check(matches(withText(R.string.splash_text)))
 
     }
 
     @Test
     fun test_startButtonVisible() {
 
-        // Check start button is displayed and matches text "Start"
+        // Check start button is displayed and matches text start
         onView(withId(R.id.start_button)).check(matches(isCompletelyDisplayed()))
-        onView(withId(R.id.start_button)).check(matches(withText("Start")))
+        onView(withId(R.id.start_button)).check(matches(withText(R.string.start)))
 
     }
 
-    // Not yet built out
+//     Not yet built out
 //    @Test
 //    fun test_uiDisplayOrderMaintained() {
 //
