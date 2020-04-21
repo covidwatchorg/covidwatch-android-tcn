@@ -1,6 +1,5 @@
 package org.covidwatch.android.presentation.test
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +11,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.R
 import org.covidwatch.android.databinding.FragmentTestQuestionsBinding
-import java.util.*
+import org.covidwatch.android.presentation.util.showDatePicker
 
-class TestQuestionsFragment : Fragment(), DatePickerMixin {
+class TestQuestionsFragment : Fragment() {
 
     private var _binding: FragmentTestQuestionsBinding? = null
     private val binding get() = _binding!!
 
-    override val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
+    private val testQuestionsViewModel: TestQuestionsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +61,9 @@ class TestQuestionsFragment : Fragment(), DatePickerMixin {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
         binding.dateButton.setOnClickListener {
-            showDatePicker(this)
+            showDatePicker {
+                testQuestionsViewModel.onDateSelected(it)
+            }
         }
         binding.reportButton.setOnClickListener {
             findNavController().navigate(R.id.testConfirmationFragment)
