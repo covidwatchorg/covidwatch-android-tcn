@@ -21,10 +21,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Run unit tests
-      run: bash ./gradlew testDebugUnitTest
-      continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
-    - name: Android Test Report Action
-      uses: asadmansr/android-test-report-action@v1.2.0
+      run: bash ./gradlew test
   
   apk:
       name: Generate APK
