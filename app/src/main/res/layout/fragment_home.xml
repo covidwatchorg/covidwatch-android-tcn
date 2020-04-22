@@ -39,22 +39,14 @@
         </LinearLayout>
 
         <TextView
+            style="@style/AlertBanner"
             android:id="@+id/banner_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:drawableStart="@drawable/ic_info"
-            android:drawableEnd="@drawable/ic_keyboard_arrow_right"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:padding="32dp"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:visibility="gone"
-            tools:background="@color/tangerine"
             tools:text="You may have been in contact with COVID-19"
-            tools:visibility="visible" />
+            tools:background="@color/tangerine"
+            tools:visibility="visible"/>
 
         <ImageView
             android:layout_width="300sp"
