@@ -13,11 +13,11 @@ internal class DateConverterTest {
     @Nested
     inner class ToDate() {
         @Test
-        fun `check conversion to Date from Long`() {
+        fun `Convert Long to Date`() {
             assertThat(dateConv.toDate(205465402)).isEqualTo(Date(205465402))
         }
         @Test
-        fun `check conversion to Date from Long (null)`() {
+        fun `Convert Null to Date(Null)`() {
             assertThat(dateConv.toDate(null)).isEqualTo(null)
         }
     }
@@ -25,11 +25,11 @@ internal class DateConverterTest {
     @Nested
     inner class FromDate() {
         @Test
-        fun `check conversion to Long from Date`() {
+        fun `Convert Date to Long`() {
             assertThat(dateConv.fromDate(Date(205465402))).isEqualTo(205465402)
         }
         @Test
-        fun `check conversion to Long from Date (null)`() {
+        fun `Convert Null to Long(Null)`() {
             assertThat(dateConv.fromDate(null)).isEqualTo(null)
         }
     }
