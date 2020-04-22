@@ -42,6 +42,16 @@ android {
     viewBinding {
         enabled = true
     }
+    
+    testOptions {
+        animationsDisabled = true
+        unitTests.all {
+            useJUnitPlatform()
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+            }
+        }
+    }
 }
 
 dependencies {
