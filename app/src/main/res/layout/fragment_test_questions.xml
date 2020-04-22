@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="32dp">
+    android:paddingHorizontal="32dp"
+    android:id="@+id/testQuestionsFragmentInternal">
 
     <LinearLayout
         android:layout_width="match_parent"

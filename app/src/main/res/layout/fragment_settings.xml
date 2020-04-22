@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="32dp"
-    android:paddingVertical="24dp">
+    android:paddingVertical="24dp"
+    android:id="@+id/settingsFragmentInternal">
 
     <ImageView
         android:id="@+id/close_button"
