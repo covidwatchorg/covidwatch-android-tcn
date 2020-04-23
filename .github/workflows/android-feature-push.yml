@@ -25,9 +25,10 @@ jobs:
         java-version: 1.8
     - name: Clean, Build, Test
       run: bash ./gradlew clean build --stacktrace
+    - name: Grab pushed branch name
+      uses: nelonoel/branch-name@v1
     - name: Update SonarQube
       env:
         LOGIN_KEY: ${{ secrets.SONARCLOUD_LOGIN_KEY }}
-        PUSH_BRANCH: github.event.push.head.ref
-      run: bash ./gradlew sonarqube -Dsonar.login=$LOGIN_KEY -Dsonar.branch.name=$PUSH_BRANCH -Dsonar.branch.target=develop --stacktrace
+      run: bash ./gradlew sonarqube -Dsonar.login=$LOGIN_KEY -Dsonar.branch.name=@BRANCH_NAME -Dsonar.branch.target=develop --stacktrace
 
