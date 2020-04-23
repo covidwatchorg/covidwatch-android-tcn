@@ -1,27 +1,3 @@
-Skip to content
-Why GitHub?
-Enterprise
-Explore
-Marketplace
-Pricing
-Search
-
-Sign in
-Sign up
-github
-/
-gitignore
-3k98.7k52.2k
- Code Pull requests 118 Actions Projects 0 Security Insights
-Join GitHub today
-GitHub is home to over 40 million developers working together to host and review code, manage projects, and build software together.
-
-gitignore/Android.gitignore
-@MichalDanielDobrzanski MichalDanielDobrzanski Added aar file type to gitignore (#3233)
-1c11457 on Nov 17, 2019
-@shiftkey@arcresu@tral@Neargye@friederbluemle@callingshotgun@AdrianVovk@wRorsjakz@malhobayyeb@Zarkopafilis@Yousha@whoshuu@evorion@szpssky@aslamanver@SamWhited@esaalii@exarus@nistix@neetrath@mohsenoid@mquigley@kevinmost@vitorprado@jsoref@jshou
-85 lines (68 sloc)  1.4 KB
-
 # Built application files
 *.apk
 *.aar
@@ -108,15 +84,3 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
