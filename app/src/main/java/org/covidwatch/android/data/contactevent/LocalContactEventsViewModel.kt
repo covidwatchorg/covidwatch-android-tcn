@@ -5,11 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class LocalContactEventsViewModel(
-    contactEventDAO: ContactEventDAO,
     application: Application
-) : AndroidViewModel(application) {
+) : AndroidViewModel(application), KoinComponent {
 
+    private val contactEventDAO: ContactEventDAO by inject()
     val contactEvents: LiveData<List<ContactEvent>> = contactEventDAO.allSortedByDescTimestamp
 }

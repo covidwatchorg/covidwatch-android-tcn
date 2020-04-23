@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'de.mannodermaus.android-junit5'
 
 android {
     compileSdkVersion 29
@@ -45,10 +46,13 @@ android {
     
     testOptions {
         animationsDisabled = true
-        unitTests.all {
-            useJUnitPlatform()
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
+        unitTests {
+            includeAndroidResources = true
+            all {
+                useJUnitPlatform()
+                testLogging {
+                    events "passed", "skipped", "failed", "standardOut", "standardError"
+                }
             }
         }
     }
@@ -72,10 +76,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
     implementation "androidx.paging:paging-runtime-ktx:2.1.2"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
-    testImplementation "org.assertj:assertj-core:3.11.1"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "androidx.room:room-runtime:2.2.5"
     implementation "androidx.room:room-ktx:2.2.5"
     annotationProcessor "androidx.room:room-compiler:2.2.5"
@@ -90,4 +90,16 @@ dependencies {
 
     implementation "org.koin:koin-android:2.1.5"
     implementation "org.koin:koin-androidx-viewmodel:2.1.5"
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.2"
+    testImplementation "org.assertj:assertj-core:3.12.2"
+    testImplementation "io.mockk:mockk:1.9.3"
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'org.robolectric:robolectric:4.3'
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.2"
 }

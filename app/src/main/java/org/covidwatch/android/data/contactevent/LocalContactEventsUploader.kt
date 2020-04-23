@@ -3,20 +3,13 @@ package org.covidwatch.android.data.contactevent
 import android.app.Application
 import androidx.lifecycle.Observer
 import org.covidwatch.android.data.ContactEvent
-import org.covidwatch.android.data.CovidWatchDatabase
-import org.covidwatch.android.data.contactevent.firebase.FirebaseContactEventPublisher
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class LocalContactEventsUploader(var application: Application) {
+class LocalContactEventsUploader(var application: Application) : KoinComponent {
 
-    private val viewModel: LocalContactEventsViewModel = LocalContactEventsViewModel(
-        CovidWatchDatabase.getInstance(application).contactEventDAO(),
-        application
-    )
-
-    private val contactEventDAO = CovidWatchDatabase.getInstance(application).contactEventDAO()
-
-    // TODO: Get ContactEventPublisher via DI
-    private val publisher: ContactEventPublisher = FirebaseContactEventPublisher(contactEventDAO)
+    private val viewModel: LocalContactEventsViewModel = LocalContactEventsViewModel(application)
+    private val publisher: ContactEventPublisher by inject()
 
     fun startUploading() {
         viewModel.contactEvents.observeForever(Observer {

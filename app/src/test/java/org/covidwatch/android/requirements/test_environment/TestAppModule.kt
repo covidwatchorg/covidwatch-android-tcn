@@ -1,4 +1,4 @@
-package org.covidwatch.android.di
+package org.covidwatch.android.requirements.test_environment
 
 import android.content.Context
 import org.covidwatch.android.NotificationFactory
@@ -22,7 +22,7 @@ import org.koin.dsl.module
 import org.tcncoalition.tcnclient.TcnKeys
 
 @Suppress("USELESS_CAST")
-val appModule = module {
+val testAppModule = module {
 
     factory {
         UserFlowRepositoryImpl(
