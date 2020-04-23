@@ -51,6 +51,7 @@ This is the repository for development of the front-facing Android mobile app fo
 - Madhava (@madhavajay)
 - Nitin Kumar (@nkumarcc, nkumarcc@gmail.com)
 - Hayden Raddiford (@haydenridd)
+- Enrico Grillo (@redbasset)
 
 ## Join the cause!
 
