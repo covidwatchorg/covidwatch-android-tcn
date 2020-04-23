@@ -1,4 +1,5 @@
 ![](https://github.com/covid19risk/covidwatch-android/workflows/Develop%20Branch%20CI/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=covid19risk_covidwatch-android&metric=alert_status)](https://sonarcloud.io/dashboard?id=covid19risk_covidwatch-android)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # CovidWatch Android POC
