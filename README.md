@@ -1,7 +1,10 @@
 ![](https://github.com/covid19risk/covidwatch-android/workflows/Develop%20Branch%20CI/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # CovidWatch Android POC
 Android POC for www.covid-watch.org
+
+## Who are we? What is this app?
 
 This repository is focused on the implementation of the Android version of the COVID Watch app. Our goals are to:
 - Allow users to anonymously record interactions with others using the [TCN Protocol](https://github.com/TCNCoalition/tcn-client-android)
@@ -10,8 +13,46 @@ This repository is focused on the implementation of the Android version of the C
 
 The current version of the Figma we're working towards: https://www.figma.com/file/0uL6s79o21jwUFZz16Dr8b/Covid-Watch---App-v1.8?node-id=0%3A1
 
-### Looking to contribute?
+## Setup
 
-- Pull a copy of the `develop` branch to get the latest version of the code
-- Run on your own device to play with the UX. If you have any feedback/find any problems, create an issue!
-- If you find a solution to an existing issue create a branch and a PR to `develop`. Look at https://github.com/orgs/covid19risk/projects/1 for existing issues
+Clone this repo from the `develop` branch:
+
+```
+git clone git@github.com:covid19risk/covidwatch-android.git
+```
+
+Open the project in Android Studio. Install onto a phone of yours with the `app` configuration, and you're free to explore the app! Its optimal to install on 2 phones as much of the behavior of the app depends on 2 phones interacting.
+
+**Note:** You cannot run this app on an emulator! We are dependent on Bluetooth being on and active, and most standard Android emulators do not have Bluetooth drivers.
+
+## Looking to contribute?
+
+- Run on your own device to explore the UX. Look at the [Figma](https://www.figma.com/file/0uL6s79o21jwUFZz16Dr8b/Covid-Watch---App-v1.8?node-id=0%3A1) for what the UX should look like. If you have any feedback/find any problems, create an issue!
+- Look at https://github.com/orgs/covid19risk/projects/1 for existing issues. If you see something you want to work on, assign yourself to it, set it to in progress, and make a PR to the `develop` branch.
+
+## FAQ
+
+What is the anonymous protocol for communication between phones? How does it work and who designed it?
+
+COVID Watch uses Temporary Contact Numbers, a decentralized, privacy-first contact tracing protocol developed by the [TCN Coalition](https://tcn-coalition.org/). This protocol is built to be extensible, with the goal of providing interoperability between contact tracing applications. You can read more about it on their [Github](https://github.com/TCNCoalition/TCN).
+
+What's this repository vs the other repositories in the covid19risk Organization?
+
+This is the repository for development of the front-facing Android mobile app for COVID Watch, including the UX and tie-ins to the TCN Bluetooth Protocol and backend services. Related repos:
+- [Android Minimal:](https://github.com/covid19risk/covidwatch-android-minimal) Proof of concept pilot app for testing integrations with the bluetooth protocol.
+- [TCN:](https://github.com/TCNCoalition/tcn-client-android) Implementation of bluetooth protocol.
+
+## Contributors
+
+- Madi Myrzabek (@madim)
+- Milen Marinov (@BurningAXE)
+- James Taylor (@jamesjmtaylor)
+- Pavlo (@Apisov)
+- Madhava (@madhavajay)
+- Nitin Kumar (@nkumarcc, nkumarcc@gmail.com)
+- Hayden Raddiford (@haydenridd)
+
+## Join the cause!
+
+Interested in volunteering with COVID-Watch? Check out our [get involved page](https://covid-watch.org/collaborate) and send us an email at contact@covid-watch.org!
+
