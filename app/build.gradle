@@ -28,9 +28,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             testCoverageEnabled false
+            buildConfigField("String", "FIREBASE_CLOUD_FUNCTIONS_ENDPOINT", '"https://us-central1-tagstwo-431e3.cloudfunctions.net"')
         }
         debug {
             testCoverageEnabled true
+            buildConfigField("String", "FIREBASE_CLOUD_FUNCTIONS_ENDPOINT", '"https://us-central1-tagstwo-431e3.cloudfunctions.net"')
         }
     }
 
@@ -96,12 +98,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha01'
     implementation 'android.arch.lifecycle:extensions:2.3.0-alpha01'
     //noinspection LifecycleAnnotationProcessorWithJava8
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.3.0-alpha01'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.3.0-alpha01'
 
     implementation "androidx.paging:paging-runtime-ktx:2.1.2"
     implementation "androidx.room:room-runtime:2.2.5"
     implementation "androidx.room:room-ktx:2.2.5"
-    annotationProcessor "androidx.room:room-compiler:2.2.5"
     kapt 'androidx.room:room-compiler:2.2.5'
     implementation 'androidx.fragment:fragment-ktx:1.2.4'
     implementation "androidx.work:work-runtime-ktx:2.3.4"
@@ -111,6 +112,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation "org.koin:koin-android:2.1.5"
     implementation "org.koin:koin-androidx-viewmodel:2.1.5"
+    implementation "com.squareup.okhttp3:okhttp:4.5.0"
 
     // TEST RELATED DEPENDENCIES
 
