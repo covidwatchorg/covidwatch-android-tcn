@@ -1,11 +1,13 @@
 package org.covidwatch.android.di
 
 import android.content.Context
+import okhttp3.OkHttpClient
 import org.covidwatch.android.CovidWatchTcnManager
 import org.covidwatch.android.NotificationFactory
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
+import org.covidwatch.android.data.signedreport.firestore.SignedReportsUploader
 import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
@@ -38,7 +40,7 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
-            contactEventDAO = get()
+            tcnDao = get()
         )
     }
 
@@ -52,10 +54,26 @@ val appModule = module {
         database.contactEventDAO()
     }
 
+    single {
+        val database: CovidWatchDatabase = get()
+        database.signedReportDAO()
+    }
+
+    single {
+        val database: CovidWatchDatabase = get()
+        database.temporaryContactNumberDAO()
+    }
+
+    single { TcnKeys(androidApplication()) }
+
+    single { OkHttpClient() }
+
+    single { SignedReportsUploader(okHttpClient = get(), signedReportDAO = get()) }
+
     factory {
         TestedRepositoryImpl(
             preferences = get(),
-            contactEventDAO = get()
+            covidWatchTcnManager = get()
         ) as TestedRepository
     }
 
@@ -75,7 +93,9 @@ val appModule = module {
     single {
         CovidWatchTcnManager(
             context = androidApplication(),
-            tcnKeys = TcnKeys(androidApplication())
+            tcnKeys = get(),
+            tcnDao = get(),
+            signedReportDAO = get()
         )
     }
 }
