@@ -70,8 +70,8 @@ class HomeViewModel(
             userFlowRepository.updateFirstTimeUserFlow()
         }
         if (userFlow !is Setup) {
-            ensureBluetoothIsOn()
             checkIfTestedPositive()
+            ensureBluetoothIsOn()
         }
         _userFlow.value = userFlow
     }
