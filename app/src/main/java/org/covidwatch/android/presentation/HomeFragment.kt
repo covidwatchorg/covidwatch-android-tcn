@@ -13,12 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.BuildConfig
+import org.covidwatch.android.CovidWatchTcnManager
 import org.covidwatch.android.R
-import org.covidwatch.android.TcnManager
 import org.covidwatch.android.databinding.FragmentHomeBinding
-import org.covidwatch.android.domain.*
+import org.covidwatch.android.domain.FirstTimeUser
+import org.covidwatch.android.domain.ReturnUser
+import org.covidwatch.android.domain.Setup
+import org.covidwatch.android.domain.UserFlow
 import org.covidwatch.android.presentation.home.Banner
-import org.covidwatch.android.presentation.home.BannerAction
 import org.covidwatch.android.presentation.home.HomeViewModel
 import org.covidwatch.android.presentation.util.EventObserver
 import org.koin.android.ext.android.inject
@@ -36,7 +38,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by viewModel()
-    private val tcnManager: TcnManager by inject()
+    private val tcnManager: CovidWatchTcnManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,7 +163,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun ensureLocationPermissionIsGranted() {
         val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
         if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
-            tcnManager.start()
+            tcnManager.startService()
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(
@@ -185,11 +187,11 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this).build().show()
         }
-        tcnManager.stop()
+        tcnManager.stopService()
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        tcnManager.start()
+        tcnManager.startService()
     }
 
     private fun turnOnBluetooth() {

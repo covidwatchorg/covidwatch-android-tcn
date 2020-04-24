@@ -5,13 +5,16 @@ import androidx.work.*
 import org.covidwatch.android.data.contactevent.ContactEventsDownloadWorker
 import org.covidwatch.android.data.contactevent.LocalContactEventsUploader
 import org.covidwatch.android.di.appModule
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import org.tcncoalition.tcnclient.TcnClient
 import java.util.concurrent.TimeUnit
 
 class CovidWatchApplication : Application() {
 
     private lateinit var localContactEventsUploader: LocalContactEventsUploader
+    private val tcnManager : CovidWatchTcnManager by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -20,6 +23,8 @@ class CovidWatchApplication : Application() {
             androidContext(applicationContext)
             modules(appModule)
         }
+
+        TcnClient.init(tcnManager)
 
         localContactEventsUploader = LocalContactEventsUploader(this)
         localContactEventsUploader.startUploading()

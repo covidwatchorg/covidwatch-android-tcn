@@ -1,10 +1,8 @@
 package org.covidwatch.android.di
 
 import android.content.Context
+import org.covidwatch.android.CovidWatchTcnManager
 import org.covidwatch.android.NotificationFactory
-import org.covidwatch.android.TcnManager
-import org.covidwatch.android.ble.BluetoothManager
-import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
@@ -75,15 +73,9 @@ val appModule = module {
     }
 
     single {
-        BluetoothManagerImpl(androidApplication()) as BluetoothManager
-    }
-
-    single {
-        TcnManager(
-            tcnKeys = TcnKeys(androidApplication()),
-            bluetoothManager = get(),
-            contactEventDAO = get(),
-            testedRepository = get()
+        CovidWatchTcnManager(
+            context = androidApplication(),
+            tcnKeys = TcnKeys(androidApplication())
         )
     }
 }
