@@ -10,13 +10,23 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.covidwatch.android.data.TemporaryContactNumber
+import org.covidwatch.android.data.TemporaryContactNumberDAO
+import org.covidwatch.android.data.signedreport.SignedReport
+import org.covidwatch.android.data.signedreport.SignedReportDAO
 import org.covidwatch.android.presentation.MainActivity
 import org.tcncoalition.tcnclient.TcnKeys
 import org.tcncoalition.tcnclient.TcnManager
+import java.util.*
 
 class CovidWatchTcnManager(
     private val context: Context,
-    private val tcnKeys: TcnKeys
+    private val tcnKeys: TcnKeys,
+    private val tcnDao: TemporaryContactNumberDAO,
+    private val signedReportDAO: SignedReportDAO
 ) : TcnManager(context) {
     private val advertisedTcns = mutableListOf<ByteArray>()
 
@@ -94,39 +104,33 @@ class CovidWatchTcnManager(
     fun generateAndUploadReport() {
         // Create a new Signed Report with `uploadState` set to `.notUploaded` and store it in the local persistent store.
         // This will kick off an observer that watches for signed reports which were not uploaded and will upload it.
-//        val signedReport = SignedReport(tcnKeys.createReport())
-//        signedReport.isProcessed = true
-//        signedReport.uploadState = SignedReport.UploadState.NOTUPLOADED
-//
-//        CovidWatchDatabase.databaseWriteExecutor.execute {
-//            val dao =
-//                CovidWatchDatabase.getInstance(context).signedReportDAO()
-//            dao.insert(signedReport)
-//        }
+        val signedReport = SignedReport(tcnKeys.createReport())
+        signedReport.isProcessed = true
+        signedReport.uploadState = SignedReport.UploadState.NOTUPLOADED
+        GlobalScope.launch(Dispatchers.IO) {
+            signedReportDAO.insert(signedReport)
+        }
     }
 
     private fun logTcn(tcnBytes: ByteArray, estimatedDistance: Double?) {
-//        CovidWatchDatabase.databaseWriteExecutor.execute {
-//
-//            val temporaryContactNumberDAO: TemporaryContactNumberDAO =
-//                CovidWatchDatabase.getInstance(context).temporaryContactNumberDAO()
-//
-//            var tcn = temporaryContactNumberDAO.findByPrimaryKey(tcnBytes)
-//            if (tcn == null) {
-//                tcn = TemporaryContactNumber()
-//                tcn.bytes = tcnBytes
-//                if (estimatedDistance != null && estimatedDistance < tcn.closestEstimatedDistanceMeters) {
-//                    tcn.closestEstimatedDistanceMeters = estimatedDistance
-//                }
-//                temporaryContactNumberDAO.insert(tcn)
-//            } else {
-//                tcn.lastSeenDate = Date()
-//                if (estimatedDistance != null && estimatedDistance < tcn.closestEstimatedDistanceMeters) {
-//                    tcn.closestEstimatedDistanceMeters = estimatedDistance
-//                }
-//                temporaryContactNumberDAO.update(tcn)
-//            }
-//        }
+        GlobalScope.launch(Dispatchers.IO) {
+
+            var tcn = tcnDao.findByPrimaryKey(tcnBytes)
+            if (tcn == null) {
+                tcn = TemporaryContactNumber()
+                tcn.bytes = tcnBytes
+                if (estimatedDistance != null && estimatedDistance < tcn.closestEstimatedDistanceMeters) {
+                    tcn.closestEstimatedDistanceMeters = estimatedDistance
+                }
+                tcnDao.insert(tcn)
+            } else {
+                tcn.lastSeenDate = Date()
+                if (estimatedDistance != null && estimatedDistance < tcn.closestEstimatedDistanceMeters) {
+                    tcn.closestEstimatedDistanceMeters = estimatedDistance
+                }
+                tcnDao.update(tcn)
+            }
+        }
     }
 
     companion object {

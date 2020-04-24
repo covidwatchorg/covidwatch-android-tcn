@@ -2,8 +2,8 @@ package org.covidwatch.android
 
 import android.app.Application
 import androidx.work.*
-import org.covidwatch.android.data.contactevent.ContactEventsDownloadWorker
-import org.covidwatch.android.data.contactevent.LocalContactEventsUploader
+import org.covidwatch.android.data.signedreport.firestore.SignedReportsDownloadWorker
+import org.covidwatch.android.data.signedreport.firestore.SignedReportsUploader
 import org.covidwatch.android.di.appModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit
 
 class CovidWatchApplication : Application() {
 
-    private lateinit var localContactEventsUploader: LocalContactEventsUploader
-    private val tcnManager : CovidWatchTcnManager by inject()
+    private val tcnManager: CovidWatchTcnManager by inject()
+    private val signedReportsUploader: SignedReportsUploader by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -25,10 +25,7 @@ class CovidWatchApplication : Application() {
         }
 
         TcnClient.init(tcnManager)
-
-        localContactEventsUploader = LocalContactEventsUploader(this)
-        localContactEventsUploader.startUploading()
-
+        signedReportsUploader.startUploading()
         schedulePeriodicPublicContactEventsRefresh()
     }
 
@@ -39,12 +36,12 @@ class CovidWatchApplication : Application() {
             .build()
 
         val downloadRequest =
-            PeriodicWorkRequestBuilder<ContactEventsDownloadWorker>(1, TimeUnit.HOURS)
+            PeriodicWorkRequestBuilder<SignedReportsDownloadWorker>(1, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            ContactEventsDownloadWorker.WORKER_NAME,
+            SignedReportsDownloadWorker.WORKER_NAME,
             ExistingPeriodicWorkPolicy.REPLACE,
             downloadRequest
         )

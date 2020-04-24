@@ -1,18 +1,23 @@
 package org.covidwatch.android.presentation.home
 
 import android.bluetooth.BluetoothAdapter
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.covidwatch.android.R
-import org.covidwatch.android.data.ContactEvent
-import org.covidwatch.android.data.ContactEventDAO
+import org.covidwatch.android.data.TemporaryContactNumberDAO
 import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.util.Event
-import org.covidwatch.android.presentation.util.getDistinct
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testedRepository: TestedRepository,
-    contactEventDAO: ContactEventDAO
+    private val tcnDao: TemporaryContactNumberDAO
 ) : ViewModel() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
@@ -36,45 +41,41 @@ class HomeViewModel(
     private val _potentialRiskAction = MutableLiveData<Event<Unit>>()
     val potentialRiskAction: LiveData<Event<Unit>> get() = _potentialRiskAction
 
-    private val hasPossiblyInteractedWithInfected: LiveData<Boolean> =
-        Transformations
-            .map(contactEventDAO.allSortedByDescTimestamp) { cenList ->
-                cenList.fold(initial = false) { isInfected: Boolean, event: ContactEvent ->
-                    isInfected || event.wasPotentiallyInfectious
-                }
-            }
-            .getDistinct()
-
-    private val interactedWithInfectedObserver = Observer<Boolean> { hasPossiblyInteractedWithInfected ->
-        if (hasPossiblyInteractedWithInfected && !isUserTestedPositive) {
-            _banner.value = Banner.Warning(R.string.contact_alert_text, BannerAction.PotentialRisk)
-        } else if (isUserTestedPositive) {
-            _banner.value = Banner.Warning(R.string.reported_alert_text, BannerAction.PotentialRisk)
-        }
-    }
-
-    init {
-        hasPossiblyInteractedWithInfected.observeForever(interactedWithInfectedObserver)
-        val userFlow = userFlowRepository.getUserFlow()
-        if (userFlow !is Setup) {
-            _locationPermissionAction.value = Event(Unit)
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        hasPossiblyInteractedWithInfected.removeObserver(interactedWithInfectedObserver)
-    }
-
     fun setup() {
+        viewModelScope.launch(Dispatchers.IO) {
+            tcnDao.allSortedByDescTimestamp()
+                .map { it.fold(false) { infected, tcn -> infected || tcn.wasPotentiallyInfectious } }
+                .collect { potentiallyInfected ->
+                    if (potentiallyInfected && !isUserTestedPositive) {
+                        _banner.postValue(
+                            Banner.Warning(
+                                R.string.contact_alert_text,
+                                BannerAction.PotentialRisk
+                            )
+                        )
+                    } else if (isUserTestedPositive) {
+                        _banner.postValue(
+                            Banner.Warning(
+                                R.string.reported_alert_text,
+                                BannerAction.PotentialRisk
+                            )
+                        )
+                    }
+                }
+        }
+
         val userFlow = userFlowRepository.getUserFlow()
-        if (userFlow is FirstTimeUser) {
-            userFlowRepository.updateFirstTimeUserFlow()
+        when (userFlow) {
+            !is Setup -> {
+                _locationPermissionAction.value = Event(Unit)
+                ensureBluetoothIsOn()
+                checkIfTestedPositive()
+            }
+            is FirstTimeUser -> {
+                userFlowRepository.updateFirstTimeUserFlow()
+            }
         }
-        if (userFlow !is Setup) {
-            ensureBluetoothIsOn()
-            checkIfTestedPositive()
-        }
+
         _userFlow.value = userFlow
     }
 
