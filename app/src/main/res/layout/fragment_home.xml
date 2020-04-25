@@ -13,40 +13,29 @@
         android:orientation="vertical"
         android:paddingBottom="32dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="32dp"
-            android:paddingVertical="24dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:srcCompat="@drawable/ic_cw_brandmark_blue" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/menu_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_menu" />
-        </LinearLayout>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar" />
 
         <TextView
+            android:id="@+id/warning_banner"
             style="@style/AlertBanner"
-            android:id="@+id/banner_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:background="@color/tangerine"
             tools:text="You may have been in contact with COVID-19"
-            tools:background="@color/tangerine"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/info_banner"
+            style="@style/AlertBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/aqua"
+            tools:text="Turn Bluetooth on for  this device"
+            tools:visibility="visible" />
 
         <ImageView
             android:layout_width="300sp"

@@ -12,6 +12,8 @@ import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.presentation.home.HomeViewModel
+import org.covidwatch.android.presentation.home.InfoBannerViewModel
+import org.covidwatch.android.presentation.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,6 +44,17 @@ val appModule = module {
             testedRepository = get(),
             contactEventDAO = get()
         )
+    }
+
+    viewModel {
+        InfoBannerViewModel(
+            application = androidApplication(),
+            tcnManager = get()
+        )
+    }
+
+    viewModel {
+        SettingsViewModel(androidApplication())
     }
 
     single {

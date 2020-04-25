@@ -1,22 +1,17 @@
 package org.covidwatch.android.presentation.home
 
-sealed class Banner(val action: BannerAction) {
+import androidx.annotation.StringRes
 
-    data class Warning(
-        val message: Int,
-        val bannerAction: BannerAction
-    ) : Banner(bannerAction)
+sealed class WarningBanner {
 
-    data class Info(
-        val message: Int,
-        val bannerAction: BannerAction
-    ): Banner(bannerAction)
+    data class Show(@StringRes val text: Int) : WarningBanner()
 
-    object Empty : Banner(BannerAction.NoAction)
+    object Hide : WarningBanner()
 }
 
-sealed class BannerAction {
-    object TurnOnBluetooth : BannerAction()
-    object PotentialRisk : BannerAction()
-    object NoAction : BannerAction()
+sealed class InfoBanner {
+
+    data class Show(@StringRes val text: Int) : InfoBanner()
+
+    object Hide : InfoBanner()
 }
