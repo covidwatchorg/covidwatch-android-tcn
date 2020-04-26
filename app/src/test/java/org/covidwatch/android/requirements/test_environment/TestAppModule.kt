@@ -1,6 +1,7 @@
 package org.covidwatch.android.requirements.test_environment
 
 import android.content.Context
+import io.mockk.mockk
 import org.covidwatch.android.NotificationFactory
 import org.covidwatch.android.TcnManager
 import org.covidwatch.android.ble.BluetoothManager
@@ -51,12 +52,6 @@ val testAppModule = module {
         CovidWatchDatabase.getInstance(androidContext())
     }
 
-    single {
-        val database: CovidWatchDatabase = get()
-
-        database.contactEventDAO()
-    }
-
     factory {
         TestedRepositoryImpl(
             preferences = get(),
@@ -93,5 +88,9 @@ val testAppModule = module {
     single {
         val contactEventDAO: ContactEventDAO = get()
         FirebaseContactEventPublisher(contactEventDAO) as ContactEventPublisher
+    }
+
+    single {
+        mockk<ContactEventDAO>(relaxed = true)
     }
 }
