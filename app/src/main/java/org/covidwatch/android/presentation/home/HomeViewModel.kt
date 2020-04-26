@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
+import org.covidwatch.android.data.contactevent.ContactEventsDownloader
 import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.util.Event
 import org.covidwatch.android.presentation.util.getDistinct
@@ -12,6 +13,7 @@ import org.covidwatch.android.presentation.util.getDistinct
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testedRepository: TestedRepository,
+    private val contactEventsDownloader: ContactEventsDownloader,
     contactEventDAO: ContactEventDAO
 ) : ViewModel() {
 
@@ -35,6 +37,9 @@ class HomeViewModel(
 
     private val _potentialRiskAction = MutableLiveData<Event<Unit>>()
     val potentialRiskAction: LiveData<Event<Unit>> get() = _potentialRiskAction
+
+    private val _isRefreshing = MediatorLiveData<Boolean>()
+    val isRefreshing: LiveData<Boolean> get() = _isRefreshing
 
     private val hasPossiblyInteractedWithInfected: LiveData<Boolean> =
         Transformations
@@ -87,6 +92,16 @@ class HomeViewModel(
             }
             is BannerAction.PotentialRisk -> {
                 _potentialRiskAction.value = Event(Unit)
+            }
+        }
+    }
+
+    fun onRefreshRequested() {
+        val state = contactEventsDownloader.executePublicContactEventsRefresh()
+        _isRefreshing.addSource(state) {
+            _isRefreshing.value = !it
+            if (_isRefreshing.value == false) {
+                _isRefreshing.removeSource(state)
             }
         }
     }
