@@ -16,9 +16,8 @@ import org.covidwatch.android.domain.FirstTimeUser
 import org.covidwatch.android.domain.ReturnUser
 import org.covidwatch.android.domain.Setup
 import org.covidwatch.android.presentation.home.HomeViewModel
-import org.covidwatch.android.presentation.home.InfoBanner
-import org.covidwatch.android.presentation.home.InfoBannerViewModel
-import org.covidwatch.android.presentation.home.WarningBanner
+import org.covidwatch.android.presentation.home.InfoBannerState
+import org.covidwatch.android.presentation.home.WarningBannerState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -26,7 +25,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val infoBannerViewModel: InfoBannerViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
@@ -46,19 +44,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        infoBannerViewModel.onStart()
-        infoBannerViewModel.infoBanner.observe(viewLifecycleOwner, Observer { banner ->
-            when (banner) {
-                is InfoBanner.Show -> {
-                    binding.infoBanner.isVisible = true
-                    binding.infoBanner.setText(banner.text)
-                }
-                InfoBanner.Hide -> {
-                    binding.infoBanner.isVisible = false
-                }
-            }
-        })
-
         homeViewModel.onStart()
         homeViewModel.userFlow.observe(viewLifecycleOwner, Observer { userFlow ->
             when (userFlow) {
@@ -73,13 +58,24 @@ class HomeFragment : Fragment() {
                 }
             }
         })
-        homeViewModel.warningBanner.observe(viewLifecycleOwner, Observer { banner ->
+        homeViewModel.infoBannerState.observe(viewLifecycleOwner, Observer { banner ->
             when (banner) {
-                is WarningBanner.Show -> {
+                is InfoBannerState.Visible -> {
+                    binding.infoBanner.isVisible = true
+                    binding.infoBanner.setText(banner.text)
+                }
+                InfoBannerState.Hidden -> {
+                    binding.infoBanner.isVisible = false
+                }
+            }
+        })
+        homeViewModel.warningBannerState.observe(viewLifecycleOwner, Observer { banner ->
+            when (banner) {
+                is WarningBannerState.Visible -> {
                     binding.warningBanner.isVisible = true
                     binding.warningBanner.setText(banner.text)
                 }
-                WarningBanner.Hide -> {
+                WarningBannerState.Hidden -> {
                     binding.warningBanner.isVisible = false
                 }
             }

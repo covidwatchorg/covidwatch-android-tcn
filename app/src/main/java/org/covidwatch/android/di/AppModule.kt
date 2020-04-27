@@ -11,8 +11,8 @@ import org.covidwatch.android.data.UserFlowRepositoryImpl
 import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
+import org.covidwatch.android.presentation.home.EnsureTcnIsStartedUseCase
 import org.covidwatch.android.presentation.home.HomeViewModel
-import org.covidwatch.android.presentation.home.InfoBannerViewModel
 import org.covidwatch.android.presentation.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -38,18 +38,19 @@ val appModule = module {
         )
     }
 
-    viewModel {
-        HomeViewModel(
-            userFlowRepository = get(),
-            testedRepository = get(),
-            contactEventDAO = get()
+    factory {
+        EnsureTcnIsStartedUseCase(
+            context = androidContext(),
+            tcnManager = get()
         )
     }
 
     viewModel {
-        InfoBannerViewModel(
-            application = androidApplication(),
-            tcnManager = get()
+        HomeViewModel(
+            userFlowRepository = get(),
+            testedRepository = get(),
+            ensureTcnIsStartedUseCase = get(),
+            contactEventDAO = get()
         )
     }
 

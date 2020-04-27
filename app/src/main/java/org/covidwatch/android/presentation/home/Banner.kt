@@ -2,16 +2,16 @@ package org.covidwatch.android.presentation.home
 
 import androidx.annotation.StringRes
 
-sealed class WarningBanner {
+sealed class WarningBannerState {
 
-    data class Show(@StringRes val text: Int) : WarningBanner()
+    data class Visible(@StringRes val text: Int) : WarningBannerState()
 
-    object Hide : WarningBanner()
+    object Hidden : WarningBannerState()
 }
 
-sealed class InfoBanner {
+sealed class InfoBannerState {
 
-    data class Show(@StringRes val text: Int) : InfoBanner()
+    data class Visible(@StringRes val text: Int) : InfoBannerState()
 
-    object Hide : InfoBanner()
+    object Hidden : InfoBannerState()
 }
