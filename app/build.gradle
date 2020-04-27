@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: "com.vanniktech.android.junit.jacoco"
+apply plugin: "org.sonarqube"
 
 android {
     compileSdkVersion 29
@@ -25,6 +27,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testCoverageEnabled false
+        }
+        debug {
+            testCoverageEnabled true
         }
     }
 
@@ -50,8 +56,23 @@ android {
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
             }
+
         }
+
     }
+
+    junitJacoco {
+        jacocoVersion = '0.8.5' // type String
+        ignoreProjects = [] // type String array
+        excludes // type String List
+        includeNoLocationClasses = false // type boolean
+        includeInstrumentationCoverageInMergedReport = false // type boolean
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
@@ -62,16 +83,13 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
-//    def nav_version = "2.3.0-alpha03" // required to use navigation-testing
     def nav_version = "2.2.1"
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
-//    // Navigation testing
-//    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     implementation 'androidx.lifecycle:lifecycle-runtime:2.3.0-alpha01'
 
@@ -109,10 +127,6 @@ dependencies {
     // AssertJ for Assertions
     testImplementation "org.assertj:assertj-core:3.11.1"
 
-    // If Junit4 is still needed
-//    testImplementation "junit:junit:4.13"
-//    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.6.2"
-
     // Core library
     androidTestImplementation 'androidx.test:core:1.2.0'
 
@@ -132,4 +146,13 @@ dependencies {
     def fragment_version = "1.2.4"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "covid19risk_covidwatch-android"
+        property "sonar.organization", "covid19risk"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/debug/jacoco.xml,${buildDir}/reports/jacoco/release/jacoco.xml,${buildDir}/reports/jacocoCombined/debug/jacoco.xml"
+    }
 }

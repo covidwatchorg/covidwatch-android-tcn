@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -43,6 +44,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
 
         homeViewModel.onStart()
         homeViewModel.userFlow.observe(viewLifecycleOwner, Observer { userFlow ->
@@ -83,6 +86,9 @@ class HomeFragment : Fragment() {
         homeViewModel.userTestedPositive.observe(viewLifecycleOwner, Observer {
             updateUiForTestedPositive()
         })
+        homeViewModel.isRefreshing.observe(viewLifecycleOwner, Observer { isRefreshing ->
+            binding.swipeRefreshLayout.isRefreshing = isRefreshing
+        })
 
         initClickListeners()
     }
@@ -102,6 +108,9 @@ class HomeFragment : Fragment() {
         }
         binding.infoBanner.setOnClickListener {
             findNavController().navigate(R.id.settingsFragment)
+        }
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            homeViewModel.onRefreshRequested()
         }
     }
 

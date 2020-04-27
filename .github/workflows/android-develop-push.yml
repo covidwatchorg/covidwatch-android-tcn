@@ -2,33 +2,38 @@ name: Develop Branch CI
 
 on:
   push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
+    branches:
+      - develop
 
 jobs:
 
   test:
-    name: Unit Tests
+    name: CI Testing
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Header text
-      run: echo Beginning Unit Test Routine
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    - name: Fetch all branches
+      run: |
+        git fetch --prune --unshallow
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Run unit tests
-      run: bash ./gradlew test --stacktrace
-  
+    - name: Clean, Build, Test
+      run: bash ./gradlew clean build --stacktrace
+    - name: Update SonarQube
+      env:
+        LOGIN_KEY: ${{ secrets.SONARCLOUD_LOGIN_KEY }}
+      run: bash ./gradlew sonarqube -Dsonar.login=$LOGIN_KEY -Dsonar.branch.name=develop --stacktrace
   apk:
       name: Generate APK
       runs-on: ubuntu-latest
 
       steps:
-        - uses: actions/checkout@v2
+        - name: Checkout repo
+          uses: actions/checkout@v2
         - name: set up JDK 1.8
           uses: actions/setup-java@v1
           with:
