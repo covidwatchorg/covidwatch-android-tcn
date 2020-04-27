@@ -28,17 +28,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/issues_needs_to_be_resolved"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="@string/issues_needs_to_be_resolved" />
 
     <Button
         android:id="@+id/bluetooth_button"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
-        android:backgroundTint="@color/bluejay"
-        android:text="@string/turn_on_bluetooth"
-        android:textColor="@color/white" />
+        android:text="@string/turn_on_bluetooth" />
 
     <TextView
         android:layout_width="match_parent"

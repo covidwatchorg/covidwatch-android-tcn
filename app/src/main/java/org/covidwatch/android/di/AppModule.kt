@@ -13,7 +13,9 @@ import org.covidwatch.android.data.contactevent.ContactEventsDownloader
 import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
+import org.covidwatch.android.presentation.home.EnsureTcnIsStartedUseCase
 import org.covidwatch.android.presentation.home.HomeViewModel
+import org.covidwatch.android.presentation.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -38,10 +40,18 @@ val appModule = module {
         )
     }
 
+    factory {
+        EnsureTcnIsStartedUseCase(
+            context = androidContext(),
+            tcnManager = get()
+        )
+    }
+
     viewModel {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
+            ensureTcnIsStartedUseCase = get(),
             contactEventDAO = get(),
             contactEventsDownloader = get()
         )
@@ -51,6 +61,10 @@ val appModule = module {
         val context = androidContext()
         val workManager = WorkManager.getInstance(context)
         ContactEventsDownloader(workManager)
+    }
+
+    viewModel {
+        SettingsViewModel(androidApplication())
     }
 
     single {

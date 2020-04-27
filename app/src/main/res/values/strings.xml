@@ -69,9 +69,10 @@
     <string name="terms_of_use">Terms of Use</string>
     <string name="privacy_policy">Privacy Policy</string>
 
-    <string name="issues_needs_to_be_resolved">The following issue needs to be resolved</string>
+    <string name="issues_needs_to_be_resolved">The following issue(s) need to be resolved for the app to work properly</string>
     <string name="turn_on_bluetooth">Turn on Bluetooth</string>
     <string name="turn_bluetooth_on">Turn Bluetooth on for this device</string>
+    <string name="allow_location_access">Allow Location Access to this device</string>
     <string name="turn_on_bluetooth_subtext">Bluetooth is required for this app to work</string>
     <string name="location_access_on">Location Access On</string>
 
