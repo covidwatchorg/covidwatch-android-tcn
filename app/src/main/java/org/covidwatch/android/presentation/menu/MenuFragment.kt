@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import org.covidwatch.android.R
 
-
 class MenuFragment : Fragment(R.layout.fragment_menu) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

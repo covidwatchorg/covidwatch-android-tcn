@@ -1,6 +1,7 @@
 package org.covidwatch.android.di
 
 import android.content.Context
+import androidx.work.WorkManager
 import org.covidwatch.android.NotificationFactory
 import org.covidwatch.android.TcnManager
 import org.covidwatch.android.ble.BluetoothManager
@@ -8,10 +9,13 @@ import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
+import org.covidwatch.android.data.contactevent.ContactEventsDownloader
 import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
+import org.covidwatch.android.presentation.home.EnsureTcnIsStartedUseCase
 import org.covidwatch.android.presentation.home.HomeViewModel
+import org.covidwatch.android.presentation.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -36,12 +40,31 @@ val appModule = module {
         )
     }
 
+    factory {
+        EnsureTcnIsStartedUseCase(
+            context = androidContext(),
+            tcnManager = get()
+        )
+    }
+
     viewModel {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
-            contactEventDAO = get()
+            ensureTcnIsStartedUseCase = get(),
+            contactEventDAO = get(),
+            contactEventsDownloader = get()
         )
+    }
+
+    factory {
+        val context = androidContext()
+        val workManager = WorkManager.getInstance(context)
+        ContactEventsDownloader(workManager)
+    }
+
+    viewModel {
+        SettingsViewModel(androidApplication())
     }
 
     single {
