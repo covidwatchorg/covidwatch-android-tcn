@@ -39,7 +39,7 @@ jobs:
       env:
         LOGIN_KEY: ${{ secrets.SONARCLOUD_LOGIN_KEY }}
         PR_BRANCH: github.event.pull_request.head.ref
-      run: bash ./gradlew sonarqube -Dsonar.login=$LOGIN_KEY -Dsonar.pullrequest.branch=$PR_BRANCH -Dsonar.pullrequest.base=develop -Dsonar.pullrequest.key=$PULL_NUMBER --stacktrace
+      run: bash ./gradlew sonarqube -Dsonar.login=$LOGIN_KEY -Dsonar.pullrequest.branch=$PR_BRANCH -Dsonar.pullrequest.base=develop -Dsonar.pullrequest.key=$PULL_NUMBER -Dsonar.androidLint.reportPaths=./app/build/reports/lint-results.xml,./tcn-client-android/tcn-client-android/build/reports/lint-results.xml --stacktrace
   apk:
       name: Generate APK
       runs-on: ubuntu-latest
