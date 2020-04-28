@@ -7,7 +7,7 @@ Android POC for www.covid-watch.org
 
 ## Who are we? What is this app?
 
-This repository is focused on the implementation of the Android version of the COVID Watch app. Our goals are to:
+This repository is focused on the implementation of the Android version of the Covid Watch app. Our goals are to:
 - Allow users to anonymously record interactions with others using the [TCN Protocol](https://github.com/TCNCoalition/tcn-client-android)
 - Notify users if someone they've interacted with in the past 2 weeks indicates they've tested positive for COVID-19 (again, anonymously!)
 - Offer a seamless UX to complete all of the above!
@@ -49,11 +49,11 @@ Open the project in Android Studio. Install onto a phone of yours with the `app`
 
 What is the anonymous protocol for communication between phones? How does it work and who designed it?
 
-COVID Watch uses Temporary Contact Numbers, a decentralized, privacy-first contact tracing protocol developed by the [TCN Coalition](https://tcn-coalition.org/). This protocol is built to be extensible, with the goal of providing interoperability between contact tracing applications. You can read more about it on their [Github](https://github.com/TCNCoalition/TCN).
+Covid Watch uses Temporary Contact Numbers, a decentralized, privacy-first contact tracing protocol developed by the [TCN Coalition](https://tcn-coalition.org/). This protocol is built to be extensible, with the goal of providing interoperability between contact tracing applications. You can read more about it on their [Github](https://github.com/TCNCoalition/TCN).
 
 What's this repository vs the other repositories in the covid19risk Organization?
 
-This is the repository for development of the front-facing Android mobile app for COVID Watch, including the UX and tie-ins to the TCN Bluetooth Protocol and backend services. Related repos:
+This is the repository for development of the front-facing Android mobile app for Covid Watch, including the UX and tie-ins to the TCN Bluetooth Protocol and backend services. Related repos:
 - [Android Minimal:](https://github.com/covid19risk/covidwatch-android-minimal) Proof of concept pilot app for testing integrations with the bluetooth protocol.
 - [TCN:](https://github.com/TCNCoalition/tcn-client-android) Implementation of bluetooth protocol.
 
@@ -70,5 +70,5 @@ This is the repository for development of the front-facing Android mobile app fo
 
 ## Join the cause!
 
-Interested in volunteering with COVID-Watch? Check out our [get involved page](https://covid-watch.org/collaborate) and send us an email at contact@covid-watch.org!
+Interested in volunteering with Covid Watch? Check out our [get involved page](https://covid-watch.org/collaborate) and send us an email at contact@covid-watch.org!
 
