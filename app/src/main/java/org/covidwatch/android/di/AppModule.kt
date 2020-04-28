@@ -48,7 +48,6 @@ val appModule = module {
     }
 
     viewModel {
-//        tcnDao = get(),
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
