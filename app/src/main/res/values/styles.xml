@@ -11,16 +11,17 @@
     </style>
 
     <style name="AlertBanner" parent="@style/AppTheme">
-        <item name="colorPrimary">@color/tangerine</item>
-        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:foreground">?selectableItemBackground</item>
         <item name="android:drawableStart">@drawable/ic_info</item>
         <item name="android:drawableEnd">@drawable/ic_keyboard_arrow_right</item>
         <item name="android:drawablePadding">16dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:padding">32dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
-        <item name="fontFamily">@font/montserrat</item>
     </style>
 </resources>

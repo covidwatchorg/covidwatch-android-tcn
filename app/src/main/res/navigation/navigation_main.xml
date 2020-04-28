@@ -36,7 +36,10 @@
             app:destination="@id/splashFragment" />
         <action
             android:id="@+id/action_homeFragment_to_potentialRiskFragment"
-            app:destination="@id/action_homeFragment_to_potentialRiskFragment" />
+            app:destination="@id/potentialRiskFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/testQuestionsFragment"
@@ -70,7 +73,7 @@
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/action_homeFragment_to_potentialRiskFragment"
+        android:id="@+id/potentialRiskFragment"
         android:name="org.covidwatch.android.presentation.test.PotentialRiskFragment"
         android:label="PotentialRiskFragment"
         tools:layout="@layout/fragment_potential_risk"/>
