@@ -120,7 +120,7 @@ class SignedReportsUploader(
     }
 
     private fun contentType(): MediaType {
-        return "context/json; charset=utf-8".toMediaType()
+        return "application/json; charset=utf-8".toMediaType()
     }
 
     companion object {
