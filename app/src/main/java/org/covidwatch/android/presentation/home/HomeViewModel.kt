@@ -5,11 +5,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.covidwatch.android.R
-import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.TemporaryContactNumberDAO
 import org.covidwatch.android.data.signedreport.SignedReportsDownloader
 import org.covidwatch.android.domain.*
-import org.covidwatch.android.presentation.util.getDistinct
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
