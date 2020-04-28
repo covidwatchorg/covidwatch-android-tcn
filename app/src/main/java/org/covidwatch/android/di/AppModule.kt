@@ -52,9 +52,9 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
+            signedReportsDownloader = get(),
             ensureTcnIsStartedUseCase = get(),
-            contactEventDAO = get(),
-            signedReportsDownloader = get()
+            tcnDao = get()
         )
     }
 
