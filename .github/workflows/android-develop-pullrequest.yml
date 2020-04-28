@@ -24,6 +24,8 @@ jobs:
           core.exportVariable('PULL_NUMBER', prNumber);
     - name: Checkout repo
       uses: actions/checkout@v2
+      with:
+        submodules: `recursive`
     - name: Fetch all branches
       run: |
           git fetch --prune --unshallow
