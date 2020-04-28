@@ -15,7 +15,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
       with:
-        submodules: `recursive`
+        submodules: 'recursive'
     - name: Fetch all branches
       run: |
         git fetch --prune --unshallow
@@ -37,7 +37,7 @@ jobs:
         - name: Checkout repo
           uses: actions/checkout@v2
           with:
-            submodules: `recursive`
+            submodules: 'recursive'
         - name: set up JDK 1.8
           uses: actions/setup-java@v1
           with:
