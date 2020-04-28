@@ -28,9 +28,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             testCoverageEnabled false
+            buildConfigField("String", "FIREBASE_CLOUD_FUNCTIONS_ENDPOINT", '"https://us-central1-tagstwo-431e3.cloudfunctions.net"')
         }
         debug {
             testCoverageEnabled true
+            buildConfigField("String", "FIREBASE_CLOUD_FUNCTIONS_ENDPOINT", '"https://us-central1-tagstwo-431e3.cloudfunctions.net"')
         }
     }
 
@@ -76,6 +78,7 @@ android {
 }
 
 dependencies {
+    implementation project(":tcn-client-android:tcn-client-android")
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -98,8 +101,11 @@ dependencies {
     def lifecycle_version = "2.3.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     //noinspection LifecycleAnnotationProcessorWithJava8
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+    implementation "com.squareup.okhttp3:okhttp:4.5.0"
 
     def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"
@@ -118,8 +124,6 @@ dependencies {
     def koin_version = "2.1.5"
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-
-    implementation "com.github.TCNCoalition:tcn-client-android:0.0.2"
 
     //// TEST RELATED DEPENDENCIES
 

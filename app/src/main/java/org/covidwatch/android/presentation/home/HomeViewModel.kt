@@ -2,20 +2,21 @@ package org.covidwatch.android.presentation.home
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
-import org.covidwatch.android.data.ContactEventDAO
-import org.covidwatch.android.data.contactevent.ContactEventsDownloader
+import org.covidwatch.android.data.TemporaryContactNumberDAO
+import org.covidwatch.android.data.signedreport.SignedReportsDownloader
 import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.util.getDistinct
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testedRepository: TestedRepository,
-    private val contactEventsDownloader: ContactEventsDownloader,
+    private val signedReportsDownloader: SignedReportsDownloader,
     private val ensureTcnIsStartedUseCase: EnsureTcnIsStartedUseCase,
-    contactEventDAO: ContactEventDAO
+    tcnDao: TemporaryContactNumberDAO
 ) : ViewModel(), EnsureTcnIsStartedPresenter {
 
     private val isUserTestedPositive: Boolean get() = testedRepository.isUserTestedPositive()
@@ -35,13 +36,9 @@ class HomeViewModel(
     val isRefreshing: LiveData<Boolean> get() = _isRefreshing
 
     private val hasPossiblyInteractedWithInfected: LiveData<Boolean> =
-        Transformations
-            .map(contactEventDAO.allSortedByDescTimestamp) { cenList ->
-                cenList.fold(initial = false) { isInfected: Boolean, event: ContactEvent ->
-                    isInfected || event.wasPotentiallyInfectious
-                }
-            }
-            .getDistinct()
+        tcnDao.allSortedByDescTimestamp()
+            .map { it.fold(false) { infected, tcn -> infected || tcn.wasPotentiallyInfectious } }
+            .asLiveData()
 
     private val interactedWithInfectedObserver =
         Observer<Boolean> { hasPossiblyInteractedWithInfected ->
@@ -84,7 +81,7 @@ class HomeViewModel(
     }
 
     fun onRefreshRequested() {
-        val state = contactEventsDownloader.executePublicContactEventsRefresh()
+        val state = signedReportsDownloader.executePublicSignedReportsRefresh()
         _isRefreshing.addSource(state) {
             _isRefreshing.value = !it
             if (_isRefreshing.value == false) {

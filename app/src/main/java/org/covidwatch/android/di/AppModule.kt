@@ -1,15 +1,15 @@
 package org.covidwatch.android.di
 
 import android.content.Context
+import org.covidwatch.android.CovidWatchTcnManager
 import androidx.work.WorkManager
+import okhttp3.OkHttpClient
 import org.covidwatch.android.NotificationFactory
-import org.covidwatch.android.TcnManager
-import org.covidwatch.android.ble.BluetoothManager
-import org.covidwatch.android.ble.BluetoothManagerImpl
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
-import org.covidwatch.android.data.contactevent.ContactEventsDownloader
+import org.covidwatch.android.data.signedreport.firestore.SignedReportsUploader
+import org.covidwatch.android.data.signedreport.SignedReportsDownloader
 import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
@@ -51,16 +51,16 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
+            signedReportsDownloader = get(),
             ensureTcnIsStartedUseCase = get(),
-            contactEventDAO = get(),
-            contactEventsDownloader = get()
+            tcnDao = get()
         )
     }
 
     factory {
         val context = androidContext()
         val workManager = WorkManager.getInstance(context)
-        ContactEventsDownloader(workManager)
+        SignedReportsDownloader(workManager)
     }
 
     viewModel {
@@ -77,10 +77,26 @@ val appModule = module {
         database.contactEventDAO()
     }
 
+    single {
+        val database: CovidWatchDatabase = get()
+        database.signedReportDAO()
+    }
+
+    single {
+        val database: CovidWatchDatabase = get()
+        database.temporaryContactNumberDAO()
+    }
+
+    single { TcnKeys(androidApplication()) }
+
+    single { OkHttpClient() }
+
+    single { SignedReportsUploader(okHttpClient = get(), signedReportDAO = get()) }
+
     factory {
         TestedRepositoryImpl(
             preferences = get(),
-            contactEventDAO = get()
+            covidWatchTcnManager = get()
         ) as TestedRepository
     }
 
@@ -98,15 +114,11 @@ val appModule = module {
     }
 
     single {
-        BluetoothManagerImpl(androidApplication()) as BluetoothManager
-    }
-
-    single {
-        TcnManager(
-            tcnKeys = TcnKeys(androidApplication()),
-            bluetoothManager = get(),
-            contactEventDAO = get(),
-            testedRepository = get()
+        CovidWatchTcnManager(
+            context = androidApplication(),
+            tcnKeys = get(),
+            tcnDao = get(),
+            signedReportDAO = get()
         )
     }
 }
