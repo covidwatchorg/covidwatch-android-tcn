@@ -46,6 +46,8 @@ class SignedReportsDownloadWorker(var context: Context, workerParams: WorkerPara
             fetchSinceTime = lastFetchTime.time
         }
 
+        val instance = FirebaseFirestore.getInstance()
+
         val task =
             FirebaseFirestore.getInstance().collection(FirestoreConstants.COLLECTION_SIGNED_REPORTS)
                 .whereGreaterThan(

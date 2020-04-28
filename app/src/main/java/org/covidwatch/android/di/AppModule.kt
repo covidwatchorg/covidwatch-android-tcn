@@ -9,7 +9,7 @@ import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
 import org.covidwatch.android.data.signedreport.firestore.SignedReportsUploader
-import org.covidwatch.android.data.contactevent.ContactEventsDownloader
+import org.covidwatch.android.data.signedreport.SignedReportsDownloader
 import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
@@ -54,14 +54,14 @@ val appModule = module {
             testedRepository = get(),
             ensureTcnIsStartedUseCase = get(),
             contactEventDAO = get(),
-            contactEventsDownloader = get()
+            signedReportsDownloader = get()
         )
     }
 
     factory {
         val context = androidContext()
         val workManager = WorkManager.getInstance(context)
-        ContactEventsDownloader(workManager)
+        SignedReportsDownloader(workManager)
     }
 
     viewModel {

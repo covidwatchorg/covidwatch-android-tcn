@@ -6,14 +6,14 @@ import kotlinx.coroutines.launch
 import org.covidwatch.android.R
 import org.covidwatch.android.data.ContactEvent
 import org.covidwatch.android.data.ContactEventDAO
-import org.covidwatch.android.data.contactevent.ContactEventsDownloader
+import org.covidwatch.android.data.signedreport.SignedReportsDownloader
 import org.covidwatch.android.domain.*
 import org.covidwatch.android.presentation.util.getDistinct
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testedRepository: TestedRepository,
-    private val contactEventsDownloader: ContactEventsDownloader,
+    private val signedReportsDownloader: SignedReportsDownloader,
     private val ensureTcnIsStartedUseCase: EnsureTcnIsStartedUseCase,
     contactEventDAO: ContactEventDAO
 ) : ViewModel(), EnsureTcnIsStartedPresenter {
@@ -84,7 +84,7 @@ class HomeViewModel(
     }
 
     fun onRefreshRequested() {
-        val state = contactEventsDownloader.executePublicContactEventsRefresh()
+        val state = signedReportsDownloader.executePublicSignedReportsRefresh()
         _isRefreshing.addSource(state) {
             _isRefreshing.value = !it
             if (_isRefreshing.value == false) {
