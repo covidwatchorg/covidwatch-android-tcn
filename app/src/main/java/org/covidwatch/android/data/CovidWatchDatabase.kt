@@ -10,10 +10,9 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 //TODO: Remove ContactEvent when migration to TCN is complete
-@Database(entities = [ContactEvent::class, TemporaryContactNumber::class, SignedReport::class], version = 1, exportSchema = false)
+@Database(entities = [TemporaryContactNumber::class, SignedReport::class], version = 2, exportSchema = false)
 abstract class CovidWatchDatabase : RoomDatabase() {
 
-    abstract fun contactEventDAO(): ContactEventDAO
     abstract fun temporaryContactNumberDAO(): TemporaryContactNumberDAO
     abstract fun signedReportDAO(): SignedReportDAO
 

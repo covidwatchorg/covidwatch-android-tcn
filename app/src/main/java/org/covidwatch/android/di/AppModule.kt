@@ -4,13 +4,11 @@ import android.content.Context
 import org.covidwatch.android.CovidWatchTcnManager
 import androidx.work.WorkManager
 import okhttp3.OkHttpClient
-import org.covidwatch.android.NotificationFactory
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
 import org.covidwatch.android.data.signedreport.firestore.SignedReportsUploader
 import org.covidwatch.android.data.signedreport.SignedReportsDownloader
-import org.covidwatch.android.domain.NotifyAboutPossibleExposureUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.presentation.home.EnsureTcnIsStartedUseCase
@@ -73,12 +71,6 @@ val appModule = module {
 
     single {
         val database: CovidWatchDatabase = get()
-
-        database.contactEventDAO()
-    }
-
-    single {
-        val database: CovidWatchDatabase = get()
         database.signedReportDAO()
     }
 
@@ -98,19 +90,6 @@ val appModule = module {
             preferences = get(),
             covidWatchTcnManager = get()
         ) as TestedRepository
-    }
-
-    factory {
-        NotifyAboutPossibleExposureUseCase(
-            context = androidContext(),
-            notificationFactory = get(),
-            testedRepository = get(),
-            contactEventDAO = get()
-        )
-    }
-
-    factory {
-        NotificationFactory(androidContext())
     }
 
     single {
