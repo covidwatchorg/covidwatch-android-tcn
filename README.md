@@ -22,6 +22,20 @@ Clone this repo from the `develop` branch:
 git clone git@github.com:covid19risk/covidwatch-android.git
 ```
 
+We are using tracking TCN's project as a submodule for now tracking the develop branch, so don't forget to init and fetch.
+
+First time:
+
+```
+$ git submodule update --init --recursive --remote
+```
+
+To Update:
+
+```
+git submodule update --remote
+```
+
 Open the project in Android Studio. Install onto a phone of yours with the `app` configuration, and you're free to explore the app! Its optimal to install on 2 phones as much of the behavior of the app depends on 2 phones interacting.
 
 **Note:** You cannot run this app on an emulator! We are dependent on Bluetooth being on and active, and most standard Android emulators do not have Bluetooth drivers.
