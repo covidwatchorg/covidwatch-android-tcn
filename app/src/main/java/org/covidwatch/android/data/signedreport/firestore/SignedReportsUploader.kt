@@ -41,33 +41,26 @@ class SignedReportsUploader(
         if (signedReports.isEmpty()) return
         signedReports.forEach { signedReport ->
 
-            val signatureBytesBase64EncodedString = base64String(signedReport.signatureBytes)
+            val signatureBytes = base64String(signedReport.signatureBytes)
 
-            Log.i(TAG, "Uploading signed report ($signatureBytesBase64EncodedString)...")
+            Log.i(TAG, "Uploading signed report ($signatureBytes)...")
 
             signedReport.uploadState = SignedReport.UploadState.UPLOADING
             signedReportDAO.update(signedReport)
 
-            try {
+            val isUploaded = try {
                 val json = signedReport.toJson()
-                val isSuccessful = submitReport(json)
-                if (isSuccessful) {
-                    uploaded(signedReport)
-                    Log.i(TAG, "Uploaded signed report ($signatureBytesBase64EncodedString)")
-                } else {
-                    notUploaded(signedReport)
-                    Log.e(
-                        TAG,
-                        "Uploading signed report ($signatureBytesBase64EncodedString) failed"
-                    )
-                }
-            } catch (e: IOException) {
+                uploadReport(json)
+            } catch (e: Exception) {
+                Log.e(TAG, "Uploading signed report ($signatureBytes) failed", e)
+                false
+            }
+            if (isUploaded) {
+                uploaded(signedReport)
+                Log.i(TAG, "Uploaded signed report ($signatureBytes)")
+            } else {
                 notUploaded(signedReport)
-                Log.e(
-                    TAG,
-                    "Uploading signed report ($signatureBytesBase64EncodedString) failed",
-                    e
-                )
+                Log.e(TAG, "Uploading signed report ($signatureBytes) failed")
             }
         }
     }
@@ -104,8 +97,8 @@ class SignedReportsUploader(
         return Base64.encodeToString(input, Base64.NO_WRAP)
     }
 
-    @Throws(IOException::class)
-    private fun submitReport(json: String): Boolean {
+    @Throws(IOException::class, IllegalStateException::class)
+    private fun uploadReport(json: String): Boolean {
         val apiUrl = BuildConfig.FIREBASE_CLOUD_FUNCTIONS_ENDPOINT
         val url = "$apiUrl/submitReport"
         val body = json.toRequestBody(contentType())
