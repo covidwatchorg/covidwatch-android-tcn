@@ -34,7 +34,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Clean, Build, Test
-      run: bash ./gradlew clean build --stacktrace
+      run: bash ./gradlew clean assemble --stacktrace
     - name: Update SonarQube
       env:
         LOGIN_KEY: ${{ secrets.SONARCLOUD_LOGIN_KEY }}
