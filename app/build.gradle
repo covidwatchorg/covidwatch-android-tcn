@@ -160,11 +160,14 @@ dependencies {
 
 }
 
+/*
 sonarqube {
     properties {
         property "sonar.projectKey", "covid19risk_covidwatch-android"
-        property "sonar.organization", "covid19risk"
+       // property "sonar.organization", "covid19risk"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/debug/jacoco.xml,${buildDir}/reports/jacoco/release/jacoco.xml,${buildDir}/reports/jacocoCombined/debug/jacoco.xml"
+        property 'sonar.androidLint.reportPaths', "${buildDir}/reports/lint-results.xml"
     }
 }
+*/
