@@ -82,8 +82,12 @@ val appModule = module {
     }
 
     single {
+        TcnKeys(androidApplication())
+    }
+
+    single {
         TcnManager(
-            tcnKeys = TcnKeys(androidApplication()),
+            tcnKeys = get(),
             bluetoothManager = get(),
             contactEventDAO = get(),
             testedRepository = get()
