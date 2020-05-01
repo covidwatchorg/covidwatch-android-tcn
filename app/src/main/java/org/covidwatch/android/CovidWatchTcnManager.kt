@@ -20,6 +20,7 @@ import org.covidwatch.android.data.signedreport.SignedReportDAO
 import org.covidwatch.android.presentation.MainActivity
 import org.tcncoalition.tcnclient.TcnKeys
 import org.tcncoalition.tcnclient.TcnManager
+import org.tcncoalition.tcnclient.crypto.MemoType
 import java.util.*
 
 class CovidWatchTcnManager(
@@ -104,7 +105,7 @@ class CovidWatchTcnManager(
     fun generateAndUploadReport() {
         // Create a new Signed Report with `uploadState` set to `.notUploaded` and store it in the local persistent store.
         // This will kick off an observer that watches for signed reports which were not uploaded and will upload it.
-        val signedReport = SignedReport(tcnKeys.createReport())
+        val signedReport = SignedReport(tcnKeys.createReport("Hello, World!".toByteArray(),MemoType.CovidWatchV1))
         signedReport.isProcessed = true
         signedReport.uploadState = SignedReport.UploadState.NOTUPLOADED
         GlobalScope.launch(Dispatchers.IO) {
