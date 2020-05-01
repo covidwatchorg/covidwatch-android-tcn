@@ -36,8 +36,6 @@ fun testAppModule(testContext: TestContext) = module(override = true) {
     }
 
     factory {
-        mockk<SharedPreferences>(relaxed = false).apply {
-            every { getBoolean(any(), any()) } answers { args[1] as Boolean }
-        }
+        testContext.sharedPreferences
     }
 }

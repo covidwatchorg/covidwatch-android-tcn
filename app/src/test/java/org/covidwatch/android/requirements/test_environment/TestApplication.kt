@@ -4,10 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentHostCallback
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelStore
 import androidx.work.*
 import androidx.work.impl.WorkManagerImpl
 import io.mockk.every
@@ -56,7 +52,7 @@ class TestApplication(private val testContext: TestContext) {
         every { enqueueUniquePeriodicWork(any(), any(), any()) } returns mockk(relaxed = false, relaxUnitFun = true)
     }
 
-    private val homeFragment: HomeFragment
+    private val homeFragment: FragmentTestBed<HomeFragment>
 
     init {
         ArchTaskExecutor.getInstance().setDelegate(taskExecutorMock)
@@ -72,19 +68,7 @@ class TestApplication(private val testContext: TestContext) {
 
         schedulePeriodicPublicContactEventsRefresh()
 
-        homeFragment = HomeFragment()
-        homeFragment["mHost"] = mockk<FragmentHostCallback<*>>(relaxed = false)
-
-        val viewModelStore = ViewModelStore()
-
-        val fragmentManagerMock = mockk<FragmentManager>(relaxed = false)
-        every { fragmentManagerMock["isStateAtLeast"](1) } returns true
-        every { fragmentManagerMock["getViewModelStore"](homeFragment) } returns viewModelStore
-
-        homeFragment["mChildFragmentManager"] = fragmentManagerMock
-        homeFragment["mFragmentManager"] = fragmentManagerMock
-
-        homeFragment.onCreate(null)
+        homeFragment = FragmentTestBed(HomeFragment())
     }
 
     private fun schedulePeriodicPublicContactEventsRefresh() {
