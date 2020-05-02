@@ -32,7 +32,7 @@ jobs:
     - name: Update SonarQube
       env:
         LOGIN_KEY: ${{ secrets.SONARCLOUD_LOGIN_KEY }}
-      run: bash ./gradlew sonarqube -Dsonar.login=$LOGIN_KEY -Dsonar.branch.name=develop --stacktrace -Dsonar.androidLint.reportPaths=build/reports/lint-results.xml --stacktrace
+      run: bash ./gradlew sonarqube -Dsonar.login=$LOGIN_KEY -Dsonar.branch.name=develop --stacktrace --stacktrace
   apk:
       name: Generate APK
       runs-on: ubuntu-latest
