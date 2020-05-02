@@ -33,8 +33,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Clean, Build, Test
-      run: bash ./gradlew clean build --stacktrace
+    - name: Clean, Build
+      run: bash ./gradlew clean assemble --stacktrace
+    - name: Lint
+      run: bash ./gradlew lint
+    - name: Test
+      run: bash ./gradlew app:test
     - name: Update SonarQube
       env:
         LOGIN_KEY: ${{ secrets.SONARCLOUD_LOGIN_KEY }}
