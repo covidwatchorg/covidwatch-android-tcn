@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: "com.vanniktech.android.junit.jacoco"
 apply plugin: "org.sonarqube"
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 29
@@ -91,6 +92,10 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation "androidx.fragment:fragment-ktx:1.2.4"
     implementation "androidx.work:work-runtime-ktx:2.3.4"
+    //Google Analytics dependency.
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
+    //Firebase Crashlytics dependency.
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     def nav_version = "2.2.1"
     implementation "androidx.navigation:navigation-fragment:$nav_version"
