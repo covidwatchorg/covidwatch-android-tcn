@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation
+package org.covidwatch.android.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,9 +16,9 @@ import org.covidwatch.android.databinding.FragmentHomeBinding
 import org.covidwatch.android.domain.FirstTimeUser
 import org.covidwatch.android.domain.ReturnUser
 import org.covidwatch.android.domain.Setup
-import org.covidwatch.android.presentation.home.HomeViewModel
-import org.covidwatch.android.presentation.home.InfoBannerState
-import org.covidwatch.android.presentation.home.WarningBannerState
+import org.covidwatch.android.ui.home.HomeViewModel
+import org.covidwatch.android.ui.home.InfoBannerState
+import org.covidwatch.android.ui.home.WarningBannerState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {

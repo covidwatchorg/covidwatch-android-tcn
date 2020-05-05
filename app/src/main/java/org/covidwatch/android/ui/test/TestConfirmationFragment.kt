@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.test
+package org.covidwatch.android.ui.test
 
 import android.os.Bundle
 import android.view.LayoutInflater

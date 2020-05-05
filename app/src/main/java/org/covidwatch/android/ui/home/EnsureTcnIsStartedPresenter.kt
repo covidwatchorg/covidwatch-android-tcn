@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.home
+package org.covidwatch.android.ui.home
 
 interface EnsureTcnIsStartedPresenter {
 

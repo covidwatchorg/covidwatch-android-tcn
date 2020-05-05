@@ -20,9 +20,9 @@ import org.covidwatch.android.domain.AppCoroutineDispatchers
 import org.covidwatch.android.domain.ProvideDiagnosisKeysUseCase
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
-import org.covidwatch.android.presentation.home.EnsureTcnIsStartedUseCase
-import org.covidwatch.android.presentation.home.HomeViewModel
-import org.covidwatch.android.presentation.settings.SettingsViewModel
+import org.covidwatch.android.ui.home.EnsureTcnIsStartedUseCase
+import org.covidwatch.android.ui.home.HomeViewModel
+import org.covidwatch.android.ui.settings.SettingsViewModel
 import org.covidwatch.android.ui.exposurenotification.ExposureNotificationViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext

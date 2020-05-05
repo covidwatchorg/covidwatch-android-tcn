@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation
+package org.covidwatch.android.ui
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import org.covidwatch.android.R
 import org.covidwatch.android.databinding.FragmentSettingsBinding
-import org.covidwatch.android.presentation.settings.SettingsViewModel
+import org.covidwatch.android.ui.settings.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -116,6 +116,8 @@ class SettingsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private fun turnOnBluetooth() {
         val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+        startActivityForResult(enableBtIntent,
+            REQUEST_ENABLE_BT
+        )
     }
 }

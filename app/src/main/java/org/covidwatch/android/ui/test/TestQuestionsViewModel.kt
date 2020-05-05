@@ -1,11 +1,11 @@
-package org.covidwatch.android.presentation.test
+package org.covidwatch.android.ui.test
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.covidwatch.android.presentation.test.model.TestDate
-import org.covidwatch.android.presentation.util.combineAndCompute
+import org.covidwatch.android.ui.test.model.TestDate
+import org.covidwatch.android.ui.util.combineAndCompute
 import java.text.SimpleDateFormat
 import java.util.*
 

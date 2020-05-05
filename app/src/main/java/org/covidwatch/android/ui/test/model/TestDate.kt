@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.test.model
+package org.covidwatch.android.ui.test.model
 
 data class TestDate(
     val formattedDate: String,

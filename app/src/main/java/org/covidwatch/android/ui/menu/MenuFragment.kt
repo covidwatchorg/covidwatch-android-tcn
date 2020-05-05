@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.menu
+package org.covidwatch.android.ui.menu
 
 import android.content.Intent
 import android.net.Uri

@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.menu
+package org.covidwatch.android.ui.menu
 
 data class MenuItem(
     val title: Int,

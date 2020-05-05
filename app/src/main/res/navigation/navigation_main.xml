@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="org.covidwatch.android.presentation.SplashFragment"
+        android:name="org.covidwatch.android.ui.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -16,13 +16,13 @@
     </fragment>
     <fragment
         android:id="@+id/setupBluetoothFragment"
-        android:name="org.covidwatch.android.presentation.SetupBluetoothFragment"
+        android:name="org.covidwatch.android.ui.SetupBluetoothFragment"
         android:label="SetupBluetoothFragment"
         tools:layout="@layout/fragment_setup_bluetooth">
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="org.covidwatch.android.presentation.HomeFragment"
+        android:name="org.covidwatch.android.ui.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/testQuestionsFragment"
-        android:name="org.covidwatch.android.presentation.test.TestQuestionsFragment"
+        android:name="org.covidwatch.android.ui.test.TestQuestionsFragment"
         android:label="TestFragment"
         tools:layout="@layout/fragment_test_questions">
         <action
@@ -52,12 +52,12 @@
     </fragment>
     <fragment
         android:id="@+id/testConfirmationFragment"
-        android:name="org.covidwatch.android.presentation.test.TestConfirmationFragment"
+        android:name="org.covidwatch.android.ui.test.TestConfirmationFragment"
         android:label="TestConfirmationFragment"
         tools:layout="@layout/fragment_test_confirmation" />
     <fragment
         android:id="@+id/menuFragment"
-        android:name="org.covidwatch.android.presentation.menu.MenuFragment"
+        android:name="org.covidwatch.android.ui.menu.MenuFragment"
         android:label="MenuFragment"
         tools:layout="@layout/fragment_menu">
         <action
@@ -69,12 +69,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="org.covidwatch.android.presentation.SettingsFragment"
+        android:name="org.covidwatch.android.ui.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/potentialRiskFragment"
-        android:name="org.covidwatch.android.presentation.test.PotentialRiskFragment"
+        android:name="org.covidwatch.android.ui.test.PotentialRiskFragment"
         android:label="PotentialRiskFragment"
         tools:layout="@layout/fragment_potential_risk"/>
 </navigation>

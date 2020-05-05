@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.util
+package org.covidwatch.android.ui.util
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

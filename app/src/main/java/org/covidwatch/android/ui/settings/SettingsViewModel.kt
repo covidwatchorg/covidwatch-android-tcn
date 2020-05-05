@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.settings
+package org.covidwatch.android.ui.settings
 
 import android.Manifest
 import android.app.Application

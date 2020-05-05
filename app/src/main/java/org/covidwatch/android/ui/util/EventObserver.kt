@@ -1,4 +1,4 @@
-package org.covidwatch.android.presentation.util
+package org.covidwatch.android.ui.util
 
 import androidx.lifecycle.Observer
 
