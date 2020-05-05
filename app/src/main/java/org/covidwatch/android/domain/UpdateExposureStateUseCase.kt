@@ -7,7 +7,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.await
-import org.covidwatch.android.ENStatus
+import org.covidwatch.android.exposurenotification.ENStatus
 import org.covidwatch.android.functional.Either
 import org.covidwatch.android.work.ProvideDiagnosisKeysWork
 import org.covidwatch.android.work.ProvideDiagnosisKeysWork.Companion.UNKNOWN_FAILURE

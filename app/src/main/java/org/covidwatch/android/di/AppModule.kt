@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.work.WorkManager
 import com.google.android.gms.nearby.Nearby
 import okhttp3.OkHttpClient
-import org.covidwatch.android.ExposureNotificationManager
+import org.covidwatch.android.exposurenotification.ExposureNotificationManager
 import org.covidwatch.android.data.AppDatabase
 import org.covidwatch.android.data.FirebaseService
 import org.covidwatch.android.data.TestedRepositoryImpl
@@ -36,7 +36,9 @@ val appModule = module {
     }
 
     single {
-        ExposureNotificationManager(exposureNotification = get())
+        ExposureNotificationManager(
+            exposureNotification = get()
+        )
     }
 
     viewModel {

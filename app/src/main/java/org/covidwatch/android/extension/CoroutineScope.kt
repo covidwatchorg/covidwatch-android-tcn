@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.covidwatch.android.ENStatus
+import org.covidwatch.android.exposurenotification.ENStatus
 import org.covidwatch.android.domain.UseCase
 
 fun <T : Any?> CoroutineScope.io(block: suspend () -> T, result: (T) -> Unit) {

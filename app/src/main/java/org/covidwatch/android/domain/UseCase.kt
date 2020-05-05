@@ -4,7 +4,7 @@ import org.covidwatch.android.functional.Either
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.covidwatch.android.ENStatus
+import org.covidwatch.android.exposurenotification.ENStatus
 
 /**
  * Abstract class for a Use Case (Interactor in terms of Clean Architecture).

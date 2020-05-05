@@ -5,8 +5,8 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.covidwatch.android.ENStatus
-import org.covidwatch.android.Status
+import org.covidwatch.android.exposurenotification.ENStatus
+import org.covidwatch.android.exposurenotification.Status
 import org.covidwatch.android.functional.Either
 import java.util.concurrent.ExecutionException
 

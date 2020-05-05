@@ -1,4 +1,4 @@
-package org.covidwatch.android
+package org.covidwatch.android.exposurenotification
 
 import com.google.android.gms.nearby.exposurenotification.ExposureConfiguration
 import com.google.android.gms.nearby.exposurenotification.ExposureNotificationClient

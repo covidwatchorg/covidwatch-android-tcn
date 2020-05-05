@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.WorkerParameters
-import org.covidwatch.android.ExposureNotificationManager
+import org.covidwatch.android.exposurenotification.ExposureNotificationManager
 import org.covidwatch.android.data.CovidExposureSummary
 import org.covidwatch.android.data.asTemporaryExposureKey
 import org.covidwatch.android.data.positivediagnosis.PositiveDiagnosisRepository

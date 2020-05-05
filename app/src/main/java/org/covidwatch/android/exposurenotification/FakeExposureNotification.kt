@@ -1,4 +1,4 @@
-package org.covidwatch.android
+package org.covidwatch.android.exposurenotification
 
 import com.google.android.gms.common.api.Api
 import com.google.android.gms.common.api.internal.ApiKey

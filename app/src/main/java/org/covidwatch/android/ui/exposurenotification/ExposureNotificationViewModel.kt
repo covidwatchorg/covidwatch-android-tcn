@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.covidwatch.android.ENStatus
-import org.covidwatch.android.ExposureNotificationManager
+import org.covidwatch.android.exposurenotification.ENStatus
+import org.covidwatch.android.exposurenotification.ExposureNotificationManager
 import org.covidwatch.android.data.CovidExposureInformation
 import org.covidwatch.android.data.CovidExposureSummary
 import org.covidwatch.android.data.PositiveDiagnosis

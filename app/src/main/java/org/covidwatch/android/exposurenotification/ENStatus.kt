@@ -1,4 +1,4 @@
-package org.covidwatch.android
+package org.covidwatch.android.exposurenotification
 
 import androidx.annotation.IntDef
 
