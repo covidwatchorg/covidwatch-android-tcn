@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import org.covidwatch.android.CovidWatchTcnManager
 import org.covidwatch.android.R
 import org.covidwatch.android.domain.UserFlowRepository
 import org.koin.android.ext.android.inject
@@ -20,7 +19,6 @@ class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth),
     EasyPermissions.PermissionCallbacks {
 
     private val userFlowRepository: UserFlowRepository by inject()
-    private val tcnManager: CovidWatchTcnManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,7 +63,6 @@ class SetupBluetoothFragment : Fragment(R.layout.fragment_setup_bluetooth),
     }
 
     private fun permissionGranted() {
-        tcnManager.startService()
         userFlowRepository.updateSetupUserFlow()
         findNavController().popBackStack(R.id.homeFragment, false)
     }

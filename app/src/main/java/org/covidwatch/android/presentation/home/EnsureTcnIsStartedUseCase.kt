@@ -4,12 +4,10 @@ import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import androidx.annotation.WorkerThread
-import org.covidwatch.android.CovidWatchTcnManager
 import pub.devrel.easypermissions.EasyPermissions
 
 class EnsureTcnIsStartedUseCase(
-    private val context: Context,
-    private val tcnManager: CovidWatchTcnManager
+    private val context: Context
 ) {
 
     private val hasLocationPermission: Boolean
@@ -25,15 +23,12 @@ class EnsureTcnIsStartedUseCase(
     fun execute(presenter: EnsureTcnIsStartedPresenter) {
         when {
             !hasLocationPermission -> {
-                tcnManager.stopService()
                 presenter.showLocationPermissionBanner()
             }
             !isBluetoothEnabled -> {
-                tcnManager.stopService()
                 presenter.showEnableBluetoothBanner()
             }
             else -> {
-                tcnManager.startService()
                 presenter.hideBanner()
             }
         }

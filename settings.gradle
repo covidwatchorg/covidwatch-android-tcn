@@ -1,2 +1,2 @@
 rootProject.name='COVIDWatch'
-include ':app', ':tcn-client-android:tcn-client-android'
+include ':app'

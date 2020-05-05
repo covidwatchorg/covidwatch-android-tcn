@@ -53,15 +53,6 @@ data class SignedReport(
         temporaryContactKeyBytes = parcel.createByteArray() ?: ByteArray(0)
     }
 
-    constructor(signedReport: org.tcncoalition.tcnclient.crypto.SignedReport) : this() {
-        endIndex = signedReport.report.j2.uShort.toInt()
-        memoData = signedReport.report.memoData
-        memoType = signedReport.report.memoType.ordinal
-        reportVerificationPublicKeyBytes = signedReport.report.rvk.toByteArray()
-        signatureBytes = signedReport.signature.toByteArray()
-        startIndex = signedReport.report.j1.uShort.toInt()
-        temporaryContactKeyBytes = signedReport.report.tckBytes
-    }
 
     enum class UploadState(val code: Int) {
         NOTUPLOADED(0), UPLOADING(1), UPLOADED(2);

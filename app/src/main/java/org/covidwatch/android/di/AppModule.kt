@@ -1,14 +1,11 @@
 package org.covidwatch.android.di
 
 import android.content.Context
-import org.covidwatch.android.CovidWatchTcnManager
-import androidx.work.WorkManager
 import okhttp3.OkHttpClient
 import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
 import org.covidwatch.android.data.signedreport.firestore.SignedReportsUploader
-import org.covidwatch.android.data.signedreport.SignedReportsDownloader
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.presentation.home.EnsureTcnIsStartedUseCase
@@ -18,7 +15,6 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import org.tcncoalition.tcnclient.TcnKeys
 
 @Suppress("USELESS_CAST")
 val appModule = module {
@@ -40,8 +36,7 @@ val appModule = module {
 
     factory {
         EnsureTcnIsStartedUseCase(
-            context = androidContext(),
-            tcnManager = get()
+            context = androidContext()
         )
     }
 
@@ -49,16 +44,9 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
-            signedReportsDownloader = get(),
             ensureTcnIsStartedUseCase = get(),
             tcnDao = get()
         )
-    }
-
-    factory {
-        val context = androidContext()
-        val workManager = WorkManager.getInstance(context)
-        SignedReportsDownloader(workManager)
     }
 
     viewModel {
@@ -79,25 +67,13 @@ val appModule = module {
         database.temporaryContactNumberDAO()
     }
 
-    single { TcnKeys(androidApplication()) }
-
     single { OkHttpClient() }
 
     single { SignedReportsUploader(okHttpClient = get(), signedReportDAO = get()) }
 
     factory {
         TestedRepositoryImpl(
-            preferences = get(),
-            covidWatchTcnManager = get()
+            preferences = get()
         ) as TestedRepository
-    }
-
-    single {
-        CovidWatchTcnManager(
-            context = androidApplication(),
-            tcnKeys = get(),
-            tcnDao = get(),
-            signedReportDAO = get()
-        )
     }
 }
