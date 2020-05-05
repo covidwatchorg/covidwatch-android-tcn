@@ -95,13 +95,13 @@ dependencies {
     //Firebase Crashlytics dependency.
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
-    def nav_version = "2.2.1"
+    def nav_version = "2.2.2"
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    def lifecycle_version = "2.3.0-alpha01"
+    def lifecycle_version = "2.3.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -118,7 +118,7 @@ dependencies {
 
     implementation "com.google.android.material:material:1.1.0"
 
-    implementation "com.google.firebase:firebase-firestore-ktx:21.4.2"
+    implementation "com.google.firebase:firebase-firestore-ktx:21.4.3"
 
     implementation "com.google.guava:guava:29.0-android"
 
@@ -152,7 +152,7 @@ dependencies {
     // Assertions
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.ext:truth:1.2.0"
-    androidTestImplementation "com.google.truth:truth:1.0"
+    androidTestImplementation "com.google.truth:truth:1.0.1"
 
     // Espresso dependencies
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"

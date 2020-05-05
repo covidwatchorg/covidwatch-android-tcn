@@ -2,17 +2,14 @@ package org.covidwatch.android.presentation.home
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.covidwatch.android.R
-import org.covidwatch.android.data.TemporaryContactNumberDAO
 import org.covidwatch.android.domain.*
 
 class HomeViewModel(
     private val userFlowRepository: UserFlowRepository,
     private val testedRepository: TestedRepository,
-    private val ensureTcnIsStartedUseCase: EnsureTcnIsStartedUseCase,
-    tcnDao: TemporaryContactNumberDAO
+    private val ensureTcnIsStartedUseCase: EnsureTcnIsStartedUseCase
 ) : ViewModel(), EnsureTcnIsStartedPresenter {
 
     private val isUserTestedPositive: Boolean get() = testedRepository.isUserTestedPositive()
@@ -31,10 +28,7 @@ class HomeViewModel(
     private val _isRefreshing = MediatorLiveData<Boolean>()
     val isRefreshing: LiveData<Boolean> get() = _isRefreshing
 
-    private val hasPossiblyInteractedWithInfected: LiveData<Boolean> =
-        tcnDao.allSortedByDescTimestamp()
-            .map { it.fold(false) { infected, tcn -> infected || tcn.wasPotentiallyInfectious } }
-            .asLiveData()
+    private val hasPossiblyInteractedWithInfected: LiveData<Boolean> = MutableLiveData()
 
     private val interactedWithInfectedObserver =
         Observer<Boolean> { hasPossiblyInteractedWithInfected ->

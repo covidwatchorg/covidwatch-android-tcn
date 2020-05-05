@@ -2,10 +2,8 @@ package org.covidwatch.android.di
 
 import android.content.Context
 import okhttp3.OkHttpClient
-import org.covidwatch.android.data.CovidWatchDatabase
 import org.covidwatch.android.data.TestedRepositoryImpl
 import org.covidwatch.android.data.UserFlowRepositoryImpl
-import org.covidwatch.android.data.signedreport.firestore.SignedReportsUploader
 import org.covidwatch.android.domain.TestedRepository
 import org.covidwatch.android.domain.UserFlowRepository
 import org.covidwatch.android.presentation.home.EnsureTcnIsStartedUseCase
@@ -44,8 +42,7 @@ val appModule = module {
         HomeViewModel(
             userFlowRepository = get(),
             testedRepository = get(),
-            ensureTcnIsStartedUseCase = get(),
-            tcnDao = get()
+            ensureTcnIsStartedUseCase = get()
         )
     }
 
@@ -53,23 +50,7 @@ val appModule = module {
         SettingsViewModel(androidApplication())
     }
 
-    single {
-        CovidWatchDatabase.getInstance(androidContext())
-    }
-
-    single {
-        val database: CovidWatchDatabase = get()
-        database.signedReportDAO()
-    }
-
-    single {
-        val database: CovidWatchDatabase = get()
-        database.temporaryContactNumberDAO()
-    }
-
     single { OkHttpClient() }
-
-    single { SignedReportsUploader(okHttpClient = get(), signedReportDAO = get()) }
 
     factory {
         TestedRepositoryImpl(
