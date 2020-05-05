@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pha_permission_number_dialog_title"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_pha_number"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/padding_content"
+        android:autofillHints=""
+        android:gravity="bottom"
+        android:hint="@string/pha_permission_number"
+        android:inputType="text"
+        tools:ignore="TextFields" />
+</LinearLayout>

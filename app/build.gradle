@@ -128,6 +128,11 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:4.0.0'
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:4.0.0'
+
     //// TEST RELATED DEPENDENCIES
 
     // Junit5 for Unit Tests

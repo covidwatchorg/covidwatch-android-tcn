@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="java.util.Date" />
+
+        <variable
+            name="item"
+            type="org.covidwatch.android.data.CovidExposureInformation" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            app:date="@{item.dateMillisSinceEpoch}"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2020.20.20" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@plurals/exposure_details(item.durationMinutes, context.getString(item.howClose))}"
+            app:layout_constraintTop_toBottomOf="@id/date"
+            tools:text="For 5 minutes, close distance" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

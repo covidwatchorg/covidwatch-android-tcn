@@ -111,4 +111,29 @@
     <string name="get_tested_if_advised">Get tested if advised</string>
     <string name="refer_to_local_agencies">Refer to local agencies for medical advice</string>
 
+    <!-- Exposure notification-->
+    <string name="upload_diagnosis">Upload diagnosis</string>
+    <string name="exposure_title">Exposure</string>
+    <string name="load_exposure_info">Load exposure details</string>
+    <string name="stop">Stop</string>
+    <plurals name="exposure_details">
+        <item quantity="zero">No Recent Messages</item>
+        <item quantity="one">For %d minute, %s distance</item>
+        <item quantity="other">For %d minutes, %s distance</item>
+    </plurals>
+
+    <string name="far_exposure_distance">Far</string>
+    <string name="close_exposure_distance">Close</string>
+    <string name="near_exposure_distance">Near</string>
+    <string name="exposure_summary">Days since last exposure: %d\nMatched keys: %d\nRisk level: %d\n</string>
+    <string name="no_exposure">No Exposure</string>
+    <string name="pha_permission_number">Your test number</string>
+    <string name="upload">Upload</string>
+    <string name="pha_permission_number_dialog_title">Provide test confirmation number</string>
+    <string name="reset_all_data">Clear data</string>
+
+    <string name="notification_title">Possible COVID-19 exposure</string>
+    <string name="notification_message">Someone you were near has tested positive for COVID-19. Tap for more info.</string>
+    <string name="notification_channel_name">Exposure Notification</string>
+    <string name="notification_channel_description">Exposure notification alerts.</string>
 </resources>

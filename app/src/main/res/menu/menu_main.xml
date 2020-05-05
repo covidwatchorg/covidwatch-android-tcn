@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_upload_diagnosis"
+        android:icon="@drawable/ic_cloud_upload"
+        android:title="@string/upload_diagnosis"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_start_stop"
+        android:title="@string/start"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_reset"
+        android:title="@string/reset_all_data"
+        app:showAsAction="never" />
+</menu>

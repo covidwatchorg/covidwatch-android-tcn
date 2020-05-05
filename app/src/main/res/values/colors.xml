@@ -3,6 +3,10 @@
     <color name="colorIsCurrentUserSick">#F44336</color>
     <color name="colorIsCurrentUserNotSick">#4CAF50</color>
 
+    <color name="colorAccentExposure">#A5E33C68</color>
+    <dimen name="exposure_summary_text">20sp</dimen>
+    <dimen name="padding_content">16dp</dimen>
+
     <!-- Imported from UX Repo -->
     <color name="colorPrimary">#6200EE</color>
     <color name="colorSecondary">#FFFFFF</color>
