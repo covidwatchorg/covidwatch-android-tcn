@@ -10,13 +10,10 @@ apply plugin: 'io.fabric'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
     defaultConfig {
         applicationId "edu.stanford.covidwatch.android"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -40,6 +37,7 @@ android {
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -79,7 +77,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'com.google.android.gms:play-services-tasks:17.0.2'
+    implementation 'com.google.android.gms:play-services-base:17.2.1'
+    implementation 'com.google.android.gms:play-services-basement:17.2.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -91,9 +92,9 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.2.4"
     implementation "androidx.work:work-runtime-ktx:2.3.4"
     //Google Analytics dependency.
-    implementation 'com.google.firebase:firebase-analytics:17.4.0'
+    debugImplementation 'com.google.firebase:firebase-analytics:17.4.0'
     //Firebase Crashlytics dependency.
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    debugImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     def nav_version = "2.2.2"
     implementation "androidx.navigation:navigation-fragment:$nav_version"
@@ -103,10 +104,9 @@ dependencies {
 
     def lifecycle_version = "2.3.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    //noinspection LifecycleAnnotationProcessorWithJava8
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
     implementation "com.squareup.okhttp3:okhttp:4.5.0"
 
@@ -162,15 +162,3 @@ dependencies {
     debugImplementation "androidx.fragment:fragment-testing:$fragment_testing_version"
 
 }
-
-/*
-sonarqube {
-    properties {
-        property "sonar.projectKey", "covid19risk_covidwatch-android"
-       // property "sonar.organization", "covid19risk"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/debug/jacoco.xml,${buildDir}/reports/jacoco/release/jacoco.xml,${buildDir}/reports/jacocoCombined/debug/jacoco.xml"
-        property 'sonar.androidLint.reportPaths', "${buildDir}/reports/lint-results.xml"
-    }
-}
-*/
